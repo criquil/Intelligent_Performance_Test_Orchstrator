@@ -1,0 +1,10 @@
+name: Intelligent_Performance_Test_Orchstrator
+version: 1.0.0
+description: APM project for Intelligent_Performance_Test_Orchstrator
+author: Rosa Cristian
+dependencies:
+  apm:
+  - mubaidr/gem-team
+  mcp: []
+includes: auto
+scripts: {}

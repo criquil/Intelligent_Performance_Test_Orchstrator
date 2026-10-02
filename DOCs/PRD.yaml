@@ -1,0 +1,75 @@
+# Product Requirements Document — Intelligent Performance Test Orchestrator v3
+# Leído por gem-orchestrator en Phase 0 como fuente de conocimiento del proyecto.
+
+product:
+  name: "Intelligent Performance Test Orchestrator"
+  version: "3.0"
+  domain: performance-testing
+  language: Spanish
+
+objective: |
+  Framework de orquestación inteligente para el Performance Test Life Cycle (PTLC).
+  Guía al usuario a través de 6 fases secuenciales — desde el levantamiento de
+  requisitos hasta el análisis final — generando todos los artefactos on-demand
+  (scripts, planes, reportes) para la herramienta seleccionada en cada proyecto.
+
+model:
+  tool_selection: one-per-project        # El usuario elige UNA herramienta por ciclo PTLC
+  script_generation: on-demand           # Los scripts se generan al momento del request
+  results: individual-per-tool           # Los resultados son propios de la herramienta usada
+  supported_tools:
+    - k6
+    - JMeter
+    - Gatling
+    - Locust
+
+pipeline:
+  entry_point: gem-orchestrator
+  phases:
+    - id: phase-1-intake
+      agent: ptlc-intake
+      output: requisitos + herramienta seleccionada
+    - id: phase-2-diagnostics
+      agent: ptlc-diagnostics
+      output: readiness score + riesgos
+    - id: phase-3-procedure
+      agent: ptlc-procedure-plan
+      output: tipos de prueba + workload model
+    - id: phase-4-test-plan
+      agent: ptlc-test-plan
+      output: docs/performance-test-plan.md
+    - id: phase-5-execution
+      agent: ptlc-execution
+      output: tests/performance/{tool}/ + resultados
+      requires_approval: true
+    - id: phase-6-analysis
+      agent: ptlc-analysis
+      output: docs/performance-test-report.md
+
+deliverables:
+  test_plan: docs/performance-test-plan.md
+  test_report: docs/performance-test-report.md
+  scripts: tests/performance/{tool}/
+  plan_state: docs/plan/{plan_id}/plan.yaml
+
+knowledge_base:
+  path: DOCs/
+  files: 37
+  size_kb: 650
+  categories:
+    - 01_Introduccion_PTLC
+    - 02_Tipos_de_Pruebas
+    - 03_Fases_del_PTLC
+    - 04_Metricas_y_KPIs
+    - 05_Herramientas
+    - 06_Workload_Modeling
+    - 07_Entorno_y_Monitoreo
+    - 08_Desarrollo_de_Scripts
+    - 09_Analisis_y_Bottlenecks
+    - 10_Mejores_Practicas
+
+constraints:
+  - Todos los outputs en español
+  - La ejecución real de pruebas requiere aprobación explícita del usuario
+  - El estado de cada plan se persiste en docs/plan/{plan_id}/plan.yaml
+  - Nunca ejecutar múltiples herramientas en paralelo dentro de un mismo ciclo PTLC

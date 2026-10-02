@@ -1,0 +1,36 @@
+# Gem Team Configuration for PTLC Project
+# https://github.com/mubaidr/gem-team#configuration
+
+orchestrator:
+  # Tratar el PTLC como alta complejidad por defecto (múltiples fases secuenciales)
+  default_complexity_threshold: MEDIUM
+  # Máximo 2 subagentes concurrentes (las fases PTLC son secuenciales)
+  max_concurrent_agents: 2
+
+project:
+  # Contexto del proyecto para que los agentes gem-* entiendan el dominio
+  domain: performance-testing
+  primary_language: Spanish
+  knowledge_base: DOCs/
+  output_docs: docs/
+  output_tests: tests/performance/
+
+memory:
+  # Persistir decisiones de herramienta y patrones de testing
+  persist_decisions: true
+  persist_patterns: true
+  persist_gotchas: true
+
+agents:
+  # gem-orchestrator es el entry point unificado para TODOS los tasks (v2.0)
+  # Detecta automáticamente intent de performance-testing y orquesta el pipeline PTLC completo
+  # ptlc-orchestrator se mantiene como entry point directo de conveniencia para usuarios avanzados
+  primary_entry_point: gem-orchestrator
+  ptlc_entry_point: gem-orchestrator
+  gem_entry_point: gem-orchestrator
+  ptlc_direct_entry_point: ptlc-orchestrator
+
+output:
+  format: markdown
+  include_doc_references: true
+  language: Spanish
