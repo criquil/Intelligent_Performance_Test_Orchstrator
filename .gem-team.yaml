@@ -11,7 +11,7 @@ project:
   # Contexto del proyecto para que los agentes gem-* entiendan el dominio
   domain: performance-testing
   primary_language: Spanish
-  knowledge_base: .github/skills/
+  knowledge_base: .opencode/skills/
   output_docs: docs/
   output_tests: tests/performance/
 
@@ -26,7 +26,7 @@ agents:
   # Recibe toda solicitud del usuario, detecta intent de performance-testing en Phase 0
   # y orquesta el pipeline PTLC completo cargando las skills ptlc-* (una por wave).
   # Las tareas generales (no-PTLC) se derivan a gem-orchestrator / equipo gem-*.
-  # Las skills del pipeline viven en .github/skills/ptlc-*/
+  # Las skills del pipeline viven en .opencode/skills/ptlc-*/
   primary_entry_point: ptlc-orchestrator
   ptlc_entry_point: ptlc-orchestrator
   gem_entry_point: ptlc-orchestrator
