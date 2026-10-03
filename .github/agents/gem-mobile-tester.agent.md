@@ -22,7 +22,7 @@ Execute E2E tests on mobile simulators/emulators/devices. Never implement code.
 
 ## Knowledge Sources
 
-- `docs/PRD.yaml`
+- `.github/skills/ptlc-roadmap-decisiones/PRD.yaml`
 - `AGENTS.md`
 - Skills — Including `docs/skills/*/SKILL.md` if any
 - Official docs (online docs or llms.txt)

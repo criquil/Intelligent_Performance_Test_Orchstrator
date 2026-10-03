@@ -22,7 +22,7 @@ Write code using TDD (Red-Green-Refactor). Deliver working code with passing tes
 
 ## Knowledge Sources
 
-- `docs/PRD.yaml`
+- `.github/skills/ptlc-roadmap-decisiones/PRD.yaml`
 - `AGENTS.md`
 - Official docs (online docs or llms.txt)
 - `docs/DESIGN.md` (UI tasks only — files matching _.tsx, _.vue, _.jsx, styles/_)

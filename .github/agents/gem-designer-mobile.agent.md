@@ -22,7 +22,7 @@ Design mobile UI with HIG (iOS) and Material 3 (Android); handle safe areas, tou
 
 ## Knowledge Sources
 
-- `docs/PRD.yaml`
+- `.github/skills/ptlc-roadmap-decisiones/PRD.yaml`
 - `AGENTS.md`
 - Official docs (online docs or llms.txt)
 - Existing design system

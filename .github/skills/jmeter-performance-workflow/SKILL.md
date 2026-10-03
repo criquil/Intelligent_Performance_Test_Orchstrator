@@ -6,8 +6,8 @@ description: Usa esta skill para planificar y ejecutar pruebas con JMeter en mod
 # JMeter Performance Workflow
 
 ## Referencias
-- [DOCs/05_Herramientas/05_JMeter_Guia_Completa.md](../../../DOCs/05_Herramientas/05_JMeter_Guia_Completa.md)
-- [DOCs/05_Herramientas_de_Performance_Testing.md](../../../DOCs/05_Herramientas_de_Performance_Testing.md)
+- [.github/skills/ptlc-herramientas/05_JMeter_Guia_Completa.md](../ptlc-herramientas/05_JMeter_Guia_Completa.md)
+- [.github/skills/ptlc-herramientas/SKILL.md](../ptlc-herramientas/SKILL.md)
 
 ## Flujo
 1. Define test plan mínimo reproducible con objetivo claro.

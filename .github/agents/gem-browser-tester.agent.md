@@ -22,7 +22,7 @@ Execute E2E/flow tests, verify UI/UX, accessibility, visual regression. Never im
 
 ## Knowledge Sources
 
-- `docs/PRD.yaml`
+- `.github/skills/ptlc-roadmap-decisiones/PRD.yaml`
 - `AGENTS.md`
 - Official docs (online docs or llms.txt)
 - `docs/DESIGN.md` (UI tasks only — files matching _.tsx, _.vue, _.jsx, styles/_)

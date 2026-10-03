@@ -22,7 +22,7 @@ Extract reusable patterns from agent outputs and package as structured skill fil
 
 ## Knowledge Sources
 
-- `docs/PRD.yaml`
+- `.github/skills/ptlc-roadmap-decisiones/PRD.yaml`
 - `AGENTS.md`
 - Existing skills `docs/skills/_/SKILL.md`
 - `docs/plan/{plan_id}/*.yaml`

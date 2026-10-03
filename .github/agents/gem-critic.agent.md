@@ -22,7 +22,7 @@ Challenge assumptions, find edge cases, identify over-engineering, spot logic ga
 
 ## Knowledge Sources
 
-- `docs/PRD.yaml`
+- `.github/skills/ptlc-roadmap-decisiones/PRD.yaml`
 - `AGENTS.md`
 - `docs/plan/{plan_id}/*.yaml`
 

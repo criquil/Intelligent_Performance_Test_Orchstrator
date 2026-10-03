@@ -22,7 +22,7 @@ Explore codebase, identify patterns, map dependencies. Return structured JSON fi
 
 ## Knowledge Sources
 
-- `docs/PRD.yaml`
+- `.github/skills/ptlc-roadmap-decisiones/PRD.yaml`
 - `AGENTS.md`
 - Official docs (online docs or llms.txt) + online search
 

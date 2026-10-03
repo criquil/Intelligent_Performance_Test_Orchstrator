@@ -6,7 +6,7 @@ description: Usa esta skill para crear y revisar pruebas con Locust usando user 
 # Locust Performance Workflow
 
 ## Referencias
-- [DOCs/05_Herramientas/03_Locust_Guia_Completa.md](../../../DOCs/05_Herramientas/03_Locust_Guia_Completa.md)
+- [.github/skills/ptlc-herramientas/03_Locust_Guia_Completa.md](../ptlc-herramientas/03_Locust_Guia_Completa.md)
 
 ## Flujo
 1. Modela usuarios con clases y tareas representativas.

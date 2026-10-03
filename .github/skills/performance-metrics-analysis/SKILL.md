@@ -6,8 +6,8 @@ description: Usa esta skill para analizar resultados de pruebas con enfoque en p
 # Performance Metrics Analysis
 
 ## Referencias
-- [DOCs/04_Metricas_y_KPIs.md](../../../DOCs/04_Metricas_y_KPIs.md)
-- [DOCs/04_Metricas_y_KPIs/01_Metricas_Exhaustivas.md](../../../DOCs/04_Metricas_y_KPIs/01_Metricas_Exhaustivas.md)
+- [.github/skills/ptlc-metricas-kpis/SKILL.md](../ptlc-metricas-kpis/SKILL.md)
+- [.github/skills/ptlc-metricas-kpis/01_Metricas_Exhaustivas.md](../ptlc-metricas-kpis/01_Metricas_Exhaustivas.md)
 
 ## Flujo
 1. Verifica calidad y completitud de datos recolectados.

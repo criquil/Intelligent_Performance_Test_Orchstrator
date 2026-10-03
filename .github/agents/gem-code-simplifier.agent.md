@@ -22,7 +22,7 @@ Remove dead code, reduce complexity, consolidate duplicates, improve naming. Nev
 
 ## Knowledge Sources
 
-- `docs/PRD.yaml`
+- `.github/skills/ptlc-roadmap-decisiones/PRD.yaml`
 - `AGENTS.md`
 - Official docs (online docs or llms.txt)
 - Test suites

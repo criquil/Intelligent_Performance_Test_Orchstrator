@@ -11,7 +11,7 @@ project:
   # Contexto del proyecto para que los agentes gem-* entiendan el dominio
   domain: performance-testing
   primary_language: Spanish
-  knowledge_base: DOCs/
+  knowledge_base: .github/skills/
   output_docs: docs/
   output_tests: tests/performance/
 
@@ -22,12 +22,14 @@ memory:
   persist_gotchas: true
 
 agents:
-  # gem-orchestrator es el entry point unificado para TODOS los tasks (v2.0)
-  # Detecta automáticamente intent de performance-testing y orquesta el pipeline PTLC completo
-  # ptlc-orchestrator se mantiene como entry point directo de conveniencia para usuarios avanzados
-  primary_entry_point: gem-orchestrator
-  ptlc_entry_point: gem-orchestrator
-  gem_entry_point: gem-orchestrator
+  # ptlc-orchestrator es el entry point OBLIGATORIO de todo request (v3.0)
+  # Recibe toda solicitud del usuario, detecta intent de performance-testing en Phase 0
+  # y orquesta el pipeline PTLC completo cargando las skills ptlc-* (una por wave).
+  # Las tareas generales (no-PTLC) se derivan a gem-orchestrator / equipo gem-*.
+  # Las skills del pipeline viven en .github/skills/ptlc-*/
+  primary_entry_point: ptlc-orchestrator
+  ptlc_entry_point: ptlc-orchestrator
+  gem_entry_point: ptlc-orchestrator
   ptlc_direct_entry_point: ptlc-orchestrator
 
 output:

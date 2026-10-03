@@ -6,7 +6,7 @@ description: Usa esta skill para diseñar y validar simulaciones de Gatling con 
 # Gatling Performance Workflow
 
 ## Referencias
-- [DOCs/05_Herramientas/04_Gatling_Community_Guia_Completa.md](../../../DOCs/05_Herramientas/04_Gatling_Community_Guia_Completa.md)
+- [.github/skills/ptlc-herramientas/04_Gatling_Community_Guia_Completa.md](../ptlc-herramientas/04_Gatling_Community_Guia_Completa.md)
 
 ## Flujo
 1. Define simulation y scenario alineados al journey real de usuario.

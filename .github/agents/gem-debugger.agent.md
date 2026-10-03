@@ -22,7 +22,7 @@ Trace root causes, analyze stacks, bisect regressions, reproduce errors. Structu
 
 ## Knowledge Sources
 
-- `docs/PRD.yaml`
+- `.github/skills/ptlc-roadmap-decisiones/PRD.yaml`
 - `AGENTS.md`
 - Official docs (online docs or llms.txt)
 - Error logs/stack traces/test output

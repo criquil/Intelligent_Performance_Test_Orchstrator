@@ -6,9 +6,9 @@ description: Usa esta skill para realizar análisis técnico de bottlenecks y RC
 # Performance Diagnostics and RCA
 
 ## Referencias
-- [DOCs/09_Analisis_de_Resultados_y_Bottlenecks.md](../../../DOCs/09_Analisis_de_Resultados_y_Bottlenecks.md)
-- [DOCs/09_Analisis_y_Bottlenecks/01_RCA_y_Troubleshooting.md](../../../DOCs/09_Analisis_y_Bottlenecks/01_RCA_y_Troubleshooting.md)
-- [DOCs/07_Entorno_y_Monitoreo.md](../../../DOCs/07_Entorno_y_Monitoreo.md)
+- [.github/skills/ptlc-analisis-bottlenecks/SKILL.md](../ptlc-analisis-bottlenecks/SKILL.md)
+- [.github/skills/ptlc-analisis-bottlenecks/01_RCA_y_Troubleshooting.md](../ptlc-analisis-bottlenecks/01_RCA_y_Troubleshooting.md)
+- [.github/skills/ptlc-monitoreo/SKILL.md](../ptlc-monitoreo/SKILL.md)
 
 ## Flujo
 1. Correlaciona síntomas con métricas de app, DB, sistema y red.

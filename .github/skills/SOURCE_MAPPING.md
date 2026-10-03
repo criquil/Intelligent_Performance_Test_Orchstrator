@@ -61,4 +61,4 @@
 ## Criterio de selección
 - Se priorizaron skills alineadas a herramientas del repositorio (`k6`, `JMeter`, `Gatling`, `Locust`).
 - Se agruparon skills muy granulares en skills operables y mantenibles para evitar duplicación.
-- Se enlazó la documentación local en `DOCs/` para mantener una única fuente de verdad.
+- Se enlazó la documentación local en `.github/skills/` para mantener una única fuente de verdad.

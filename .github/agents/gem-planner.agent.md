@@ -44,7 +44,7 @@ Design DAG-based plans, decompose tasks, create `plan.yaml`. Never implement cod
 
 ## Knowledge Sources
 
-- `docs/PRD.yaml`
+- `.github/skills/ptlc-roadmap-decisiones/PRD.yaml`
 - `AGENTS.md`
 - Official docs (online docs or llms.txt)
 

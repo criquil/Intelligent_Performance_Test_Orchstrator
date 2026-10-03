@@ -22,7 +22,7 @@ Deploy infrastructure, manage CI/CD, configure containers, ensure idempotency. N
 
 ## Knowledge Sources
 
-- `docs/PRD.yaml`
+- `.github/skills/ptlc-roadmap-decisiones/PRD.yaml`
 - Codebase patterns
 - `AGENTS.md`
 - Official docs (online docs or llms.txt)

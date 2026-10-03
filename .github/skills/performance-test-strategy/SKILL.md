@@ -6,9 +6,9 @@ description: Usa esta skill para diseñar la estrategia de pruebas de rendimient
 # Performance Test Strategy
 
 ## Referencias
-- [DOCs/02_Tipos_de_Pruebas_de_Rendimiento.md](../../../DOCs/02_Tipos_de_Pruebas_de_Rendimiento.md)
-- [DOCs/06_Workload_Modeling_y_Diseno_de_Escenarios.md](../../../DOCs/06_Workload_Modeling_y_Diseno_de_Escenarios.md)
-- [DOCs/03_Fases_del_PTLC_Detalle.md](../../../DOCs/03_Fases_del_PTLC_Detalle.md)
+- [.github/skills/ptlc-tipos-de-pruebas/SKILL.md](../ptlc-tipos-de-pruebas/SKILL.md)
+- [.github/skills/ptlc-workload-modeling/SKILL.md](../ptlc-workload-modeling/SKILL.md)
+- [.github/skills/ptlc-fases-del-ciclo/SKILL.md](../ptlc-fases-del-ciclo/SKILL.md)
 
 ## Flujo
 1. Aclara objetivos de negocio y NFRs.

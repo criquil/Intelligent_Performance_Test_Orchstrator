@@ -6,8 +6,8 @@ description: Usa esta skill para diseñar, generar y revisar pruebas de rendimie
 # k6 Performance Workflow
 
 ## Referencias
-- [DOCs/05_Herramientas/06_k6_Guia_Completa_Expandida.md](../../../DOCs/05_Herramientas/06_k6_Guia_Completa_Expandida.md)
-- [DOCs/04_Metricas_y_KPIs.md](../../../DOCs/04_Metricas_y_KPIs.md)
+- [.github/skills/ptlc-herramientas/06_k6_Guia_Completa_Expandida.md](../ptlc-herramientas/06_k6_Guia_Completa_Expandida.md)
+- [.github/skills/ptlc-metricas-kpis/SKILL.md](../ptlc-metricas-kpis/SKILL.md)
 
 ## Flujo
 1. Define objetivo y criterio pass/fail con `thresholds`.

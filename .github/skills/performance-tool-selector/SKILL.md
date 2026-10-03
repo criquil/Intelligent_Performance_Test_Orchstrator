@@ -9,9 +9,9 @@ description: Usa esta skill cuando necesites elegir entre k6, JMeter, Gatling o 
 Elegir la herramienta adecuada para un escenario de pruebas de rendimiento y justificar la decisión con criterios técnicos.
 
 ## Referencias
-- [DOCs/05_Herramientas_de_Performance_Testing.md](../../../DOCs/05_Herramientas_de_Performance_Testing.md)
-- [DOCs/02_Tipos_de_Pruebas_de_Rendimiento.md](../../../DOCs/02_Tipos_de_Pruebas_de_Rendimiento.md)
-- [DOCs/06_Workload_Modeling_y_Diseno_de_Escenarios.md](../../../DOCs/06_Workload_Modeling_y_Diseno_de_Escenarios.md)
+- [.github/skills/ptlc-herramientas/SKILL.md](../ptlc-herramientas/SKILL.md)
+- [.github/skills/ptlc-tipos-de-pruebas/SKILL.md](../ptlc-tipos-de-pruebas/SKILL.md)
+- [.github/skills/ptlc-workload-modeling/SKILL.md](../ptlc-workload-modeling/SKILL.md)
 
 ## Flujo
 1. Identifica el objetivo principal: baseline, capacidad, estrés, soak o resiliencia.
@@ -24,4 +24,4 @@ Elegir la herramienta adecuada para un escenario de pruebas de rendimiento y jus
 - Herramienta recomendada.
 - Razones técnicas en bullets.
 - Riesgos de implementación.
-- Siguiente documento a leer en `DOCs/05_Herramientas/`.
+- Siguiente documento a leer en `.github/skills/ptlc-herramientas/`.

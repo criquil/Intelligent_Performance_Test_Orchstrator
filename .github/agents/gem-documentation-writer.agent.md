@@ -22,7 +22,7 @@ Write technical docs, generate diagrams, maintain code-docs parity, maintain `AG
 
 ## Knowledge Sources
 
-- `docs/PRD.yaml`
+- `.github/skills/ptlc-roadmap-decisiones/PRD.yaml`
 - `AGENTS.md`
 - Official docs (online docs or llms.txt)
 - Existing docs (README, docs/, `CONTRIBUTING.md`)
@@ -52,7 +52,7 @@ IMPORTANT: Batch/join dependency-free steps; serialize only true dependencies wh
   - PRD:
     - Read task_definition (action, clarifications, ADRs).
     - Read existing PRD if updating.
-    - Create / update `docs/PRD.yaml` per PRD Format Guide.
+    - Create / update `.github/skills/ptlc-roadmap-decisiones/PRD.yaml` per PRD Format Guide.
     - Mark features complete, record decisions, log changes.
     - Check duplicates, append concisely.
     - Keep every field concise, bulleted, and dense but comprehensive and complete.
