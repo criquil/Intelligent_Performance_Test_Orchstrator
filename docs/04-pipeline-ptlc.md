@@ -1,12 +1,12 @@
 # 04 — Pipeline PTLC: las 6 fases en detalle
 
-Orquestador: `ptlc-orchestrator` (entry point obligatorio). Detecta el dominio en Phase 0 y ejecuta las 6 fases en cascada, una skill por fase. Ver [01-arquitectura](01-arquitectura.md) · [05-skills](05-skills.md) · [06-knowledge-base](06-knowledge-base.md).
+Orquestador: `ptlc-orchestrator` (entry point obligatorio). Detecta el dominio en Phase 0 y ejecuta las 6 fases en cascada, una skill por fase. Ver [02-arquitectura](02-arquitectura.md) · [05-skills](05-skills.md) · [06-knowledge-base](06-knowledge-base.md).
 
-> Rutas de skills: `../.opencode/skills/<skill>/SKILL.md`. Contrato del contexto: `../.opencode/skills/ptlc-roadmap-decisiones/CONTEXT_ENVELOPE.md`.
+> Rutas de skills: `../.claude/skills/<skill>/SKILL.md`. Contrato del contexto: `../.claude/skills/ptlc-roadmap-decisiones/CONTEXT_ENVELOPE.md`.
 
 ## F1 · Intake — requisitos + selección de herramienta
 
-- **Skill:** `../.opencode/skills/ptlc-intake/SKILL.md`
+- **Skill:** `../.claude/skills/ptlc-intake/SKILL.md`
 - **Objetivo:** recopilar SUT, NFRs, contexto del equipo y datos; seleccionar UNA herramienta.
 - **Inputs:** `user_input` (+ `context_snapshot` si existe).
 - **Outputs:** JSON `requirements` + `selected_tool` + `pending_questions`; escribe bloque `intake` del envelope.
@@ -14,7 +14,7 @@ Orquestador: `ptlc-orchestrator` (entry point obligatorio). Detecta el dominio e
 
 ## F2 · Diagnostics — readiness + riesgos
 
-- **Skill:** `../.opencode/skills/ptlc-diagnostics/SKILL.md`
+- **Skill:** `../.claude/skills/ptlc-diagnostics/SKILL.md`
 - **Objetivo:** viabilidad técnica: entorno, observabilidad, datos, NFRs; workload estimado con Little's Law.
 - **Inputs:** `requirements` de F1.
 - **Outputs:** `readiness_score` (0-100) + riesgos + `preparation_actions`; bloque `diagnostics`.
@@ -22,7 +22,7 @@ Orquestador: `ptlc-orchestrator` (entry point obligatorio). Detecta el dominio e
 
 ## F3 · Procedure plan — tipos + workload model
 
-- **Skill:** `../.opencode/skills/ptlc-procedure-plan/SKILL.md`
+- **Skill:** `../.claude/skills/ptlc-procedure-plan/SKILL.md`
 - **Objetivo:** definir QUÉ hacer: tipos (máx 5), escenarios, workload model, criterios numéricos.
 - **Inputs:** `requirements` + `diagnostics_output`.
 - **Outputs:** `test_types` + `workload_model` (nominal/pico/stress, Little's Law) + `execution_order`; bloque `procedure`.
@@ -30,7 +30,7 @@ Orquestador: `ptlc-orchestrator` (entry point obligatorio). Detecta el dominio e
 
 ## F4 · Test plan — documento formal ISTQB/IEEE-829
 
-- **Skill:** `../.opencode/skills/ptlc-test-plan/SKILL.md`
+- **Skill:** `../.claude/skills/ptlc-test-plan/SKILL.md`
 - **Objetivo:** plan de 11 secciones legible por stakeholders; genera `docs/performance-test-plan.md`.
 - **Inputs:** fases 1-3 (`requirements` + `diagnostics` + `procedure_plan`).
 - **Outputs:** JSON resumen + archivo del plan; bloque `test_plan`.
@@ -42,7 +42,7 @@ Orquestador: `ptlc-orchestrator` (entry point obligatorio). Detecta el dominio e
 
 ## F5 · Execution — scripts + ejecución
 
-- **Skill:** `../.opencode/skills/ptlc-execution/SKILL.md`
+- **Skill:** `../.claude/skills/ptlc-execution/SKILL.md`
 - **Objetivo:** generar scripts on-demand en `tests/performance/{tool}/{plan_id}/` y ejecutar si `execute = true`.
 - **Inputs:** plan completo + `execute` (booleano aprobado) + herramienta seleccionada.
 - **Outputs:** `scripts_generated` + `execution_results`; bloque `execution`.
@@ -50,7 +50,7 @@ Orquestador: `ptlc-orchestrator` (entry point obligatorio). Detecta el dominio e
 
 ## F6 · Analysis — métricas + RCA + veredicto
 
-- **Skill:** `../.opencode/skills/ptlc-analysis/SKILL.md`
+- **Skill:** `../.claude/skills/ptlc-analysis/SKILL.md`
 - **Objetivo:** p50/p95/p99, Apdex, throughput, error rate vs criterios; RCA con 5 Whys; reporte en `docs/performance-test-report.md`.
 - **Inputs:** `execution_results` + `acceptance_criteria`.
 - **Outputs:** `overall_verdict` + métricas por prueba + bottlenecks P1-P4; bloque `analysis`.

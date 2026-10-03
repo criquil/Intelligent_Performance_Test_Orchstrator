@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Medidor de presupuesto de tokens del knowledge base PTLC.
 
-Recorre `.opencode/agents/*.md` y `.opencode/skills/**` y estima el coste en
+Recorre `.claude/agents/*.md` y `.claude/skills/**` y estima el coste en
 tokens de cada artefacto como `caracteres / 3.5`. Esta aproximacion es
 conservadora para texto en espanol (≈3.5 caracteres por token) y no requiere
 dependencias externas.
@@ -113,8 +113,8 @@ def rel(root, path):
 
 def collect(root):
     """Recolecta agentes, skills y documentos de detalle."""
-    skills_dir = os.path.join(root, ".opencode", "skills")
-    agents_dir = os.path.join(root, ".opencode", "agents")
+    skills_dir = os.path.join(root, ".claude", "skills")
+    agents_dir = os.path.join(root, ".claude", "agents")
 
     report = {
         "agents": [],
@@ -212,20 +212,20 @@ def totals(report, root):
     skill_desc_all = sum(s["desc_tokens"] for s in skills)
     agent_desc_all = sum(a["desc_tokens"] for a in agents)
 
-    agents_md = os.path.join(root, "AGENTS.md")
-    agents_md_tok = tokens(read_text(agents_md)) if os.path.isfile(agents_md) else 0
+    claude_md = os.path.join(root, "CLAUDE.md")
+    claude_md_tok = tokens(read_text(claude_md)) if os.path.isfile(claude_md) else 0
 
-    opencode_json = os.path.join(root, "opencode.json")
-    opencode_tok = (tokens(read_text(opencode_json))
-                    if os.path.isfile(opencode_json) else 0)
+    settings_json = os.path.join(root, ".claude", "settings.json")
+    settings_tok = (tokens(read_text(settings_json))
+                    if os.path.isfile(settings_json) else 0)
 
     return {
         "skill_desc_tokens": skill_desc_all,
         "agent_desc_tokens": agent_desc_all,
-        "agents_md_tokens": agents_md_tok,
-        "opencode_json_tokens": opencode_tok,
+        "claude_md_tokens": claude_md_tok,
+        "settings_json_tokens": settings_tok,
         "always_on_tokens": (skill_desc_all + agent_desc_all
-                             + agents_md_tok + opencode_tok),
+                             + claude_md_tok + settings_tok),
         "agent_body_tokens": sum(a["body_tokens"] for a in agents),
         "skill_index_tokens": sum(s["index_tokens"] for s in skills),
         "detail_tokens": sum(s["detail_tokens"] for s in skills),
@@ -235,7 +235,7 @@ def totals(report, root):
 def _resolve_read_ref(root, ref):
     """Resuelve una referencia a `.md` de un `<pre_execution>` a un path real.
 
-    Acepta rutas relativas a la raiz (`.opencode/...`) y nombres sueltos (p. ej.
+    Acepta rutas relativas a la raiz (`.claude/...`) y nombres sueltos (p. ej.
     `01_Load_Testing.md`) buscados por basename en el arbol de skills.
     Devuelve el path o None si no se puede resolver de forma inequivoca.
     """
@@ -244,7 +244,7 @@ def _resolve_read_ref(root, ref):
     if os.path.isfile(direct):
         return direct
     base = os.path.basename(ref)
-    matches = glob.glob(os.path.join(root, ".opencode", "skills", "**", base),
+    matches = glob.glob(os.path.join(root, ".claude", "skills", "**", base),
                         recursive=True)
     if len(matches) == 1:
         return matches[0]
@@ -261,7 +261,7 @@ def check_unbounded_reads(report, root):
     """
     warnings = []
     for name in PHASE_SKILLS:
-        skill_md = os.path.join(root, ".opencode", "skills", name, "SKILL.md")
+        skill_md = os.path.join(root, ".claude", "skills", name, "SKILL.md")
         if not os.path.isfile(skill_md):
             continue
         text = read_text(skill_md)
@@ -311,7 +311,7 @@ def check_budgets(report, tot, root):
     if tot["always_on_tokens"] > BUDGET_ALWAYS_ON:
         violations.append({
             "scope": "contexto siempre activo",
-            "actual": tot["always_on_tokens_in_scope"],
+            "actual": tot["always_on_tokens"],
             "budget": BUDGET_ALWAYS_ON,
         })
 
@@ -355,8 +355,8 @@ def print_report(report, tot, violations, warnings, root):
     print("descripciones de skills  : %6d tokens (%d skills)"
           % (tot["skill_desc_tokens"], len(skills)))
     print("descripciones de agentes : %6d tokens" % tot["agent_desc_tokens"])
-    print("AGENTS.md (raiz)         : %6d tokens" % tot["agents_md_tokens"])
-    print("opencode.json            : %6d tokens" % tot["opencode_json_tokens"])
+    print("CLAUDE.md (raiz)         : %6d tokens" % tot["claude_md_tokens"])
+    print(".claude/settings.json    : %6d tokens" % tot["settings_json_tokens"])
     print("TOTAL por request        : %6d tokens  [presupuesto <= %d]"
           % (tot["always_on_tokens"], BUDGET_ALWAYS_ON))
 

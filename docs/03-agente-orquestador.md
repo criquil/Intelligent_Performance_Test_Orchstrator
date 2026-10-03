@@ -1,13 +1,13 @@
 # 03 — Agente orquestador (`ptlc-orchestrator`)
 
-Definición: [`.opencode/agents/ptlc-orchestrator.md`](../.opencode/agents/ptlc-orchestrator.md). Fijado como `default_agent` en [`opencode.json`](../opencode.json).
+Definición: [`.claude/agents/ptlc-orchestrator.md`](../.claude/agents/ptlc-orchestrator.md). La memoria del proyecto ([`CLAUDE.md`](../CLAUDE.md)) lo fija como entry point obligatorio; [`.claude/settings.json`](../.claude/settings.json) contiene los permisos del harness.
 
 ## Rol y reglas
 
 - **Entry point obligatorio:** todo request entra por él; no se le salta ni se reordena su flujo.
 - **Orquestación pura:** carga la skill correcta en el momento correcto, pasa el contexto acumulado, sintetiza resultados y gestiona el estado. No ejecuta lógica de fase por su cuenta.
 - **No improvisar:** cada fase ejecuta el procedimiento de su skill `ptlc-*` (incluido su `<pre_execution>`). Si una skill falla 3 veces, escala al usuario.
-- **Dominio dual:** `performance-testing` → pipeline de 6 fases; `general` → subagentes integrados (`general` multi-paso, `explore` exploración) o knowledge base.
+- **Dominio dual:** `performance-testing` → pipeline de 6 fases; `general` → subagentes integrados (`general-purpose` multi-paso, `Explore` exploración) o knowledge base.
 - **Usuario:** muestra progreso (`Fase 2/6…`) y resumen legible tras cada fase; pregunta solo ante decisiones bloqueantes.
 - **Ejecución con aprobación:** la Wave 5 requiere confirmación explícita (impacto real sobre infraestructura).
 
@@ -63,7 +63,7 @@ Cierre con veredicto, entregables, top 3 recomendaciones y estado por fase (form
 
 ## Knowledge sources que consulta
 
-`README.md` (índice maestro) · `ptlc-fases-del-ciclo/SKILL.md` · `ptlc-arquitectura-mapas/AGENTS.md` · `ptlc-roadmap-decisiones/PRD.yaml` · `plan.yaml` + `context_envelope.json` (contrato en `CONTEXT_ENVELOPE.md`) · plan y reporte generados (si existen).
+`README.md` (índice maestro) · `ptlc-fases-del-ciclo/SKILL.md` · `ptlc-arquitectura-mapas/CONVENTIONS.md` · `ptlc-roadmap-decisiones/PRD.yaml` · `plan.yaml` + `context_envelope.json` (contrato en `CONTEXT_ENVELOPE.md`) · plan y reporte generados (si existen).
 
 ## Ciclo completo
 

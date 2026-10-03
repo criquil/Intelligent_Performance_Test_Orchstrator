@@ -6,7 +6,7 @@ Historia y resultados del plan de optimización de tokens del knowledge base PTL
 
 Contexto por request: **3.578 tokens**, repartido así:
 
-- `AGENTS.md` (raíz): **2.054**
+- `CLAUDE.md` (raíz; antes `AGENTS.md`): **2.054**
 - Descripciones de skills: **1.015**
 - Agentes: **509**
 
@@ -18,7 +18,7 @@ Resto del KB:
 
 ```mermaid
 pie title Coste por request — línea base (3.578 tokens)
-    "AGENTS.md raíz (2.054)" : 2054
+    "CLAUDE.md raíz (2.054)" : 2054
     "Descripciones skills (1.015)" : 1015
     "Agentes (509)" : 509
 ```
@@ -26,7 +26,7 @@ pie title Coste por request — línea base (3.578 tokens)
 ## 2. Acciones aplicadas
 
 1. **8 skills stub eliminadas** (sin contenido propio).
-2. `AGENTS.md`: **2.054 → ~672** tokens.
+2. `CLAUDE.md`: **2.054 → ~672** tokens (la guía raíz se renombró de `AGENTS.md` a `CLAUDE.md` en la migración a Claude Code).
 3. Descripciones de skills: **1.031 → 253** tokens (frontmatter conciso).
 4. Contratos extraídos a skill bajo demanda (no en contexto activo).
 5. Índices Nivel 2: **14.356 → 9.899** tokens.
@@ -35,9 +35,9 @@ pie title Coste por request — línea base (3.578 tokens)
 8. **4 mapas → 1** mapa consolidado.
 9. `context_envelope.json`: cada fase persiste su bloque en `plan/{plan_id}/`; no se relee lo sintetizado.
 10. **3 cheat sheets** de consulta prioritaria:
-    - `../.opencode/skills/ptlc-metricas-kpis/00_Cheat_Sheet_Metricas.md`
-    - `../.opencode/skills/ptlc-workload-modeling/00_Cheat_Sheet_Workload.md`
-    - `../.opencode/skills/ptlc-herramientas/00b_Cheat_Sheet_Herramientas.md`
+    - `../.claude/skills/ptlc-metricas-kpis/00_Cheat_Sheet_Metricas.md`
+    - `../.claude/skills/ptlc-workload-modeling/00_Cheat_Sheet_Workload.md`
+    - `../.claude/skills/ptlc-herramientas/00b_Cheat_Sheet_Herramientas.md`
 11. Medidor versionado en `../scripts/measure_tokens.py`.
 
 ## 3. Resultado
@@ -46,7 +46,7 @@ pie title Coste por request — línea base (3.578 tokens)
 - `gem-orchestrator` → **4.191**; `gem-planner` → **2.883**.
 - `ptlc-orchestrator`: **3.092 → 2.130**.
 - `MAP.md`: **13.333 → 7.500**.
-- `gem-team` **eliminado del proyecto al cierre**; quedó solo `ptlc-orchestrator` en `../.opencode/agents/`.
+- `gem-team` **eliminado del proyecto al cierre**; quedó solo `ptlc-orchestrator` en `../.claude/agents/`.
 
 ```mermaid
 flowchart LR
@@ -63,4 +63,4 @@ python scripts/measure_tokens.py          # reporte legible
 python scripts/measure_tokens.py --strict # valida presupuestos (exit 1 si falla)
 ```
 
-Ver reglas vigentes en [08-gobernanza](08-gobernanza.md) y el índice maestro en `../.opencode/skills/README.md`.
+Ver reglas vigentes en [08-gobernanza](08-gobernanza.md) y el índice maestro en `../.claude/skills/README.md`.
