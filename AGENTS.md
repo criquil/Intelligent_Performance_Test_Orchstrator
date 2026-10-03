@@ -17,17 +17,7 @@ There is no build/lint/test pipeline at the repository level.
 ~/.apm-bin/apm-windows-x86_64/apm.exe install
 ```
 
-**Gatling tests** (the only code component, under `tests/performance/gatling/`):
-```bash
-# Run default simulation
-mvn clean test -Dgatling.simulationClass=simulations.SimpsonsBaselineSimulation
-
-# Parameterized run
-mvn clean test \
-  -Dgatling.simulationClass=simulations.SimpsonsBaselineSimulation \
-  -Dusers=50 -DrampUpSeconds=30 -DdurationSeconds=120 -DtargetHost=https://example.com
-```
-Requires Java 17+ and Maven. Reports land in `target/gatling/`.
+**Entregables on-demand**: no existe código de pruebas versionado; los scripts y resultados se generan bajo `tests/performance/{tool}/` al ejecutar la skill `ptlc-execution`.
 
 ## Architecture
 

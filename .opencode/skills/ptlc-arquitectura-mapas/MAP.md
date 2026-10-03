@@ -209,8 +209,7 @@ graph TD
     ROOT --> GEM_F["📄 .gem-team.yaml"]
     ROOT --> GIT_F["📄 .gitignore"]
     ROOT --> SK_ROOT_F["📂 .opencode/skills/"]
-    ROOT --> GH_F["📂 .opencode/"]
-    ROOT --> TESTS_F["📂 tests/"]
+    ROOT --> GH_F["📂 .opencode/agents/"]
 
     SK_ROOT_F --> README_SK["📄 README.md\nÍndice maestro"]
     SK_ROOT_F --> K1["📂 ptlc-fundamentos · ptlc-tipos-de-pruebas\nptlc-fases-del-ciclo · ptlc-metricas-kpis"]
