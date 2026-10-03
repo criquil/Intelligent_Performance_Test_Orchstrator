@@ -16,7 +16,7 @@ graph TD
     
     D -->|"Selecciona herramienta"| E["🛠️ Tool Selection<br/>JMeter (ya instalado)<br/>Razones:<br/>- Non-GUI mode<br/>- CSV output<br/>- Percentile reports"]
     
-    E -->|"Activa skill"| F["💡 Skill: jmeter-performance-workflow<br/>Guía de ejecución JMeter"]
+    E -->|"Activa guía"| F["💡 Guía: ptlc-herramientas<br/>05_JMeter_Guia_Completa.md"]
     
     F -->|"Lee documentación"| G["📚 Knowledge Base Point 05<br/>05_Herramientas/<br/>05_JMeter_Guia_Completa.md<br/>└─ ThreadGroup<br/>└─ Extractors<br/>└─ Assertions<br/>└─ Reporter Config"]
     
@@ -113,7 +113,7 @@ Define parámetros (2 users, 3s ramp, 60s, error check)
     ↓
 Selecciona herramienta (JMeter)
     ↓
-Activa skill: jmeter-performance-workflow
+Activa guía: ptlc-herramientas/05_JMeter_Guia_Completa.md
 ```
 
 ### FASE 2️⃣: DISEÑO & CREACIÓN (Plan de Prueba)
@@ -177,23 +177,23 @@ Prepara CI/CD roadmap
 
 ---
 
-## 🛠️ Agentes y Skills Utilizados
+## 🛠️ Agentes y Guías Utilizados
 
 ### Agentes Desplegados
 
 | Agente | Rol | Utilización |
 |--------|-----|------------|
 | **CLI Principal** | Orquestación general | ✅ Todo el flujo |
-| **jmeter-performance-workflow** | Guía de ejecución JMeter | ✅ Fases 2-3 |
+| **`ptlc-herramientas/05_JMeter_Guia_Completa.md`** | Guía de ejecución JMeter | ✅ Fases 2-3 |
 
-### Skills Activadas (Teóricamente Disponibles)
+### Guías Activadas (Teóicamente Disponibles)
 
-| Skill | Utilizada | Justificación |
-|-------|-----------|---------------|
-| `performance-tool-selector` | Implícita | Selección de JMeter |
-| `performance-test-strategy` | Implícita | Definición de baseline |
-| `performance-metrics-analysis` | ✅ Manual | Cálculo de percentiles |
-| `performance-diagnostics-rca` | ✅ Manual | Implementación de RCA |
+| Guía | Utilizada | Justificación |
+|------|-----------|---------------|
+| `ptlc-herramientas/02_JMeter_Gatling_Locust.md` | Implícita | Selección de JMeter |
+| `ptlc-tipos-de-pruebas/` | Implícita | Definición de baseline |
+| `ptlc-metricas-kpis/01_Metricas_Exhaustivas.md` | ✅ Manual | Cálculo de percentiles |
+| `ptlc-analisis-bottlenecks/01_RCA_y_Troubleshooting.md` | ✅ Manual | Implementación de RCA |
 
 ---
 

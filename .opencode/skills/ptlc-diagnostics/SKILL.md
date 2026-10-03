@@ -24,7 +24,7 @@ NUNCA generes planes de prueba ni scripts. Solo diagnósticos y recomendaciones.
 - `.opencode/skills/ptlc-metricas-kpis/01_Metricas_Exhaustivas.md` — métricas baseline requeridas
 - `.opencode/skills/ptlc-workload-modeling/01_Workload_Modeling_Exhaustivo.md` — cálculo de VUs
 - `.opencode/skills/ptlc-mejores-practicas/01_CICD_y_Tendencias_Futuras.md` — checklist de readiness
-- Skill: `performance-diagnostics-rca`
+- `.opencode/skills/ptlc-analisis-bottlenecks/01_RCA_y_Troubleshooting.md` — criterios de bottleneck para el readiness score
 
 </knowledge_sources>
 

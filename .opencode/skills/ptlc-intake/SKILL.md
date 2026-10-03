@@ -24,7 +24,6 @@ NUNCA generes scripts, planes o diagnósticos. Solo recopilas requisitos y selec
 - `.opencode/skills/ptlc-herramientas/02_JMeter_Gatling_Locust.md` — decision matrix
 - `.opencode/skills/ptlc-tipos-de-pruebas/SKILL.md` — tipos de prueba disponibles
 - `.opencode/skills/ptlc-metricas-kpis/SKILL.md` — NFRs y criterios pass/fail
-- Skill: `performance-tool-selector`
 
 </knowledge_sources>
 
@@ -99,7 +98,7 @@ Organizar las brechas en estas categorías:
 
 ### Paso 4: Seleccionar herramienta (si ya hay suficiente contexto)
 
-Aplicar criterios de `performance-tool-selector`:
+Aplicar la matriz de decisión de `.opencode/skills/ptlc-herramientas/02_JMeter_Gatling_Locust.md`:
 1. Protocolo → ¿requiere HTTP/gRPC/WebSocket/JDBC?
 2. Lenguaje del equipo → ¿JavaScript, Java, Python, Scala/Kotlin?
 3. Tipo de prueba → ¿carga simple, escenarios complejos, browser?

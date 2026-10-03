@@ -75,18 +75,20 @@ ptlc-orchestrator (Phase 0: detecta dominio + clasifica complejidad)
     └─ domain=general → deriva a gem-orchestrator (plan DAG con agentes gem-*)
 ```
 
-### Skills operativas disponibles
+### Guías operativas por herramienta
 
-| Skill | Disparador |
-|-------|-----------|
-| `performance-tool-selector` | Seleccionar herramienta según criterios técnicos |
-| `k6-performance-workflow` | Diseñar/generar pruebas con k6 |
-| `jmeter-performance-workflow` | Diseñar/generar pruebas con JMeter |
-| `gatling-performance-workflow` | Diseñar/generar pruebas con Gatling CE |
-| `locust-performance-workflow` | Diseñar/generar pruebas con Locust |
-| `performance-test-strategy` | Estrategia: tipos de prueba, workload model, criterios |
-| `performance-metrics-analysis` | Análisis de percentiles, Apdex, throughput |
-| `performance-diagnostics-rca` | RCA técnico de bottlenecks |
+El diseño, scripting y ejecución de cada herramienta se cubren en `.opencode/skills/ptlc-herramientas/`:
+
+| Guía | Disparador |
+|------|-----------|
+| `ptlc-herramientas/SKILL.md` | Seleccionar herramienta según la matriz de decisión |
+| `ptlc-herramientas/06_k6_Guia_Completa_Expandida.md` | Diseñar/generar pruebas con k6 |
+| `ptlc-herramientas/05_JMeter_Guia_Completa.md` | Diseñar/generar pruebas con JMeter |
+| `ptlc-herramientas/04_Gatling_Community_Guia_Completa.md` | Diseñar/generar pruebas con Gatling CE |
+| `ptlc-herramientas/03_Locust_Guia_Completa.md` | Diseñar/generar pruebas con Locust |
+| `ptlc-tipos-de-pruebas/` + `ptlc-workload-modeling/` | Estrategia: tipos de prueba, workload model, criterios |
+| `ptlc-metricas-kpis/` | Análisis de percentiles, Apdex, throughput |
+| `ptlc-analisis-bottlenecks/` | RCA técnico de bottlenecks |
 
 ## Entregables del PTLC
 

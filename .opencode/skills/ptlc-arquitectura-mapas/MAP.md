@@ -37,9 +37,9 @@ graph TB
             GEM_ORCH["🏆 gem-orchestrator\n(tareas generales, derivado)"]
             GEM_AGENTS["🤖 15 agentes gem-team"]
         end
-        subgraph SKILLS["📂 skills/ — 26 skills"]
+        subgraph SKILLS["📂 skills/ — 18 skills"]
             PIPE["⚙️ 6 skills pipeline PTLC\nintake · diagnostics · procedure\nplan · execution · analysis"]
-            OPS["🛠️ 8 skills operativas\nperformance-* · {tool}-workflow"]
+            OPS["🛠️ Guías operativas por herramienta\nptlc-herramientas/ (k6 · JMeter\nGatling · Locust)"]
         end
     end
 
@@ -216,7 +216,7 @@ graph TD
     SK_ROOT_F --> K2["📂 ptlc-herramientas · ptlc-workload-modeling\nptlc-monitoreo · ptlc-scripting"]
     SK_ROOT_F --> K3["📂 ptlc-analisis-bottlenecks · ptlc-mejores-practicas\nptlc-arquitectura-mapas · ptlc-roadmap-decisiones"]
     SK_ROOT_F --> K4["⚙️ 6 skills pipeline: ptlc-intake\nptlc-diagnostics · ptlc-procedure-plan\nptlc-test-plan · ptlc-execution · ptlc-analysis"]
-    SK_ROOT_F --> K5["🛠️ 8 skills operativas\nperformance-* · {tool}-workflow"]
+    SK_ROOT_F --> K5["🛠️ Guías operativas por herramienta\nptlc-herramientas/"]
 
     GH_F --> AG_F["📂 agents/"]
     GH_F --> INS_F["📂 instructions/"]

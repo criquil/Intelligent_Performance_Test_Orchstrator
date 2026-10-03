@@ -21,8 +21,6 @@ Eres el analista de performance testing. Interpretas resultados de pruebas, calc
 - `.opencode/skills/ptlc-metricas-kpis/01_Metricas_Exhaustivas.md` — percentiles, Apdex, fórmulas
 - `.opencode/skills/ptlc-monitoreo/01_Monitoreo_y_Observabilidad.md` — correlación con métricas de infra
 - `.opencode/skills/ptlc-fases-del-ciclo/04_Analisis_Optimizacion_Cierre.md` — reporting, sign-off, retrospectiva
-- Skill: `performance-metrics-analysis`
-- Skill: `performance-diagnostics-rca`
 
 </knowledge_sources>
 

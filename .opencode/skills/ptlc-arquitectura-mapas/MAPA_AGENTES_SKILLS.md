@@ -1,6 +1,6 @@
 # Mapa de Agentes y Skills - Arquitectura de Ejecución v3.0
 
-## 🤖 Diagrama: ptlc-orchestrator + Skills PTLC + Skills operativas + Knowledge Base
+## 🤖 Diagrama: ptlc-orchestrator + Skills PTLC + Guías de herramientas + Knowledge Base
 
 ```mermaid
 graph TB
@@ -14,7 +14,7 @@ graph TB
 
     subgraph "LAYER 2: INTAKE & TOOL SELECTION"
         INTAKE["📋 ptlc-intake\nRecopila requisitos\nFormula preguntas estructuradas"]
-        SKILL1["💡 SKILL: performance-tool-selector\nEvalúa: protocolo, complejidad,\nlenguaje equipo, tipo prueba\n→ Selecciona UNA herramienta"]
+        SKILL1["💡 GUÍA: ptlc-herramientas/SKILL.md\nEvalúa: protocolo, complejidad,\nlenguaje equipo, tipo prueba\n→ Selecciona UNA herramienta"]
         DOC1["📚 Knowledge Base 01, 02, 05, 06\nFundamentos · Tipos de prueba\nHerramientas · Workload modeling"]
     end
 
@@ -22,21 +22,21 @@ graph TB
         DIAG["🔍 ptlc-diagnostics\nReadiness score · Riesgos"]
         PROC["📐 ptlc-procedure-plan\nTipos de prueba · Little's Law\nWorkload model"]
         TPLAN["📑 ptlc-test-plan\nDocumento ISTQB/IEEE-829"]
-        SKILL2["💡 SKILL: performance-test-strategy\nSelección de tipos + workload"]
+        SKILL2["💡 GUÍA: ptlc-tipos-de-pruebas\n+ ptlc-workload-modeling\nSelección de tipos + workload"]
         DOC2["📚 Knowledge Base 03, 06\nFases PTLC · Workload modeling"]
     end
 
     subgraph "LAYER 4: EXECUTION — on-demand"
         EXEC["⚡ ptlc-execution\n⚠️ Requiere aprobación usuario\nGenera scripts on-demand\npara herramienta seleccionada"]
-        SKILL3["💡 SKILL: {herramienta}-performance-workflow\nk6 / jmeter / gatling / locust"]
+        SKILL3["💡 GUÍA: ptlc-herramientas\nGuía exhaustiva de la herramienta\nk6 / jmeter / gatling / locust"]
         DOC3["📚 Knowledge Base 05, 08\nGuía herramienta seleccionada\nScripting avanzado"]
         OUT_EXEC["📦 tests/performance/{tool}/{plan_id}/\nScripts + runner generados\nResultados de ejecución"]
     end
 
     subgraph "LAYER 5: ANALYSIS & RCA"
         ANAL["📊 ptlc-analysis\nMétricas · RCA · Veredicto"]
-        SKILL4["💡 SKILL: performance-metrics-analysis\nPercentiles · Apdex · Throughput"]
-        SKILL5["💡 SKILL: performance-diagnostics-rca\n5 Whys · Fishbone · Health scoring\nBottleneck ranking P1/P2/P3"]
+        SKILL4["💡 GUÍA: ptlc-metricas-kpis\nPercentiles · Apdex · Throughput"]
+        SKILL5["💡 GUÍA: ptlc-analisis-bottlenecks\n5 Whys · Fishbone · Health scoring\nBottleneck ranking P1/P2/P3"]
         DOC4["📚 Knowledge Base 04, 09\nMétricas exhaustivas\nRCA y troubleshooting"]
     end
 
@@ -127,7 +127,7 @@ ptlc-orchestrator (Phase 2: genera plan 6-wave PTLC)
     WAVE 1 → ptlc-intake
         ├─ Lee Knowledge Base 01, 02, 05, 06
         ├─ Formula preguntas al usuario
-        ├─ Invoca SKILL: performance-tool-selector
+        ├─ Aplica la matriz de decisión de ptlc-herramientas/SKILL.md
         └─ → Herramienta seleccionada (UNA: k6/JMeter/Gatling/Locust)
 
     WAVE 2 → ptlc-diagnostics
@@ -147,20 +147,20 @@ ptlc-orchestrator (Phase 2: genera plan 6-wave PTLC)
 
     WAVE 5 → ptlc-execution (solo con aprobación)
         ├─ Lee Knowledge Base 05 (guía herramienta), 08 (scripting)
-        ├─ Invoca SKILL: {herramienta}-performance-workflow
+        ├─ Lee la guía de la herramienta en ptlc-herramientas/
         ├─ Genera scripts on-demand en tests/performance/{tool}/{plan_id}/
         └─ → Resultados de ejecución
 
     WAVE 6 → ptlc-analysis
         ├─ Lee Knowledge Base 04 (métricas), 09 (RCA)
-        ├─ Invoca SKILL: performance-metrics-analysis
-        ├─ Invoca SKILL: performance-diagnostics-rca
+        ├─ Aplica ptlc-metricas-kpis
+        ├─ Aplica ptlc-analisis-bottlenecks
         └─ → docs/performance-test-report.md + veredicto
 ```
 
 ---
 
-## 🎯 Skills por Agente
+## 🎯 Guías por Agente
 
 ### ptlc-orchestrator
 - Domain detection (Phase 0)
@@ -168,17 +168,17 @@ ptlc-orchestrator (Phase 2: genera plan 6-wave PTLC)
 - Approval gate (Phase 3B)
 
 ### ptlc-intake
-- `performance-tool-selector` — evalúa protocolo, complejidad, lenguaje, tipo prueba → selecciona UNA herramienta
+- `ptlc-herramientas/SKILL.md` — evalúa protocolo, complejidad, lenguaje, tipo prueba → selecciona UNA herramienta
 
 ### ptlc-procedure-plan
-- `performance-test-strategy` — selección de tipos de prueba + Little's Law workload model
+- `ptlc-tipos-de-pruebas/SKILL.md` + `ptlc-workload-modeling/SKILL.md` — selección de tipos de prueba + Little's Law workload model
 
 ### ptlc-execution
-- `{herramienta}-performance-workflow` (k6 / jmeter / gatling / locust) — generación de scripts y ejecución
+- Guía de la herramienta en `ptlc-herramientas/` (`06_k6_Guia_Completa_Expandida.md` / `05_JMeter_Guia_Completa.md` / `04_Gatling_Community_Guia_Completa.md` / `03_Locust_Guia_Completa.md`) — generación de scripts y ejecución
 
 ### ptlc-analysis
-- `performance-metrics-analysis` — percentiles, Apdex, throughput, error rate
-- `performance-diagnostics-rca` — 5 Whys, Fishbone, health scoring, bottleneck ranking P1/P2/P3
+- `ptlc-metricas-kpis/SKILL.md` — percentiles, Apdex, throughput, error rate
+- `ptlc-analisis-bottlenecks/SKILL.md` — 5 Whys, Fishbone, health scoring, bottleneck ranking P1/P2/P3
 
 ---
 

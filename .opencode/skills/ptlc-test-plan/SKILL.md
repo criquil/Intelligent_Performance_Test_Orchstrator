@@ -25,7 +25,7 @@ NUNCA ejecutes pruebas. Generas documentación formal.
 - `.opencode/skills/ptlc-fundamentos/01_Definicion_y_Fundamentos.md` — glosario y fundamentos
 - `.opencode/skills/ptlc-fundamentos/02_Roles_y_Responsabilidades.md` — RACI, roles del equipo (responsable, ejecutor, revisión)
 - `.opencode/skills/ptlc-fundamentos/03_Frameworks_y_Estandares.md` — ISO 25010, ISTQB
-- Skill: `performance-test-strategy`
+- `.opencode/skills/ptlc-tipos-de-pruebas/SKILL.md` — tipos de prueba y criterios de aceptación por tipo
 
 </knowledge_sources>
 

@@ -10,7 +10,7 @@
 - **Entry point obligatorio:** `ptlc-orchestrator` (agente en `.opencode/agents/ptlc-orchestrator.md`) — todo request del usuario entra por él. Orquesta las 6 fases del PTLC cargando las skills del pipeline, y deriva tareas generales (no-PTLC) al equipo `gem-*`.
 - **Pipeline PTLC:** 6 skills de fase (`ptlc-intake` → `ptlc-diagnostics` → `ptlc-procedure-plan` → `ptlc-test-plan` → `ptlc-execution` → `ptlc-analysis`), con approval gate antes de ejecutar.
 - **Knowledge base:** 12 skills temáticas (~650 KB, 48 documentos) que reemplazan la antigua carpeta `DOCs/`.
-- **Skills operativas:** 8 skills `performance-*` y `{tool}-performance-workflow` para diseño, ejecución y análisis.
+- **Guías operativas:** el diseño, scripting y ejecución de cada herramienta viven en las guías exhaustivas de `ptlc-herramientas/` — no hay skills operativas intermedias.
 
 ---
 
@@ -44,16 +44,14 @@ Cada skill es el procedimiento completo de una fase (lecturas obligatorias, work
 | [ptlc-execution](ptlc-execution/SKILL.md) | 5 | Generación y ejecución de scripts (**requiere aprobación**) |
 | [ptlc-analysis](ptlc-analysis/SKILL.md) | 6 | Métricas, RCA y reporte final |
 
-## 🛠️ Skills Operativas (8)
+## 🛠️ Guías Operativas de Herramientas
 
-- `performance-tool-selector`: selecciona la herramienta adecuada (k6, JMeter, Gatling, Locust).
-- `k6-performance-workflow`: flujo de trabajo de k6 para diseño, ejecución y análisis.
-- `jmeter-performance-workflow`: flujo de trabajo de JMeter, incluyendo modo no-GUI y estructura de plan.
-- `gatling-performance-workflow`: flujo de trabajo de Gatling con DSL e injection profiles.
-- `locust-performance-workflow`: flujo de trabajo de Locust con user classes, load shapes y modo distribuido.
-- `performance-test-strategy`: diseña estrategia de pruebas (load, stress, spike, soak, baseline).
-- `performance-metrics-analysis`: analiza percentiles, Apdex, throughput y criterios pass/fail.
-- `performance-diagnostics-rca`: RCA técnico con foco en bottlenecks de app, DB y red.
+Diseño, scripting, ejecución y análisis por herramienta — todo en [`ptlc-herramientas`](ptlc-herramientas/SKILL.md):
+
+- **k6** → [06_k6_Guia_Completa_Expandida.md](ptlc-herramientas/06_k6_Guia_Completa_Expandida.md)
+- **JMeter** → [05_JMeter_Guia_Completa.md](ptlc-herramientas/05_JMeter_Guia_Completa.md)
+- **Gatling** → [04_Gatling_Community_Guia_Completa.md](ptlc-herramientas/04_Gatling_Community_Guia_Completa.md)
+- **Locust** → [03_Locust_Guia_Completa.md](ptlc-herramientas/03_Locust_Guia_Completa.md)
 
 ---
 

@@ -24,4 +24,4 @@ description: "Mapas y arquitectura del repositorio PTLC: diagramas visuales del 
 |--------------------------|---------|
 | `ptlc-roadmap-decisiones` | Consultar ADRs, roadmap y decisiones de arquitectura |
 | `ptlc-fases-del-ciclo` | Profundizar en las fases del ciclo |
-| Skills `performance-*` y `{tool}-performance-workflow` | Consultar los flujos operativos de testing |
+| Guías operativas de herramientas en `ptlc-herramientas/` | Consultar los flujos de scripting y ejecución por herramienta |

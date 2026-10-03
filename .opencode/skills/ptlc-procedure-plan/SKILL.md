@@ -24,7 +24,6 @@ NUNCA generes scripts ni ejecutes pruebas. Defines QUÉ hacer, no CÓMO implemen
 - `.opencode/skills/ptlc-fases-del-ciclo/02_Planificacion_y_Diseno.md` — estructura de plan de pruebas
 - `.opencode/skills/ptlc-workload-modeling/01_Workload_Modeling_Exhaustivo.md` — Little's Law, VU calc, patrones
 - `.opencode/skills/ptlc-metricas-kpis/01_Metricas_Exhaustivas.md` — KPIs, percentiles, Apdex
-- Skill: `performance-test-strategy`
 
 </knowledge_sources>
 

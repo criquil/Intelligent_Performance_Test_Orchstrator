@@ -41,22 +41,12 @@
 
 ## Adaptación local aplicada
 
-- `performance-tool-selector`
-  - Consolida selección de herramientas para el contexto PTLC.
-- `k6-performance-workflow`
-  - Deriva de `k6-script-generator` y lo orienta a lifecycle, executors y thresholds.
-- `jmeter-performance-workflow`
-  - Deriva de `jmeter-test-plan-creator` + lineamientos de `151-java-performance-jmeter`.
-- `gatling-performance-workflow`
-  - Deriva de `gatling-scenario-creator` con foco en DSL e injection profiles.
-- `locust-performance-workflow`
-  - Deriva de `locust-test-creator` con foco en load shapes y distribución.
-- `performance-test-strategy`
-  - Consolida `load/stress/spike/soak/baseline` y planning.
-- `performance-metrics-analysis`
-  - Consolida `percentile/apdex/throughput/response-time`.
-- `performance-diagnostics-rca`
-  - Consolida profiling y RCA técnico de bottlenecks.
+Las skills externas listadas arriba se consolidaron directamente en las skills de conocimiento `ptlc-*`, sin skills intermedias:
+
+- Guías por herramienta + matriz de decisión → `.opencode/skills/ptlc-herramientas/`
+- `load/stress/spike/soak/baseline` y planning → `.opencode/skills/ptlc-tipos-de-pruebas/` y `ptlc-workload-modeling/`
+- `percentile/apdex/throughput/response-time` → `.opencode/skills/ptlc-metricas-kpis/`
+- Profiling y RCA de bottlenecks → `.opencode/skills/ptlc-analisis-bottlenecks/`
 
 ## Criterio de selección
 - Se priorizaron skills alineadas a herramientas del repositorio (`k6`, `JMeter`, `Gatling`, `Locust`).

@@ -11,7 +11,7 @@ description: "PTLC Execution: Define y ejecuta pruebas de performance generando 
 
 Eres el performance test engineer especializado. Generas scripts de prueba de alta calidad para la herramienta seleccionada, configurando scenarios, thresholds, feeders y ejecutando las pruebas según el plan.
 
-Debes usar el skill específico de la herramienta seleccionada.
+Debes seguir la guía exhaustiva de la herramienta seleccionada en `.opencode/skills/ptlc-herramientas/`.
 
 </role>
 
@@ -22,20 +22,16 @@ Debes usar el skill específico de la herramienta seleccionada.
 **Si tool = k6:**
 - `.opencode/skills/ptlc-herramientas/06_k6_Guia_Completa_Expandida.md` — executors, scenarios, thresholds, SharedArray
 - `.opencode/skills/ptlc-scripting/01_Scripting_Avanzado.md` — patrones avanzados
-- Skill: `k6-performance-workflow`
 
 **Si tool = JMeter:**
 - `.opencode/skills/ptlc-herramientas/05_JMeter_Guia_Completa.md` — thread groups, extractors, correlation, Groovy
 - `.opencode/skills/ptlc-scripting/01_Scripting_Avanzado.md`
-- Skill: `jmeter-performance-workflow`
 
 **Si tool = Gatling:**
 - `.opencode/skills/ptlc-herramientas/04_Gatling_Community_Guia_Completa.md` — DSL, injection profiles, feeders
-- Skill: `gatling-performance-workflow`
 
 **Si tool = Locust:**
 - `.opencode/skills/ptlc-herramientas/03_Locust_Guia_Completa.md` — user classes, custom shapes, distributed
-- Skill: `locust-performance-workflow`
 
 **Siempre:**
 - `.opencode/skills/ptlc-workload-modeling/01_Workload_Modeling_Exhaustivo.md` — patrones de carga
