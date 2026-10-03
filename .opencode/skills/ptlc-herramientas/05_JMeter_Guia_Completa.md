@@ -1,33 +1,34 @@
 # 🪶 Apache JMeter - Guía Completa de Referencia
 
-## Índice
+## Mapa de secciones
 
-1. [Introducción y Filosofía](#1-introducción-y-filosofía)
-2. [Arquitectura Interna](#2-arquitectura-interna)
-3. [Instalación y Configuración](#3-instalación-y-configuración)
-4. [Estructura del Test Plan](#4-estructura-del-test-plan)
-5. [Thread Groups (Grupos de Hilos)](#5-thread-groups-grupos-de-hilos)
-6. [Samplers (Protocolos)](#6-samplers-protocolos)
-7. [Config Elements](#7-config-elements)
-8. [Pre-Processors y Post-Processors](#8-pre-processors-y-post-processors)
-9. [Extractors y Correlation](#9-extractors-y-correlation)
-10. [Assertions (Validaciones)](#10-assertions-validaciones)
-11. [Timers (Think Time)](#11-timers-think-time)
-12. [Logic Controllers](#12-logic-controllers)
-13. [Listeners (Reportes)](#13-listeners-reportes)
-14. [Scripting (JSR223 / Groovy)](#14-scripting-jsr223--groovy)
-15. [Parametrización y Data Driven Testing](#15-parametrización-y-data-driven-testing)
-16. [Testing Distribuido](#16-testing-distribuido)
-17. [Ejecución en Modo CLI (Non-GUI)](#17-ejecución-en-modo-cli-non-gui)
-18. [Plugins Esenciales](#18-plugins-esenciales)
-19. [Protocolos Avanzados (JDBC, JMS, SMTP)](#19-protocolos-avanzados-jdbc-jms-smtp)
-20. [Integración con CI/CD](#20-integración-con-cicd)
-21. [HTML Dashboard Report](#21-html-dashboard-report)
-22. [Patrones Avanzados](#22-patrones-avanzados)
-23. [Troubleshooting y Performance Tuning](#23-troubleshooting-y-performance-tuning)
-24. [Mejores Prácticas y Antipatrones](#24-mejores-prácticas-y-antipatrones)
-25. [Proyecto de Referencia Completo](#25-proyecto-de-referencia-completo)
+Tabla generada con `grep -n "^## "`. Para leer solo una sección concreta usa `read` con ese offset (o `grep` sobre el título) en lugar de cargar el archivo entero.
 
+| Línea | Sección |
+|--------|---------|
+| 3 | Mapa de secciones |
+| 34 | 1. Introducción y Filosofía |
+| 82 | 2. Arquitectura Interna |
+| 152 | 3. Instalación y Configuración |
+| 242 | 4. Estructura del Test Plan |
+| 310 | 5. Thread Groups (Grupos de Hilos) |
+| 391 | 6. Samplers (Protocolos) |
+| 466 | 7. Config Elements |
+| 532 | 8. Pre-Processors y Post-Processors |
+| 595 | 9. Extractors y Correlation |
+| 688 | 10. Assertions (Validaciones) |
+| 774 | 11. Timers (Think Time) |
+| 841 | 12. Logic Controllers |
+| 922 | 13. Listeners (Reportes) |
+| 971 | 14. Scripting (JSR223 / Groovy) |
+| 1071 | 15. Parametrización y Data Driven Testing |
+| 1120 | 16. Testing Distribuido |
+| 1191 | 17. Ejecución en Modo CLI (Non-GUI) |
+| 1251 | 18. Plugins Esenciales |
+| 1306 | 19. Protocolos Avanzados (JDBC, JMS, SMTP) |
+| 1364 | 21. HTML Dashboard Report |
+| 1403 | 22. Patrones Avanzados |
+| 1484 | Referencias |
 ---
 
 ## 1. Introducción y Filosofía
@@ -1356,82 +1357,9 @@ que auto-ajusta el número de threads necesarios.
 
 ---
 
-## 20. Integración con CI/CD
-
-### GitHub Actions
-
-```yaml
-name: Performance Test (JMeter)
-
-on:
-  schedule:
-    - cron: '0 5 * * 1-5'
-  workflow_dispatch:
-    inputs:
-      users:
-        description: 'Number of users'
-        default: '100'
-      duration:
-        description: 'Duration in seconds'
-        default: '600'
-
-jobs:
-  jmeter-test:
-    runs-on: ubuntu-latest
-    
-    steps:
-      - uses: actions/checkout@v4
-      
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-      
-      - name: Install JMeter
-        run: |
-          wget -q https://dlcdn.apache.org/jmeter/binaries/apache-jmeter-5.6.3.tgz
-          tar -xzf apache-jmeter-5.6.3.tgz
-          echo "JMETER_HOME=$(pwd)/apache-jmeter-5.6.3" >> $GITHUB_ENV
-          echo "$(pwd)/apache-jmeter-5.6.3/bin" >> $GITHUB_PATH
-      
-      - name: Install Plugins
-        run: |
-          cd $JMETER_HOME
-          wget -q -O lib/ext/jmeter-plugins-manager-1.10.jar \
-            https://jmeter-plugins.org/get/
-          java -jar lib/cmdrunner-2.3.jar \
-            --tool org.jmeterplugins.repository.PluginManagerCMDInstaller
-          ./bin/PluginsManagerCMD.sh install jpgc-casutg,jpgc-tst
-      
-      - name: Run JMeter Test
-        run: |
-          jmeter -n \
-            -t tests/performance/load_test.jmx \
-            -l results/results.jtl \
-            -e -o results/dashboard/ \
-            -Jtarget.host=${{ secrets.STAGING_HOST }} \
-            -Jtest.users=${{ inputs.users || '100' }} \
-            -Jtest.duration=${{ inputs.duration || '600' }} \
-            -Xmx4g
-      
-      - name: Check Results
-        run: |
-          # Parse JTL and check thresholds
-          python scripts/check_jmeter_results.py \
-            --jtl results/results.jtl \
-            --p95-max 2000 \
-            --error-max 1.0
-      
-      - name: Upload Report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: jmeter-report-${{ github.run_id }}
-          path: results/dashboard/
-```
-
----
+> **Secciones extraídas a la guía canónica común.**
+> Versión canónica: [00_Comunes_Guia_Herramientas.md](00_Comunes_Guia_Herramientas.md) (CI/CD, troubleshooting, mejores prácticas, proyecto de referencia).
+> Delta de esta herramienta: el runner de GitHub no trae JMeter: hay que bajar el tarball, exportar `JMETER_HOME` y registrar plugins con `PluginsManagerCMD.sh`; el quality gate lee el JTL con `check_jmeter_results.py`. Workflow completo en las secciones 1.1-1.3 de la guía común.
 
 ## 21. HTML Dashboard Report
 
@@ -1549,157 +1477,9 @@ if (scenario.headers) {
 
 ---
 
-## 23. Troubleshooting y Performance Tuning
-
-### Problemas comunes
-
-| Problema | Causa | Solución |
-|----------|-------|----------|
-| OutOfMemoryError | Heap insuficiente | Aumentar `-Xmx` |
-| Resultados lentos | Listeners gráficos activos | Deshabilitar en CLI |
-| CPU 100% en JMeter | Demasiados threads | Distribuir carga |
-| "Connection reset" | Pool agotado | Aumentar timeouts |
-| Variables vacías | Extractor no matchea | Verificar con Results Tree |
-| CSV "sharing" incorrecto | ShareMode mal configurado | Revisar scope |
-| Throughput no alcanza target | Threads insuficientes | Más threads o Arrivals TG |
-
-### Optimización para carga alta
-
-```properties
-# user.properties - Optimización para alto rendimiento
-
-# Deshabilitar funciones no necesarias
-CookieManager.save.cookies=false
-CookieManager.check.cookies=false
-
-# Reducir logging
-log_level.jmeter=WARN
-log_level.jmeter.engine=WARN
-
-# Optimizar HTTP
-httpclient4.retrycount=0
-hc.parameters.file=hc.parameters
-
-# Resultados mínimos (solo lo necesario)
-jmeter.save.saveservice.output_format=csv
-jmeter.save.saveservice.data_type=false
-jmeter.save.saveservice.label=true
-jmeter.save.saveservice.response_code=true
-jmeter.save.saveservice.response_data=false
-jmeter.save.saveservice.response_data.on_error=false
-jmeter.save.saveservice.response_message=false
-jmeter.save.saveservice.successful=true
-jmeter.save.saveservice.thread_name=true
-jmeter.save.saveservice.time=true
-jmeter.save.saveservice.connect_time=true
-jmeter.save.saveservice.bytes=true
-jmeter.save.saveservice.sent_bytes=true
-jmeter.save.saveservice.thread_counts=true
-jmeter.save.saveservice.url=false
-jmeter.save.saveservice.requestHeaders=false
-jmeter.save.saveservice.responseHeaders=false
-jmeter.save.saveservice.samplerData=false
-```
-
----
-
-## 24. Mejores Prácticas y Antipatrones
-
-### ✅ Mejores Prácticas
-
-1. **SIEMPRE ejecutar en modo CLI (non-GUI) para tests reales**
-2. **Usar Groovy (JSR223) con "Compile and cache" activado**
-3. **Externalizar datos en CSV/JSON, no hardcoded**
-4. **Usar Transaction Controllers para medir flujos completos**
-5. **Configurar assertions solo donde sea necesario**
-6. **Deshabilitar View Results Tree antes de load test**
-7. **Usar properties para configuración dinámica**
-8. **Versionar .jmx en Git (es XML legible)**
-9. **Un Thread Group por perfil de usuario**
-10. **Nombres descriptivos para todos los elementos**
-
-### ❌ Antipatrones
-
-1. ❌ **Ejecutar load tests en modo GUI** (consume recursos del test)
-2. ❌ **Usar BeanShell** (5-10x más lento que Groovy)
-3. ❌ **Listeners gráficos durante el test** (memory leak)
-4. ❌ **Think time = 0** (no es realista, satura artificialmente)
-5. ❌ **Ignorar el ramp-up** (spike irreal al inicio)
-6. ❌ **No validar correlación** (variables vacías causan cascada de errores)
-7. ❌ **Un solo Thread Group gigante** (dificulta análisis)
-8. ❌ **Guardar response data en JTL** (archivos enormes)
-9. ❌ **No usar HTTP Request Defaults** (repetir host/port en cada request)
-10. ❌ **Regular Expression en lugar de JSON Extractor para JSON** (ineficiente)
-
----
-
-## 25. Proyecto de Referencia Completo
-
-### Estructura
-
-```
-jmeter-perf-tests/
-├── test-plans/
-│   ├── load_test.jmx
-│   ├── stress_test.jmx
-│   ├── smoke_test.jmx
-│   └── soak_test.jmx
-├── data/
-│   ├── users.csv
-│   ├── products.csv
-│   └── search_terms.csv
-├── scripts/
-│   ├── groovy/
-│   │   ├── setup_auth.groovy
-│   │   └── validate_response.groovy
-│   ├── check_jmeter_results.py
-│   └── generate_data.py
-├── config/
-│   ├── user.properties
-│   └── reportgenerator.properties
-├── plugins/
-│   └── (custom JARs)
-├── results/                    # gitignored
-├── reports/                    # gitignored
-├── Makefile
-├── Dockerfile
-└── README.md
-```
-
-### Makefile
-
-```makefile
-JMETER_HOME ?= /opt/apache-jmeter-5.6.3
-JMETER = $(JMETER_HOME)/bin/jmeter
-HOST ?= api.staging.example.com
-USERS ?= 100
-DURATION ?= 600
-
-.PHONY: smoke load stress soak report clean
-
-smoke:
-	$(JMETER) -n -t test-plans/smoke_test.jmx -l results/smoke.jtl \
-		-Jtarget.host=$(HOST) -Jtest.users=5 -Jtest.duration=60 \
-		-e -o reports/smoke/
-
-load:
-	$(JMETER) -n -t test-plans/load_test.jmx -l results/load.jtl \
-		-Jtarget.host=$(HOST) -Jtest.users=$(USERS) -Jtest.duration=$(DURATION) \
-		-e -o reports/load/ -Xmx4g
-
-stress:
-	$(JMETER) -n -t test-plans/stress_test.jmx -l results/stress.jtl \
-		-Jtarget.host=$(HOST) -Jtest.users=500 -Jtest.duration=900 \
-		-e -o reports/stress/ -Xmx8g
-
-report:
-	$(JMETER) -g results/load.jtl -o reports/latest/
-
-clean:
-	rm -rf results/*.jtl reports/*/
-```
-
----
+> **Secciones extraídas a la guía canónica común.**
+> Versión canónica: [00_Comunes_Guia_Herramientas.md](00_Comunes_Guia_Herramientas.md) (CI/CD, troubleshooting, mejores prácticas, proyecto de referencia).
+> Delta de esta herramienta: `user.properties` para recortar logging, cookies y columnas del JTL, tabla de problemas en la sección 2.1 y tuning en 2.3; Groovy/JSR223 con "Compile and cache" y nunca BeanShell (sección 3.3); `config/*.properties` versionados, `.jmx` en Git y Makefile con `-Xmx` por nivel (secciones 4.3-4.4).
 
 ## Referencias
 

@@ -1,15 +1,11 @@
 ---
 name: ptlc-fundamentos
-description: "Fundamentos del PTLC: definicion, NFRs, glosario, roles y matriz RACI, estandares ISO 25010, ISTQB, TMMi y Google SRE. Usar para explicar que es el PTLC, quien lo ejecuta y bajo que estandares opera."
+description: "Define el PTLC: NFRs, RACI, ISO 25010, ISTQB, TMMi"
 ---
 
 # 01 — Introducción al Performance Test Life Cycle (PTLC)
 
-> **Rol de este archivo:** Índice intermedio. Resume el contexto general del PTLC y dirige a la documentación detallada en la subcarpeta.  
-> **Cuándo leer este archivo:** Cuando necesitas entender qué es el PTLC, quién lo ejecuta, o bajo qué estándares opera.  
-> **Carpeta detallada:** [`.`](01_Introduccion_PTLC/)
-
----
+> Índice intermedio. **Cuándo leer:** qué es el PTLC, quién lo ejecuta, bajo qué estándares opera. Detalle en los documentos de esta skill (abajo).
 
 ## Resumen Ejecutivo
 
@@ -33,36 +29,17 @@ El **Performance Test Life Cycle (PTLC)** es una metodología estructurada de 9 
 
 ## 📂 Contenido de la Subcarpeta
 
-### [`01_Definicion_y_Fundamentos.md`](01_Definicion_y_Fundamentos.md)
-**Temas:** Qué es Performance Testing · Qué es el PTLC · Origen e historia · Principios fundamentales · NFRs (Non-Functional Requirements) · PTLC dentro del SDLC · Beneficios · Relación con otras disciplinas · Glosario completo de términos
+### [`01_Definicion_y_Fundamentos.md`](01_Definicion_y_Fundamentos.md) — qué es PTLC, NFRs, glosario
+- Para qué: introducir el ciclo y sus términos a stakeholders.
+- Consultar si: necesitas una definición formal para un stakeholder · dudas entre performance testing y otros tipos de QA · buscas la definición de un término técnico
 
-**Ir aquí si necesitas:**
-- Definir performance testing para stakeholders
-- Entender la diferencia entre performance testing y otros tipos de QA
-- Explicar por qué invertir en un ciclo estructurado
-- Buscar la definición de un término técnico
+### [`02_Roles_y_Responsabilidades.md`](02_Roles_y_Responsabilidades.md) — roles, RACI, career path
+- Para qué: definir quién responde en cada fase.
+- Consultar si: armas un equipo de performance testing · elaboras la matriz RACI o el reporting a stakeholders · defines el career path del equipo
 
----
-
-### [`02_Roles_y_Responsabilidades.md`](02_Roles_y_Responsabilidades.md)
-**Temas:** Estructura del equipo de performance · Performance Engineer · Performance Architect · Test Lead · DevOps/SRE · Modelos de organización (centralizado, embedded, CoE) · Matriz RACI por fase · Career path · Comunicación y reporting a stakeholders
-
-**Ir aquí si necesitas:**
-- Armar un equipo de performance testing
-- Definir responsabilidades claras por fase
-- Crear un career path para el equipo
-- Saber quién hace qué en cada fase del PTLC
-
----
-
-### [`03_Frameworks_y_Estandares.md`](03_Frameworks_y_Estandares.md)
-**Temas:** ISO 25010 (calidad del producto) · ISTQB Performance Testing · Google SRE (SLO/SLI/SLA) · OWASP Performance · TMMi · Frameworks de ejecución · Métricas de madurez · Compliance y regulaciones · Referencias
-
-**Ir aquí si necesitas:**
-- Justificar prácticas con estándares internacionales
-- Implementar SLOs/SLIs al estilo Google SRE
-- Evaluar la madurez del proceso de performance testing
-- Conocer regulaciones que aplican (financiero, salud, etc.)
+### [`03_Frameworks_y_Estandares.md`](03_Frameworks_y_Estandares.md) — ISO 25010, ISTQB, SRE, TMMi
+- Para qué: justificar prácticas con estándares internacionales.
+- Consultar si: implementas SLOs/SLIs al estilo Google SRE · evalúas la madurez del proceso (TMMi) · buscas regulaciones aplicables (financiero, salud)
 
 ---
 
@@ -70,6 +47,6 @@ El **Performance Test Life Cycle (PTLC)** es una metodología estructurada de 9 
 
 | Desde aquí puedo ir a... | Para... |
 |--------------------------|---------|
-| [02_Tipos_de_Pruebas](../ptlc-tipos-de-pruebas/SKILL.md) | Entender qué tipos de pruebas existen |
-| [03_Fases_del_PTLC](../ptlc-fases-del-ciclo/SKILL.md) | Profundizar en la ejecución de cada fase |
-| [04_Metricas](../ptlc-metricas-kpis/SKILL.md) | Definir los KPIs que se mencionan en los NFRs |
+| [ptlc-tipos-de-pruebas](../ptlc-tipos-de-pruebas/SKILL.md) | Entender qué tipos de pruebas existen |
+| [ptlc-fases-del-ciclo](../ptlc-fases-del-ciclo/SKILL.md) | Profundizar en la ejecución de cada fase |
+| [ptlc-metricas-kpis](../ptlc-metricas-kpis/SKILL.md) | Definir los KPIs que se mencionan en los NFRs |

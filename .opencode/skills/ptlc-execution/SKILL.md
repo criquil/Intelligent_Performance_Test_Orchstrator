@@ -1,6 +1,6 @@
 ---
 name: ptlc-execution
-description: "PTLC Execution: Define y ejecuta pruebas de performance generando scripts para k6, JMeter, Gatling o Locust según la herramienta seleccionada, incluyendo feeders, thresholds, scenarios y ejecución. Usar cuando se tiene el plan de pruebas completo y se necesita implementar y correr las pruebas."
+description: "Ejecuta scripts k6, JMeter, Gatling, Locust"
 ---
 
 # PTLC-EXECUTION — Definición y Ejecución de Pruebas
@@ -9,67 +9,42 @@ description: "PTLC Execution: Define y ejecuta pruebas de performance generando 
 
 ## Rol
 
-Eres el performance test engineer especializado. Generas scripts de prueba de alta calidad para la herramienta seleccionada, configurando scenarios, thresholds, feeders y ejecutando las pruebas según el plan.
-
-Debes seguir la guía exhaustiva de la herramienta seleccionada en `.opencode/skills/ptlc-herramientas/`.
+Performance test engineer: generas scripts de calidad para la herramienta seleccionada (scenarios, thresholds, feeders) y ejecutas según el plan. Cada guía de herramienta trae un mapa de secciones al inicio: carga solo lo necesario (`grep -n "^## "` o `read` por offset).
 
 </role>
-
-<knowledge_sources>
-
-## Fuentes de Conocimiento según herramienta seleccionada
-
-**Si tool = k6:**
-- `.opencode/skills/ptlc-herramientas/06_k6_Guia_Completa_Expandida.md` — executors, scenarios, thresholds, SharedArray
-- `.opencode/skills/ptlc-scripting/01_Scripting_Avanzado.md` — patrones avanzados
-
-**Si tool = JMeter:**
-- `.opencode/skills/ptlc-herramientas/05_JMeter_Guia_Completa.md` — thread groups, extractors, correlation, Groovy
-- `.opencode/skills/ptlc-scripting/01_Scripting_Avanzado.md`
-
-**Si tool = Gatling:**
-- `.opencode/skills/ptlc-herramientas/04_Gatling_Community_Guia_Completa.md` — DSL, injection profiles, feeders
-
-**Si tool = Locust:**
-- `.opencode/skills/ptlc-herramientas/03_Locust_Guia_Completa.md` — user classes, custom shapes, distributed
-
-**Siempre:**
-- `.opencode/skills/ptlc-workload-modeling/01_Workload_Modeling_Exhaustivo.md` — patrones de carga
-- `.opencode/skills/ptlc-fases-del-ciclo/03_Entorno_Scripts_Ejecucion.md` — setup de entorno, IaC, runbooks de ejecución
-
-</knowledge_sources>
 
 <pre_execution>
 
 ## ⚠️ LECTURA OBLIGATORIA ANTES DE OPERAR
 
-**Antes de generar cualquier script, leer TODOS los archivos siguientes con la herramienta `read`. Los scripts deben reflejar exactamente los patrones, configuraciones y mejores prácticas documentadas.**
+**Cargar `docs/plan/{plan_id}/context_envelope.json` si existe; no releer documentos ya sintetizados en él.**
 
-```
-# Siempre leer — independiente de la herramienta
-read(".opencode/skills/ptlc-workload-modeling/01_Workload_Modeling_Exhaustivo.md")
-read(".opencode/skills/ptlc-fases-del-ciclo/03_Entorno_Scripts_Ejecucion.md")
-read(".opencode/skills/ptlc-scripting/01_Scripting_Avanzado.md")
+**Leer exactamente lo listado; solo 2 documentos COMPLETOS. Sección = `grep -n "^## " <archivo>` + `read` offset/limit. Regla de herramienta: si `task_definition.selected_tool` (o `tool_selected`) falta, PREGUNTA; NUNCA leas las 4 guías, solo la seleccionada y sus secciones requeridas.**
 
-# Leer según herramienta seleccionada (tool = k6):
-read(".opencode/skills/ptlc-herramientas/06_k6_Guia_Completa_Expandida.md")
+### Documentos completos
+- `.opencode/skills/ptlc-herramientas/SKILL.md` — comparativa canónica de herramientas
+- `.opencode/skills/ptlc-scripting/SKILL.md` — panorama de patrones de scripting
 
-# Leer según herramienta seleccionada (tool = JMeter):
-read(".opencode/skills/ptlc-herramientas/05_JMeter_Guia_Completa.md")
+### Lecturas por sección (comunes)
+- `.opencode/skills/ptlc-fases-del-ciclo/03_Entorno_Scripts_Ejecucion.md` §FASE 4 (3) — configuración del entorno
+- `.opencode/skills/ptlc-fases-del-ciclo/03_Entorno_Scripts_Ejecucion.md` §FASE 6 (441) → Pre-execution (450), Execution (461), Post-execution (487) — ejecución, limit 98
+- `.opencode/skills/ptlc-workload-modeling/01_Workload_Modeling_Exhaustivo.md` §Patrones de Tráfico (224) — perfiles de carga
+- `.opencode/skills/ptlc-scripting/01_Scripting_Avanzado.md` §Data Management Strategies (325) — feeders y datos
+- `.opencode/skills/ptlc-scripting/01_Scripting_Avanzado.md` §Error Handling Best Practices (392) — manejo de errores
+- `.opencode/skills/ptlc-herramientas/00_Comunes_Guia_Herramientas.md` §3.1 Prácticas (267) — mejores prácticas
+- `.opencode/skills/ptlc-herramientas/00_Comunes_Guia_Herramientas.md` §3.2 Antipatrones (282) — antipatrones
+- `.opencode/skills/ptlc-herramientas/00_Comunes_Guia_Herramientas.md` §1.7 Quality gate (151) — check_thresholds.py
 
-# Leer según herramienta seleccionada (tool = Gatling):
-read(".opencode/skills/ptlc-herramientas/04_Gatling_Community_Guia_Completa.md")
+### Lecturas por sección (solo `tool_selected`, solo lo requerido)
+Guías en `.opencode/skills/ptlc-herramientas/`:
+- k6 `06_k6_Guia_Completa_Expandida.md` §5 Executors (392), §6 Scenarios (575), §9 Thresholds (931), §4 Lifecycle (227), §11 Datos/Parametrización (1163)
+- JMeter `05_JMeter_Guia_Completa.md` §5 Thread Groups (310), §9 Extractors/Correlation (595), §10 Assertions (688), §17 CLI (1191)
+- Gatling `04_Gatling_Community_Guia_Completa.md` §12 Injection Profiles (1303), §15 Assertions (1689), §11 Feeders (1203)
+- Locust `03_Locust_Guia_Completa.md` §5 User Classes (462), §9 Custom Load Shapes (1032), §8 Wait Times/Pacing (943)
 
-# Leer según herramienta seleccionada (tool = Locust):
-read(".opencode/skills/ptlc-herramientas/03_Locust_Guia_Completa.md")
-```
+Aplicar patrones de carga de `ptlc-workload-modeling/`, scripting de `ptlc-scripting/` y sintaxis de la guía de la herramienta.
 
-**NOTA:** Leer siempre los 3 primeros. Para el archivo de la herramienta, leer únicamente el correspondiente a `task_definition.selected_tool`.
-
-Usar la información leída para:
-- Aplicar los patrones de carga de `.opencode/skills/ptlc-workload-modeling/` (ramp-up, steady-state, cooldown)
-- Seguir los patrones de scripting avanzado de `.opencode/skills/ptlc-scripting/` (correlación, tokens, data management)
-- Usar la guía exhaustiva de la herramienta como referencia de sintaxis y configuración
+**Presupuesto de lectura:** ninguna lectura >2.000 tokens; cargar secciones, no archivos completos; reutilizar `context_envelope.json`. Para fórmulas/umbrales/sintaxis usa `ptlc-workload-modeling/00_Cheat_Sheet_Workload.md` y `ptlc-herramientas/00b_Cheat_Sheet_Herramientas.md` antes que el doc completo.
 
 </pre_execution>
 
@@ -77,73 +52,15 @@ Usar la información leída para:
 
 ## Flujo de Trabajo
 
-### Paso 1: Leer el plan completo
-
-- `task_definition.procedure_plan` — tipos de prueba, escenarios, VUs, criterios
-- `task_definition.requirements` — endpoints, protocolo, datos, stack
-- `task_definition.selected_tool` — herramienta a usar
-- `task_definition.test_plan` — criterios de aceptación definitivos
-
-### Paso 2: Configurar estructura de archivos
-
-Crear estructura en `tests/performance/`:
-
-```
-tests/performance/
-├── {tool}/
-│   ├── scripts/           # scripts principales
-│   ├── data/              # feeders y datos de prueba
-│   ├── config/            # configuración de ambientes
-│   └── results/           # directorio para resultados
-└── README.md
-```
-
-### Paso 3: Generar scripts por tipo de prueba
-
-Para CADA tipo de prueba del procedure plan:
-
-#### Para k6:
-- Usar `executor` correcto: `ramping-vus` para load, `constant-arrival-rate` para TPS fijo
-- Configurar `scenarios` múltiples si hay varios flujos
-- Definir `thresholds` con los criterios de aceptación numéricos
-- Usar `SharedArray` para datos paramétricos (feeders)
-- Separar `setup()`, `default function` y `teardown()`
-
-#### Para JMeter:
-- Generar JMX con Thread Group configurado (ramp-up, users, duration)
-- Agregar CSV Data Set Config para feeders
-- Configurar Response Assertion y Duration Assertion
-- Agregar extractors para correlación si se necesita token/session
-- Usar Backend Listener para métricas en tiempo real si hay Grafana
-
-#### Para Gatling:
-- Usar DSL Scala/Java/Kotlin según preferencia del equipo
-- Configurar `inject` con `rampUsers`, `constantUsersPerSec`, o `stressPeakUsers`
-- Definir `assertions` con los thresholds
-- Usar `feeder` para datos parametrizados
-
-#### Para Locust:
-- Crear `HttpUser` con `tasks` y `wait_time`
-- Para load shapes: extender `LoadTestShape` para perfiles personalizados
-- Configurar `--headless` para CI/CD
-- Agregar `events` para métricas customizadas
-
-### Paso 4: Ejecutar pruebas (si `task_definition.execute = true`)
-
-Ejecutar en orden del procedure plan:
-1. Smoke test primero (máx 2-3 minutos)
-2. Si smoke pasa → ejecutar pruebas en el orden definido
-3. Si smoke falla → detener y reportar
-
-Capturar:
-- Output de la herramienta (stdout/stderr)
-- Archivo de resultados (CSV/JSON/HTML)
-- Tiempo de inicio y fin
-
-### Paso 5: Empaquetar resultados
-
-- Guardar resultados en `tests/performance/{tool}/results/`
-- Generar resumen de ejecución
+1. **Leer plan completo:** `procedure_plan` (tipos, escenarios, VUs, criterios), `requirements` (endpoints, protocolo, datos, stack), `selected_tool`, `test_plan` (criterios definitivos).
+2. **Crear estructura** en `tests/performance/`: `{tool}/scripts/`, `{tool}/data/`, `{tool}/config/`, `{tool}/results/`, `README.md`.
+3. **Generar scripts por tipo de prueba:**
+   - k6: `executor` correcto (`ramping-vus`, `constant-arrival-rate`), `scenarios`, `thresholds`, `SharedArray`, `setup/default/teardown`.
+   - JMeter: JMX con Thread Group (ramp-up, users, duration), CSV Data Set, Response/Duration Assertion, extractors, Backend Listener.
+   - Gatling: DSL, `inject` (`rampUsers`, `constantUsersPerSec`, `stressPeakUsers`), `assertions`, `feeder`.
+   - Locust: `HttpUser` con `tasks`/`wait_time`, `LoadTestShape`, `--headless`, `events`.
+4. **Ejecutar** (si `execute = true`): smoke primero (2-3 min); si pasa, pruebas en orden; si falla, detener y reportar. Capturar stdout/stderr, CSV/JSON/HTML, tiempos.
+5. **Empaquetar resultados** en `tests/performance/{tool}/results/` + resumen.
 
 </workflow>
 
@@ -156,40 +73,18 @@ Retornar SOLO JSON válido:
 ```json
 {
   "status": "completed | failed | smoke_failed | skipped_execution",
-  "plan_id": "string",
-  "task_id": "string",
-  "tool": "k6 | JMeter | Gatling | Locust",
-  "scripts_generated": [
-    {
-      "test_type": "string",
-      "file_path": "string",
-      "description": "string"
-    }
-  ],
-  "execution_results": [
-    {
-      "test_type": "string",
-      "status": "pass | fail | skipped",
-      "duration_minutes": 0,
-      "metrics": {
-        "p95_ms": 0,
-        "p99_ms": 0,
-        "avg_ms": 0,
-        "error_rate_pct": 0,
-        "throughput_tps": 0,
-        "peak_vus": 0
-      },
-      "thresholds_passed": true,
-      "result_file": "string",
-      "notes": "string"
-    }
-  ],
-  "overall_pass": true,
-  "failed_thresholds": ["string"],
-  "recommendations": ["string"],
-  "confidence": 0.0
+  "plan_id": "string", "task_id": "string", "tool": "k6 | JMeter | Gatling | Locust",
+  "scripts_generated": [{"test_type": "string", "file_path": "string", "description": "string"}],
+  "execution_results": [{
+    "test_type": "string", "status": "pass | fail | skipped", "duration_minutes": 0,
+    "metrics": {"p95_ms": 0, "p99_ms": 0, "avg_ms": 0, "error_rate_pct": 0, "throughput_tps": 0, "peak_vus": 0},
+    "thresholds_passed": true, "result_file": "string", "notes": "string"
+  }],
+  "overall_pass": true, "failed_thresholds": ["string"], "recommendations": ["string"], "confidence": 0.0
 }
 ```
+
+**Persistir el bloque `execution` del envelope y actualizar `meta.last_updated`.**
 
 </output_format>
 
@@ -197,13 +92,12 @@ Retornar SOLO JSON válido:
 
 ## Reglas
 
-- SIEMPRE ejecutar smoke test primero; si falla, no continuar con pruebas mayores
-- Los scripts deben ser reproducibles: sin valores hardcoded de ambiente, usar variables/config files
-- Los thresholds en los scripts DEBEN coincidir con los criterios de aceptación del test plan
-- Documentar cada script con comentarios explicando la configuración
-- Para JMeter: usar modo no-GUI (`-n -t test.jmx`) siempre
-- Para k6: incluir `--out json` para capturar resultados
-- Si la ejecución no está solicitada (`execute = false`), solo generar scripts y retornar `skipped_execution`
-- Citar el DOC de referencia de la herramienta en el README generado
+- Requiere aprobación explícita del usuario (Approval Gate); sin `execute: true` aprobado, generar scripts y retornar `skipped_execution`.
+- SIEMPRE smoke test primero; si falla, no continuar con pruebas mayores.
+- Scripts reproducibles: sin valores hardcoded de ambiente, usar variables/config files.
+- Thresholds DEBEN coincidir con los criterios de aceptación del test plan.
+- Documentar cada script con comentarios explicando la configuración.
+- JMeter: modo no-GUI (`-n -t test.jmx`). k6: incluir `--out json`.
+- Citar el DOC de referencia de la herramienta en el README generado.
 
 </rules>

@@ -1,15 +1,11 @@
 ---
 name: ptlc-analisis-bottlenecks
-description: "Analisis de resultados y RCA de bottlenecks: 5 Whys, Fishbone, drill-down y profiling de aplicacion, base de datos y red."
+description: "Analiza bottlenecks: RCA, 5 Whys, Fishbone"
 ---
 
 # 09 — Análisis de Resultados y Bottlenecks
 
-> **Rol de este archivo:** Índice intermedio. Resume las técnicas de análisis, RCA y troubleshooting, y dirige al documento con frameworks completos.  
-> **Cuándo leer este archivo:** Cuando necesitas interpretar resultados, encontrar la causa raíz de un problema, o hacer profiling.  
-> **Carpeta detallada:** [`.`](09_Analisis_y_Bottlenecks/)
-
----
+> Índice intermedio. **Cuándo leer:** interpretar resultados, hallar causa raíz o hacer profiling. Detalle en los documentos de esta skill (abajo).
 
 ## Framework de Análisis — 4 Pasos
 
@@ -45,23 +41,9 @@ description: "Analisis de resultados y RCA de bottlenecks: 5 Whys, Fishbone, dri
 
 ## 📂 Contenido de la Subcarpeta
 
-### [`01_RCA_y_Troubleshooting.md`](01_RCA_y_Troubleshooting.md)
-**Contenido completo (~14 KB):**
-
-| Sección | Qué encontrarás |
-|---------|-----------------|
-| Framework de Análisis Sistemático | Proceso paso a paso, decision tree |
-| Técnicas de RCA | 5 Whys con ejemplos, Fishbone template, drill-down methodology |
-| Troubleshooting por Síntoma | Tabla extendida: síntoma → diagnóstico → solución |
-| Herramientas de Profiling | CPU profilers, memory analyzers, I/O tools, network capture |
-| Patrones de Bottleneck y Soluciones | CPU-bound, memory-bound, I/O-bound, network-bound, lock contention — con soluciones concretas |
-
-**Ir aquí si necesitas:**
-- Diagnosticar por qué un test falló
-- Decision tree para identificar tipo de bottleneck
-- Herramientas de profiling por lenguaje/plataforma
-- Soluciones concretas para cada tipo de cuello de botella
-- Template para documentar un RCA formal
+### [`01_RCA_y_Troubleshooting.md`](01_RCA_y_Troubleshooting.md) — RCA, troubleshooting, profiling
+- Para qué: pasar de síntoma a causa raíz con evidencia.
+- Consultar si: usas el decision tree o el template de RCA formal · buscas la solución concreta por tipo de bottleneck (CPU, memoria, I/O, locks) · eliges herramienta de profiling por lenguaje/plataforma
 
 ---
 
@@ -69,7 +51,7 @@ description: "Analisis de resultados y RCA de bottlenecks: 5 Whys, Fishbone, dri
 
 | Desde aquí puedo ir a... | Para... |
 |--------------------------|---------|
-| [04_Metricas](../ptlc-metricas-kpis/SKILL.md) | Entender qué significan las métricas que veo |
-| [07_Monitoreo](../ptlc-monitoreo/SKILL.md) | Verificar que tengo suficiente observabilidad |
-| [03_Fases](../ptlc-fases-del-ciclo/SKILL.md) | Fase 7 (Análisis) y Fase 8 (Optimización) |
-| [02_Tipos](../ptlc-tipos-de-pruebas/SKILL.md) | Pruebas de isolation/configuration para confirmar RCA |
+| [ptlc-metricas-kpis](../ptlc-metricas-kpis/SKILL.md) | Entender qué significan las métricas que veo |
+| [ptlc-monitoreo](../ptlc-monitoreo/SKILL.md) | Verificar que tengo suficiente observabilidad |
+| [ptlc-fases-del-ciclo](../ptlc-fases-del-ciclo/SKILL.md) | Fase 7 (Análisis) y Fase 8 (Optimización) |
+| [ptlc-tipos-de-pruebas](../ptlc-tipos-de-pruebas/SKILL.md) | Pruebas de isolation/configuration para confirmar RCA |

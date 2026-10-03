@@ -1,15 +1,11 @@
 ---
 name: ptlc-workload-modeling
-description: "Workload modeling y diseno de escenarios: Little's Law, calculo de VUs, distribuciones de carga, patrones de trafico y templates."
+description: "Modela carga: Little's Law, VUs, patrones de trafico"
 ---
 
 # 06 — Workload Modeling y Diseño de Escenarios
 
-> **Rol de este archivo:** Índice intermedio. Resume los conceptos de modelado de carga y dirige a la documentación con fórmulas y templates.  
-> **Cuándo leer este archivo:** Cuando necesitas calcular usuarios virtuales, diseñar patrones de carga, o entender distribuciones estadísticas.  
-> **Carpeta detallada:** [`.`](06_Workload_Modeling/)
-
----
+> Índice intermedio. **Cuándo leer:** calcular VUs, diseñar patrones de carga o distribuciones. Detalle en los documentos de esta skill (abajo).
 
 ## ¿Qué es el Workload Modeling?
 
@@ -40,28 +36,19 @@ Ejemplo:
 | Steady State | Duración a carga máxima | Mínimo 30 min (idealmente 1h+) |
 | Ramp-down | Tiempo de descenso | 2-5 minutos |
 
+> **Nota de uso:** usar el cheat sheet para fórmulas; el documento para el detalle.
+
 ---
 
 ## 📂 Contenido de la Subcarpeta
 
-### [`01_Workload_Modeling_Exhaustivo.md`](01_Workload_Modeling_Exhaustivo.md)
-**Contenido completo (~15 KB):**
+### [`00_Cheat_Sheet_Workload.md`](00_Cheat_Sheet_Workload.md) — fórmulas y patrones operativos (≤600 tokens)
+- Para qué: obtener de un golpe Little's Law, VUs para throughput objetivo, ramp-up y patrones de carga.
+- Consultar si: solo necesitas la fórmula o el patrón; el detalle vive en el documento.
 
-| Sección | Qué encontrarás |
-|---------|-----------------|
-| Fundamentos Teóricos | Little's Law, Queuing Theory, distribuciones (Poisson, Normal, Uniform) |
-| Recolección de Datos | APM analysis, access logs, Google Analytics, business forecasts |
-| Modelado Matemático | Fórmulas paso a paso con ejemplos numéricos |
-| Patrones de Tráfico | Diurnal, weekly, seasonal, event-driven + cómo modelar cada uno |
-| Template Completo de Workload Model | YAML template listo para copiar y adaptar |
-| Validación y Calibración | Cómo verificar que el modelo refleja la realidad |
-
-**Ir aquí si necesitas:**
-- Calcular VUs concurrentes a partir de datos de producción
-- Template YAML para documentar tu modelo de carga
-- Entender qué distribución usar para think times
-- Convertir datos de Google Analytics en un workload model
-- Validar que tu test simula carga realista
+### [`01_Workload_Modeling_Exhaustivo.md`](01_Workload_Modeling_Exhaustivo.md) — fórmulas, patrones y template YAML
+- Para qué: construir y validar un modelo de carga realista.
+- Consultar si: convierte datos de producción/APM en VUs concurrentes · eliges distribución de think times o patrón (diurnal, seasonal) · usas el template YAML del workload model
 
 ---
 
@@ -69,7 +56,7 @@ Ejemplo:
 
 | Desde aquí puedo ir a... | Para... |
 |--------------------------|---------|
-| [03_Fases](../ptlc-fases-del-ciclo/SKILL.md) | Fase 3 (Diseño) donde se crea el workload model |
-| [04_Metricas](../ptlc-metricas-kpis/SKILL.md) | Little's Law y fórmulas de throughput |
-| [05_Herramientas](../ptlc-herramientas/SKILL.md) | Implementar el modelo en k6/JMeter/Gatling/Locust |
-| [02_Tipos](../ptlc-tipos-de-pruebas/SKILL.md) | Baseline para validar el modelo |
+| [ptlc-fases-del-ciclo](../ptlc-fases-del-ciclo/SKILL.md) | Fase 3 (Diseño) donde se crea el workload model |
+| [ptlc-metricas-kpis](../ptlc-metricas-kpis/SKILL.md) | Little's Law y fórmulas de throughput |
+| [ptlc-herramientas](../ptlc-herramientas/SKILL.md) | Implementar el modelo en k6/JMeter/Gatling/Locust |
+| [ptlc-tipos-de-pruebas](../ptlc-tipos-de-pruebas/SKILL.md) | Baseline para validar el modelo |

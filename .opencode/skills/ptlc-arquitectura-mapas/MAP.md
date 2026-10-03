@@ -1,20 +1,33 @@
 # 🗺️ MAP — Intelligent Performance Test Orchestrator
 
-> Mapa visual completo del proyecto: estructura, agentes, flujos y cobertura de conocimiento.
+> Mapa único de la arquitectura v3.0: estructura del repo, pipeline de agentes, cobertura del knowledge base, entregables y tiempos.
+> Convenciones y reglas de navegación del repo en [AGENTS.md](AGENTS.md). Pipeline por fases en [`../ptlc-fases-del-ciclo/`](../ptlc-fases-del-ciclo/SKILL.md).
+
+## Índice
+
+1. [Arquitectura general](#1-arquitectura-general)
+2. [Pipeline v3.0: ptlc-orchestrator como entry point obligatorio](#2-pipeline-v30-ptlc-orchestrator-como-entry-point-obligatorio)
+3. [Fases del pipeline: lecturas, procesos y salidas](#3-fases-del-pipeline-lecturas-procesos-y-salidas)
+4. [Guías por agente](#4-guías-por-agente)
+5. [Principios de arquitectura y decisiones críticas](#5-principios-de-arquitectura-y-decisiones-críticas)
+6. [Selección de herramienta de prueba](#6-selección-de-herramienta-de-prueba)
+7. [Cobertura del knowledge base por fase](#7-cobertura-del-knowledge-base-por-fase)
+8. [Estructura de archivos](#8-estructura-de-archivos)
+9. [Modelo de navegación: 3 niveles](#9-modelo-de-navegación-3-niveles)
+10. [Entregables y artefactos por ciclo](#10-entregables-y-artefactos-por-ciclo)
+11. [Tiempos estimados por fase](#11-tiempos-estimados-por-fase)
 
 ---
 
-## 1. Arquitectura General del Proyecto
+## 1. Arquitectura general
 
 ```mermaid
 graph TB
     subgraph ROOT["📁 Raíz del Proyecto"]
         CLAUDE["📄 AGENTS.md\nGuía para agentes AI"]
-        APM_YML["📄 apm.yml\nManifiesto APM"]
-        GEM_CFG["📄 .gem-team.yaml\nConfig del equipo de agentes"]
     end
 
-    subgraph SKILLS_ROOT["📂 .opencode/skills/ — Knowledge Base PTLC (~650 KB)"]
+    subgraph SKILLS_ROOT["📂 .opencode/skills/ — Knowledge Base PTLC"]
         direction TB
         IDX["📄 README.md\nÍndice maestro · Punto de entrada"]
         D01["📂 ptlc-fundamentos"]
@@ -32,12 +45,10 @@ graph TB
     end
 
     subgraph GITHUB["📂 .opencode/"]
-        subgraph AGENTS["📂 agents/ — 17 agentes"]
+        subgraph AGENTS["📂 agents/ — 1 agente"]
             PTLC_ORCH["🎯 ptlc-orchestrator\n(ENTRY POINT OBLIGATORIO v3.0)"]
-            GEM_ORCH["🏆 gem-orchestrator\n(tareas generales, derivado)"]
-            GEM_AGENTS["🤖 15 agentes gem-team"]
         end
-        subgraph SKILLS["📂 skills/ — 18 skills"]
+        subgraph SKILLS["📂 skills/ — 18 skills ptlc-*"]
             PIPE["⚙️ 6 skills pipeline PTLC\nintake · diagnostics · procedure\nplan · execution · analysis"]
             OPS["🛠️ Guías operativas por herramienta\nptlc-herramientas/ (k6 · JMeter\nGatling · Locust)"]
         end
@@ -46,16 +57,13 @@ graph TB
     IDX --> D01
     IDX --> D12
     CLAUDE --> SKILLS_ROOT
-    GEM_CFG --> PTLC_ORCH
     PTLC_ORCH --> PIPE
-    PTLC_ORCH -->|general| GEM_ORCH
-    GEM_ORCH --> GEM_AGENTS
     PIPE --> OPS
 ```
 
 ---
 
-## 2. Flujo v3.0 — ptlc-orchestrator como entry point obligatorio
+## 2. Pipeline v3.0: ptlc-orchestrator como entry point obligatorio
 
 ```mermaid
 flowchart TD
@@ -76,12 +84,7 @@ flowchart TD
         F1 --> F2 --> F3 --> F4 --> F5 --> F6
     end
 
-    subgraph GEM_FLOW["🛠️ Pipeline General — gem-orchestrator"]
-        direction TB
-        G1["gem-planner → DAG de tasks"]
-        G2["gem-researcher / gem-implementer\ngem-reviewer / gem-debugger\ngem-documentation-writer..."]
-        G1 --> G2
-    end
+    GEN_FLOW["🛠️ Soporte general — subagentes integrados\n`general` (multi-paso) · `explore` (exploración)"]
 
     OUT_PTLC(["📦 Entregables PTLC\n• docs/performance-test-plan.md\n• tests/performance/{tool}/\n• docs/performance-test-report.md"])
     OUT_GEN(["📦 Entregables generales\n• código · documentación · tests"])
@@ -89,17 +92,70 @@ flowchart TD
     USER --> PTLC_ORCH
     PTLC_ORCH --> DOMAIN
     DOMAIN -->|performance-testing| PTLC_FLOW
-    DOMAIN -->|general| GEM_FLOW
+    DOMAIN -->|general| GEN_FLOW
     PTLC_FLOW --> OUT_PTLC
-    GEM_FLOW --> OUT_GEN
+    GEN_FLOW --> OUT_GEN
 
-    F5 -->|approval gate| USER
-    USER -->|confirmación| F5
+    F5 -->|approval gate: aprobado| USER
+    F5 -->|approval gate: rechazado| PAUSE["🛑 Ciclo pausado\n(no se ejecuta)"]
+    USER -->|confirmación explícita| F5
 ```
 
 ---
 
-## 3. Selección de Herramienta de Prueba
+## 3. Fases del pipeline: lecturas, procesos y salidas
+
+| # | Skill | Entrada | Lecturas del knowledge base | Proceso | Salida / artefacto |
+|---|-------|---------|------------------------------|---------|--------------------|
+| 0 | `ptlc-orchestrator` | Request del usuario | PRD (`ptlc-roadmap-decisiones`) | Detección de dominio + plan 6-wave | `docs/plan/{plan_id}/plan.yaml` |
+| 1 | `ptlc-intake` | Solicitud | `ptlc-fundamentos`, `ptlc-tipos-de-pruebas`, `ptlc-herramientas` (matriz de decisión), `ptlc-workload-modeling` | Preguntas estructuradas + selección de UNA herramienta | Requisitos completos + herramienta elegida |
+| 2 | `ptlc-diagnostics` | Requisitos, entorno | `ptlc-fases-del-ciclo` (readiness), `ptlc-metricas-kpis`, `ptlc-workload-modeling`, `ptlc-monitoreo`, `ptlc-mejores-practicas` | Evaluación de entorno y dependencias | Readiness score + riesgos |
+| 3 | `ptlc-procedure-plan` | Requisitos + diagnóstico | `ptlc-tipos-de-pruebas`, `ptlc-workload-modeling` (Little's Law), `ptlc-metricas-kpis` | Tipos de prueba + modelo de carga | Workload model + tipos seleccionados |
+| 4 | `ptlc-test-plan` | Procedure plan | `ptlc-fundamentos`, `ptlc-fases-del-ciclo` (planificación) | Redacción ISTQB/IEEE-829 | `docs/performance-test-plan.md` |
+| — | **APPROVAL GATE** | Plan completo | — | `ptlc-orchestrator` presenta el plan y espera confirmación explícita | Aprobado → Wave 5 · rechazado → ciclo pausado |
+| 5 | `ptlc-execution` | Test plan aprobado | `ptlc-herramientas` (guía de la herramienta), `ptlc-scripting`, `ptlc-fases-del-ciclo` | Generación on-demand de scripts + ejecución | Scripts + resultados en `tests/performance/{tool}/{plan_id}/` |
+| 6 | `ptlc-analysis` | Resultados de ejecución | `ptlc-metricas-kpis`, `ptlc-analisis-bottlenecks`, `ptlc-fases-del-ciclo` (análisis y cierre), `ptlc-monitoreo` | Métricas + RCA + health scoring | `docs/performance-test-report.md` + veredicto PASSED/FAILED |
+
+---
+
+## 4. Guías por agente
+
+| Agente | Guías que debe leer |
+|--------|--------------------|
+| `ptlc-orchestrator` | Detección de dominio (Phase 0), generación de plan 6-wave (Phase 2), approval gate (Phase 3B) |
+| `ptlc-intake` | [`ptlc-herramientas/SKILL.md`](../ptlc-herramientas/SKILL.md) — protocolo, complejidad, lenguaje, tipo de prueba → selecciona UNA herramienta |
+| `ptlc-diagnostics` | Checklist de readiness de [`ptlc-fases-del-ciclo/SKILL.md`](../ptlc-fases-del-ciclo/SKILL.md) |
+| `ptlc-procedure-plan` | [`ptlc-tipos-de-pruebas/SKILL.md`](../ptlc-tipos-de-pruebas/SKILL.md) + [`ptlc-workload-modeling/SKILL.md`](../ptlc-workload-modeling/SKILL.md) — tipos de prueba + Little's Law |
+| `ptlc-test-plan` | [`ptlc-fundamentos/SKILL.md`](../ptlc-fundamentos/SKILL.md) + template ISTQB/IEEE-829 de [`ptlc-fases-del-ciclo/`](../ptlc-fases-del-ciclo/SKILL.md) |
+| `ptlc-execution` | Guía de la herramienta en [`ptlc-herramientas/`](../ptlc-herramientas/SKILL.md) (k6 / JMeter / Gatling / Locust) + [`ptlc-scripting/`](../ptlc-scripting/SKILL.md) |
+| `ptlc-analysis` | [`ptlc-metricas-kpis/SKILL.md`](../ptlc-metricas-kpis/SKILL.md) — percentiles, Apdex, throughput, error rate · [`ptlc-analisis-bottlenecks/SKILL.md`](../ptlc-analisis-bottlenecks/SKILL.md) — 5 Whys, Fishbone, health scoring, ranking P1/P2/P3 |
+
+---
+
+## 5. Principios de arquitectura y decisiones críticas
+
+| Principio | Implementación |
+|-----------|----------------|
+| Entry point único | `ptlc-orchestrator` recibe todos los requests; resuelve los no-PTLC con los subagentes integrados (`general`/`explore`) o el knowledge base |
+| Una herramienta por ciclo | `ptlc-intake` selecciona UNA herramienta; nunca paralelo |
+| Generación on-demand | Scripts generados en Wave 5 — no existen pre-creados |
+| Aprobación explícita | `ptlc-execution` no corre sin confirmación del usuario |
+| Resultados individuales | Cada ejecución es independiente; no hay comparación cross-tool |
+| Estado persistido | `docs/plan/{plan_id}/plan.yaml` guarda el estado de cada ciclo |
+| Knowledge Base como fuente de verdad | Cada agente lee los documentos relevantes antes de actuar |
+| Outputs en español | Todos los reportes, planes y comunicaciones en español |
+
+| Decisión | Valor | Justificación |
+|----------|-------|---------------|
+| Script generation | On-demand en Wave 5 | No existen scripts pre-creados; se generan para cada request |
+| Output path | `tests/performance/{tool}/{plan_id}/` | Organización por herramienta y ciclo para trazabilidad |
+| State persistence | `docs/plan/{plan_id}/plan.yaml` | Permite retomar ciclos interrumpidos |
+| Approval gate | Requerida antes de ejecutar | `ptlc-execution` tiene impacto real sobre infraestructura |
+| Idioma | Español en todos los outputs | Requisito de producto definido en [`ptlc-roadmap-decisiones/PRD.yaml`](../ptlc-roadmap-decisiones/PRD.yaml) |
+
+---
+
+## 6. Selección de herramienta de prueba
 
 ```mermaid
 flowchart LR
@@ -120,9 +176,11 @@ flowchart LR
     Q3 -->|JS/Java| K6
 ```
 
+> Las guías se están reorganizando por tema; la tabla de decisión vigente está en [`ptlc-herramientas/SKILL.md`](../ptlc-herramientas/SKILL.md).
+
 ---
 
-## 4. Cobertura de Knowledge Base por Fase (skills)
+## 7. Cobertura del knowledge base por fase
 
 ```mermaid
 graph LR
@@ -198,15 +256,13 @@ graph LR
 
 ---
 
-## 5. Estructura de Archivos Completa
+## 8. Estructura de archivos
 
 ```mermaid
 graph TD
     ROOT["📁 /"]
 
     ROOT --> CLAUDE_F["📄 AGENTS.md"]
-    ROOT --> APM_F["📄 apm.yml"]
-    ROOT --> GEM_F["📄 .gem-team.yaml"]
     ROOT --> GIT_F["📄 .gitignore"]
     ROOT --> SK_ROOT_F["📂 .opencode/skills/"]
     ROOT --> GH_F["📂 .opencode/agents/"]
@@ -222,12 +278,11 @@ graph TD
     GH_F --> INS_F["📂 instructions/"]
 
     AG_F --> PTLC_AG["🎯 .opencode/agents/ptlc-orchestrator.md\n(entry point obligatorio)"]
-    AG_F --> GEM_AG["🤖 gem-team Agents (16)\ngem-orchestrator · gem-researcher\ngem-planner · gem-implementer\ngem-reviewer · gem-debugger\ngem-critic · gem-devops\n...y 9 más"]
 ```
 
 ---
 
-## 6. Modelo de Navegación (3 Niveles)
+## 9. Modelo de navegación: 3 niveles
 
 ```mermaid
 graph TD
@@ -237,12 +292,12 @@ graph TD
     N2B["🟡 ptlc-fases-del-ciclo (SKILL.md)"]
     N2C["🟡 ptlc-herramientas (SKILL.md)"]
     N2D["🟡 ptlc-analisis-bottlenecks (SKILL.md)"]
-    N2E["🟡 ... 8 índices más"]
+    N2E["🟡 ... índices temáticos más"]
 
     N3A["🟢 Load Testing"]
     N3B["🟢 Stress Testing"]
-    N3C["🟢 k6 Guía Expandida\n(73 KB)"]
-    N3D["🟢 JMeter Guía\n(69 KB)"]
+    N3C["🟢 k6 Guía Expandida"]
+    N3D["🟢 JMeter Guía"]
     N3E["🟢 RCA y Troubleshooting"]
     N3F["🟢 Workload Modeling\n(Little's Law)"]
 
@@ -262,12 +317,12 @@ graph TD
 
 ---
 
-## 7. Entregables Generados por el Proceso PTLC
+## 10. Entregables y artefactos por ciclo
 
 ```mermaid
 flowchart LR
     subgraph RUNTIME["⚙️ En ejecución"]
-        PY["docs/plan/{plan_id}/\nplan.yaml\ncontext_envelope.json"]
+        PY["docs/plan/{plan_id}/\nplan.yaml"]
     end
 
     subgraph DOCS_OUT["📋 Documentos"]
@@ -290,6 +345,33 @@ flowchart LR
     TP --> LCS
 ```
 
+**Scripts generados por herramienta (Wave 5, on-demand):**
+
+```
+tests/performance/{tool}/{plan_id}/
+├── [k6]       script.js + run.sh
+├── [JMeter]   test-plan.jmx + pom.xml + run.ps1
+├── [Gatling]  Simulation.scala/Java/Kotlin + pom.xml
+└── [Locust]   locustfile.py + run.sh
+```
+
 ---
 
-*Actualizado: Octubre 2026 — v3.0: knowledge base migrada de `DOCs/` a `.opencode/skills/`, `ptlc-orchestrator` como entry point obligatorio*
+## 11. Tiempos estimados por fase
+
+```
+ptlc-orchestrator (Phase 0+2)   ██░░░░░░░░░░  ~2 min  (detección + plan)
+ptlc-intake        (Wave 1)     ████░░░░░░░░  ~5 min  (preguntas + selección)
+ptlc-diagnostics   (Wave 2)     ████░░░░░░░░  ~5 min  (readiness check)
+ptlc-procedure-plan(Wave 3)     ████████░░░░  ~10 min (workload modeling)
+ptlc-test-plan     (Wave 4)     ██████████░░  ~15 min (redacción del plan)
+APPROVAL GATE                   ██░░░░░░░░░░  variable
+ptlc-execution     (Wave 5)     ████████████  variable (gen + ejecución)
+ptlc-analysis      (Wave 6)     ████████░░░░  ~10 min (análisis + reporte)
+──────────────────────────────────────────────────────────
+TOTAL (sin ejecución)                         ~47 min
+```
+
+---
+
+*Actualizado: Octubre 2026 — v3.0: knowledge base migrada de `DOCs/` a `.opencode/skills/`, `ptlc-orchestrator` como entry point obligatorio. Este documento consolidó los tres mapas previos (agentes ↔ skills, funcional simplificado y funcional v1.0), ya eliminados.*

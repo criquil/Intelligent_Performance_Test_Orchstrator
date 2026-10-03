@@ -1,32 +1,33 @@
 # 🚀 Gatling Community Edition - Guía Completa de Referencia
 
-## Índice
+## Mapa de secciones
 
-1. [Introducción y Filosofía](#1-introducción-y-filosofía)
-2. [Arquitectura Interna](#2-arquitectura-interna)
-3. [Instalación y Setup de Proyecto](#3-instalación-y-setup-de-proyecto)
-4. [DSLs Disponibles (Java, Kotlin, Scala)](#4-dsls-disponibles-java-kotlin-scala)
-5. [Estructura de una Simulation](#5-estructura-de-una-simulation)
-6. [Scenarios y Estructura de Ejecución](#6-scenarios-y-estructura-de-ejecución)
-7. [HTTP Protocol Configuration](#7-http-protocol-configuration)
-8. [Requests y Actions](#8-requests-y-actions)
-9. [Checks y Validaciones](#9-checks-y-validaciones)
-10. [Session API y Estado del Virtual User](#10-session-api-y-estado-del-virtual-user)
-11. [Feeders (Parametrización de Datos)](#11-feeders-parametrización-de-datos)
-12. [Injection Profiles (Open vs Closed Model)](#12-injection-profiles-open-vs-closed-model)
-13. [Control de Flujo (Loops, Conditions, Errors)](#13-control-de-flujo-loops-conditions-errors)
-14. [Pause, Pacing y Think Time](#14-pause-pacing-y-think-time)
-15. [Assertions (Criterios de Aceptación)](#15-assertions-criterios-de-aceptación)
-16. [Gatling Recorder](#16-gatling-recorder)
-17. [Reportes y Análisis](#17-reportes-y-análisis)
-18. [Protocolos Adicionales (WebSocket, SSE, JMS)](#18-protocolos-adicionales-websocket-sse-jms)
-19. [Integración con CI/CD](#19-integración-con-cicd)
-20. [Patrones Avanzados](#20-patrones-avanzados)
-21. [Debugging y Troubleshooting](#21-debugging-y-troubleshooting)
-22. [Community vs Enterprise Edition](#22-community-vs-enterprise-edition)
-23. [Mejores Prácticas y Antipatrones](#23-mejores-prácticas-y-antipatrones)
-24. [Proyecto de Referencia Completo](#24-proyecto-de-referencia-completo)
+Tabla generada con `grep -n "^## "`. Para leer solo una sección concreta usa `read` con ese offset (o `grep` sobre el título) en lugar de cargar el archivo entero.
 
+| Línea | Sección |
+|--------|---------|
+| 3 | Mapa de secciones |
+| 33 | 1. Introducción y Filosofía |
+| 91 | 2. Arquitectura Interna |
+| 178 | 3. Instalación y Setup de Proyecto |
+| 445 | 4. DSLs Disponibles (Java, Kotlin, Scala) |
+| 570 | 5. Estructura de una Simulation |
+| 705 | 6. Scenarios y Estructura de Ejecución |
+| 809 | 7. HTTP Protocol Configuration |
+| 886 | 8. Requests y Actions |
+| 1003 | 9. Checks y Validaciones |
+| 1112 | 10. Session API y Estado del Virtual User |
+| 1203 | 11. Feeders (Parametrización de Datos) |
+| 1303 | 12. Injection Profiles (Open vs Closed Model) |
+| 1470 | 13. Control de Flujo (Loops, Conditions, Errors) |
+| 1622 | 14. Pause, Pacing y Think Time |
+| 1689 | 15. Assertions (Criterios de Aceptación) |
+| 1758 | 16. Gatling Recorder |
+| 1838 | 17. Reportes y Análisis |
+| 1929 | 18. Protocolos Adicionales (WebSocket, SSE, JMS) |
+| 2038 | 20. Patrones Avanzados |
+| 2185 | 22. Community vs Enterprise Edition |
+| 2244 | Referencias |
 ---
 
 ## 1. Introducción y Filosofía
@@ -2030,151 +2031,9 @@ ScenarioBuilder jmsScenario = scenario("JMS Test")
 
 ---
 
-## 19. Integración con CI/CD
-
-### GitHub Actions
-
-```yaml
-# .opencode/workflows/performance-test.yml
-name: Performance Test
-
-on:
-  pull_request:
-    branches: [main, develop]
-  schedule:
-    - cron: '0 4 * * 1-5'  # Lun-Vie 4 AM
-  workflow_dispatch:
-    inputs:
-      users:
-        description: 'Target users per second'
-        default: '50'
-      duration:
-        description: 'Test duration (seconds)'
-        default: '300'
-
-jobs:
-  gatling-test:
-    runs-on: ubuntu-latest
-    environment: staging
-    
-    steps:
-      - uses: actions/checkout@v4
-      
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-          cache: 'maven'
-      
-      - name: Run Gatling Load Test
-        run: |
-          mvn gatling:test \
-            -Dgatling.simulationClass=simulations.LoadTestSimulation \
-            -DtargetHost=${{ secrets.STAGING_URL }} \
-            -Dusers=${{ inputs.users || '50' }} \
-            -Dduration=${{ inputs.duration || '300' }}
-        continue-on-error: false  # Falla si assertions fallan
-      
-      - name: Upload Gatling Report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: gatling-report-${{ github.run_id }}
-          path: target/gatling/**/index.html
-          retention-days: 30
-      
-      - name: Publish Report to GitHub Pages
-        if: github.ref == 'refs/heads/main'
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: target/gatling/
-          destination_dir: performance-reports/${{ github.run_id }}
-```
-
-### Jenkins Pipeline
-
-```groovy
-// Jenkinsfile
-pipeline {
-    agent { label 'performance' }
-    
-    parameters {
-        string(name: 'USERS', defaultValue: '100', description: 'Target users')
-        string(name: 'DURATION', defaultValue: '600', description: 'Duration (seconds)')
-        choice(name: 'ENVIRONMENT', choices: ['staging', 'preprod'], description: 'Target env')
-    }
-    
-    stages {
-        stage('Run Gatling') {
-            steps {
-                sh """
-                    mvn gatling:test \
-                        -Dgatling.simulationClass=simulations.LoadTestSimulation \
-                        -Dusers=${params.USERS} \
-                        -Dduration=${params.DURATION} \
-                        -DtargetHost=${env."${params.ENVIRONMENT}_URL"}
-                """
-            }
-            post {
-                always {
-                    gatlingArchive()  // Jenkins Gatling plugin
-                }
-            }
-        }
-    }
-}
-```
-
-### Maven profiles para diferentes tipos de test
-
-```xml
-<!-- pom.xml profiles -->
-<profiles>
-    <profile>
-        <id>smoke</id>
-        <properties>
-            <gatling.simulationClass>simulations.SmokeTestSimulation</gatling.simulationClass>
-            <users>5</users>
-            <duration>60</duration>
-        </properties>
-    </profile>
-    <profile>
-        <id>load</id>
-        <properties>
-            <gatling.simulationClass>simulations.LoadTestSimulation</gatling.simulationClass>
-            <users>100</users>
-            <duration>1800</duration>
-        </properties>
-    </profile>
-    <profile>
-        <id>stress</id>
-        <properties>
-            <gatling.simulationClass>simulations.StressTestSimulation</gatling.simulationClass>
-            <users>500</users>
-            <duration>600</duration>
-        </properties>
-    </profile>
-    <profile>
-        <id>soak</id>
-        <properties>
-            <gatling.simulationClass>simulations.SoakTestSimulation</gatling.simulationClass>
-            <users>50</users>
-            <duration>14400</duration>
-        </properties>
-    </profile>
-</profiles>
-```
-
-```bash
-# Ejecutar con profile
-mvn gatling:test -Psmoke
-mvn gatling:test -Pload
-mvn gatling:test -Pstress -DtargetHost=https://staging.example.com
-```
-
----
+> **Secciones extraídas a la guía canónica común.**
+> Versión canónica: [00_Comunes_Guia_Herramientas.md](00_Comunes_Guia_Herramientas.md) (CI/CD, troubleshooting, mejores prácticas, proyecto de referencia).
+> Delta de esta herramienta: los perfiles Maven `-Psmoke/-Pload/-Pstress/-Psoak` y `continue-on-error: false` para que las assertions fallen el job. Workflow completo en las secciones 1.1-1.3 de la guía común; Jenkins en 1.4 y perfiles Maven en 1.5.
 
 ## 20. Patrones Avanzados
 
@@ -2319,105 +2178,9 @@ ScenarioBuilder realisticScenario = scenario("E-Commerce Journey")
 
 ---
 
-## 21. Debugging y Troubleshooting
-
-### Logging configuration
-
-```xml
-<!-- src/test/resources/logback-test.xml -->
-<configuration>
-    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%-5level] %logger{36} - %msg%n</pattern>
-        </encoder>
-    </appender>
-
-    <!-- Gatling core logging -->
-    <logger name="io.gatling" level="WARN"/>
-    
-    <!-- HTTP request/response logging (SOLO para debug) -->
-    <!-- NUNCA activar en tests reales - destruye el rendimiento -->
-    <logger name="io.gatling.http.engine.response" level="DEBUG"/>
-    
-    <!-- Tus simulaciones -->
-    <logger name="simulations" level="DEBUG"/>
-
-    <root level="WARN">
-        <appender-ref ref="CONSOLE"/>
-    </root>
-</configuration>
-```
-
-### Debug de session
-
-```java
-// Imprimir session completa (SOLO para debug, NUNCA bajo carga)
-.exec(session -> {
-    System.out.println("=== SESSION STATE ===");
-    System.out.println("User ID: " + session.userId());
-    System.out.println("Scenario: " + session.scenario());
-    session.asMap().forEach((k, v) -> System.out.println("  " + k + " = " + v));
-    System.out.println("====================");
-    return session;
-})
-
-// Verificar que un valor existe
-.doIf(session -> !session.contains("token")).then(
-    exec(session -> {
-        System.err.println("WARNING: No token in session for user " + session.userId());
-        return session.markAsFailed();
-    })
-)
-```
-
-### Problemas comunes
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│ PROBLEMA                    │ CAUSA                │ SOLUCIÓN    │
-├─────────────────────────────┼──────────────────────┼─────────────┤
-│ "Session attribute not      │ Check no guardó el   │ Verificar   │
-│  found: token"              │ valor (request falló)│ exitHere... │
-│                             │                      │             │
-│ "Connection refused"        │ Target no levantado  │ Verificar   │
-│                             │ o puerto incorrecto  │ host/port   │
-│                             │                      │             │
-│ "Request timeout"           │ Server no responde   │ Aumentar    │
-│                             │ en tiempo            │ timeout     │
-│                             │                      │             │
-│ OutOfMemoryError            │ Demasiados VUs o     │ Más heap:   │
-│                             │ body responses huge  │ -Xmx4g     │
-│                             │                      │             │
-│ "Feeder is now empty"       │ queue() feeder sin   │ Usar        │
-│                             │ más datos            │ circular()  │
-│                             │                      │             │
-│ CPU 100% en load gen        │ Demasiados VUs para  │ Reducir VUs │
-│                             │ una máquina          │ o distribuir│
-│                             │                      │             │
-│ Checks siempre fallan       │ Status != esperado   │ Log HTTP    │
-│                             │ (auth, redirect)     │ response    │
-└─────────────────────────────┴──────────────────────┴─────────────┘
-```
-
-### JVM Tuning para Gatling
-
-```bash
-# Configurar JVM para alto rendimiento
-export JAVA_OPTS="\
-  -server \
-  -Xms2g -Xmx4g \
-  -XX:+UseG1GC \
-  -XX:+ParallelRefProcEnabled \
-  -XX:MaxInlineLevel=20 \
-  -XX:MaxTrivialSize=12 \
-  -XX:-UseBiasedLocking \
-  -XX:+OptimizeStringConcat"
-
-# O en Maven:
-mvn gatling:test -DargLine="-Xms2g -Xmx4g -XX:+UseG1GC"
-```
-
----
+> **Secciones extraídas a la guía canónica común.**
+> Versión canónica: [00_Comunes_Guia_Herramientas.md](00_Comunes_Guia_Herramientas.md) (CI/CD, troubleshooting, mejores prácticas, proyecto de referencia).
+> Delta de esta herramienta: `logback-test.xml` con `io.gatling` en WARN y el bloque `exec(session -> ...)` para volcar la sesión completa. Detalle en las secciones 2.1 y 2.2 de la guía común; el tuning de JVM en 2.3.
 
 ## 22. Community vs Enterprise Edition
 
@@ -2474,216 +2237,9 @@ Workaround:
 
 ---
 
-## 23. Mejores Prácticas y Antipatrones
-
-### ✅ Mejores Prácticas
-
-```java
-// 1. USAR EXPRESSION LANGUAGE PARA VALORES DINÁMICOS
-// BUENO:
-.get("/api/users/#{userId}")
-// MALO (concatenación):
-.get(session -> "/api/users/" + session.getString("userId"))
-// EL es más eficiente y legible
-
-// 2. AGRUPAR REQUESTS DINÁMICOS
-// BUENO:
-.get("/api/products/#{productId}")
-// Gatling agrupa automáticamente por nombre del request
-
-// 3. USAR exitHereIfFailed DESPUÉS DE REQUESTS CRÍTICOS
-.exec(http("Login").post("/auth").check(status().is(200)))
-.exitHereIfFailed()  // No continuar sin auth
-
-// 4. CHAINS REUTILIZABLES PARA DRY
-ChainBuilder auth = exec(/* login */).exec(/* set headers */);
-// Reutilizar en múltiples scenarios
-
-// 5. PARÁMETROS EXTERNALIZADOS
-int users = Integer.parseInt(System.getProperty("users", "100"));
-String host = System.getProperty("targetHost", "https://staging.example.com");
-
-// 6. FEEDERS CIRCULARES PARA TESTS LARGOS
-csv("data.csv").circular()  // No se acaban los datos
-
-// 7. ASSERTIONS COMO QUALITY GATES
-.assertions(
-    global().responseTime().percentile3().lt(2000),
-    global().successfulRequests().percent().gt(99.0)
-)
-```
-
-### ❌ Antipatrones
-
-```java
-// ANTIPATRÓN 1: Blocking I/O en session functions
-exec(session -> {
-    // ❌ NUNCA hacer esto - bloquea el actor system
-    HttpClient.newHttpClient().send(request, handler);
-    Thread.sleep(1000);
-    Files.readAllBytes(Path.of("/huge/file"));
-    return session;
-})
-
-// ANTIPATRÓN 2: System.out.println bajo carga
-exec(session -> {
-    // ❌ sysout es blocking I/O
-    System.out.println("User " + session.userId());
-    return session;
-})
-// ✅ Usar logging framework con nivel apropiado
-
-// ANTIPATRÓN 3: No manejar fallos de extracción
-.exec(http("Get Data").get("/api/data"))
-// Si el check falla, "token" no existirá en session
-.exec(http("Use Token").get("/api/protected").header("Auth", "#{token}"))
-// ✅ Usar .exitHereIfFailed() o .doIf(session.contains("token"))
-
-// ANTIPATRÓN 4: Think time = 0 (no es realista)
-.pause(0)  // ❌ Esto no simula usuarios reales
-// ✅ Usar pauses basados en datos de producción
-
-// ANTIPATRÓN 5: Un solo scenario monolítico gigante
-// ❌ 500 líneas en un solo scenario
-// ✅ Dividir en chains, componer scenarios
-
-// ANTIPATRÓN 6: Ignorar el modelo de carga
-setUp(scn.injectOpen(atOnceUsers(10000)))  // ❌ Spike irreal
-// ✅ Ramp realista: rampUsers(10000).during(5.minutes)
-
-// ANTIPATRÓN 7: No configurar timeouts
-// ❌ Default timeout puede ser muy largo
-// ✅ Configurar requestTimeout apropiado para tu SLA
-```
-
----
-
-## 24. Proyecto de Referencia Completo
-
-### Estructura final del proyecto
-
-```
-gatling-perf-tests/
-├── pom.xml
-├── Makefile
-├── README.md
-├── .opencode/
-│   └── workflows/
-│       └── performance.yml
-├── src/
-│   └── test/
-│       ├── java/
-│       │   ├── config/
-│       │   │   ├── TestConfig.java          # Configuración centralizada
-│       │   │   └── Protocols.java           # HTTP protocols
-│       │   ├── chains/
-│       │   │   ├── AuthChain.java           # Login/token management
-│       │   │   ├── ProductChain.java        # CRUD de productos
-│       │   │   └── CheckoutChain.java       # Flujo de compra
-│       │   ├── feeders/
-│       │   │   └── CustomFeeders.java       # Feeders programáticos
-│       │   └── simulations/
-│       │       ├── SmokeTestSimulation.java
-│       │       ├── LoadTestSimulation.java
-│       │       ├── StressTestSimulation.java
-│       │       ├── SpikeTestSimulation.java
-│       │       ├── SoakTestSimulation.java
-│       │       └── BreakpointSimulation.java
-│       └── resources/
-│           ├── gatling.conf
-│           ├── logback-test.xml
-│           ├── feeders/
-│           │   ├── users.csv
-│           │   ├── products.json
-│           │   └── search_terms.csv
-│           └── bodies/
-│               ├── create_order.json
-│               └── update_user.json
-└── target/
-    └── gatling/                             # Reports (gitignored)
-```
-
-### Ejemplo: Config centralizada
-
-```java
-// config/TestConfig.java
-package config;
-
-public class TestConfig {
-    
-    // Target
-    public static final String BASE_URL = 
-        System.getProperty("targetHost", "https://api.staging.example.com");
-    
-    // Users
-    public static final int TARGET_USERS = 
-        Integer.parseInt(System.getProperty("users", "100"));
-    
-    public static final int RAMP_DURATION_SEC = 
-        Integer.parseInt(System.getProperty("rampDuration", "120"));
-    
-    public static final int HOLD_DURATION_SEC = 
-        Integer.parseInt(System.getProperty("duration", "600"));
-    
-    // Thresholds
-    public static final int P95_MAX_MS = 
-        Integer.parseInt(System.getProperty("p95Max", "2000"));
-    
-    public static final double MIN_SUCCESS_RATE = 
-        Double.parseDouble(System.getProperty("minSuccessRate", "99.0"));
-    
-    // Think time
-    public static final int THINK_TIME_MIN_SEC = 2;
-    public static final int THINK_TIME_MAX_SEC = 8;
-}
-```
-
-### Makefile para el proyecto
-
-```makefile
-.PHONY: smoke load stress spike soak breakpoint recorder clean
-
-# Variables
-HOST ?= https://api.staging.example.com
-USERS ?= 100
-DURATION ?= 600
-
-smoke:
-	mvn gatling:test -Psmoke -DtargetHost=$(HOST)
-
-load:
-	mvn gatling:test -Pload -DtargetHost=$(HOST) -Dusers=$(USERS) -Dduration=$(DURATION)
-
-stress:
-	mvn gatling:test -Pstress -DtargetHost=$(HOST)
-
-spike:
-	mvn gatling:test \
-		-Dgatling.simulationClass=simulations.SpikeTestSimulation \
-		-DtargetHost=$(HOST)
-
-soak:
-	mvn gatling:test -Psoak -DtargetHost=$(HOST)
-
-breakpoint:
-	mvn gatling:test \
-		-Dgatling.simulationClass=simulations.BreakpointSimulation \
-		-DtargetHost=$(HOST)
-
-recorder:
-	mvn gatling:recorder
-
-report:
-	@echo "Opening latest report..."
-	@open target/gatling/$$(ls -t target/gatling/ | head -1)/index.html 2>/dev/null || \
-		xdg-open target/gatling/$$(ls -t target/gatling/ | head -1)/index.html
-
-clean:
-	mvn clean
-	rm -rf target/gatling/
-```
-
----
+> **Secciones extraídas a la guía canónica común.**
+> Versión canónica: [00_Comunes_Guia_Herramientas.md](00_Comunes_Guia_Herramientas.md) (CI/CD, troubleshooting, mejores prácticas, proyecto de referencia).
+> Delta de esta herramienta: Expression Language (`#{}`), `exitHereIfFailed()` tras cada request crítico y `ChainBuilder` reutilizable (sección 3.3 de la guía común); `TestConfig.java` con `System.getProperty`, una simulation por tipo de test y Makefile con `-P<perfil>` por target (secciones 4.3-4.5).
 
 ## Referencias
 

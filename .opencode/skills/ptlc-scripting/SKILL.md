@@ -1,15 +1,11 @@
 ---
 name: ptlc-scripting
-description: "Desarrollo de scripts de prueba avanzado: correlacion, refresh de tokens, manejo de datos, WebSocket, GraphQL y patronces de error handling."
+description: "Escribe scripts: correlacion, WebSocket, GraphQL"
 ---
 
 # 08 — Desarrollo de Scripts de Performance
 
-> **Rol de este archivo:** Índice intermedio. Resume patrones de scripting avanzados y dirige al documento con implementaciones completas.  
-> **Cuándo leer este archivo:** Cuando necesitas patrones de scripting agnósticos de herramienta, estrategias de datos, o manejo de errores.  
-> **Carpeta detallada:** [`.`](08_Desarrollo_de_Scripts/)
-
----
+> Índice intermedio. **Cuándo leer:** patrones de scripting agnósticos de herramienta, datos y manejo de errores. Detalle en los documentos de esta skill (abajo).
 
 ## Patrones de Scripting — Resumen
 
@@ -37,21 +33,9 @@ description: "Desarrollo de scripts de prueba avanzado: correlacion, refresh de 
 
 ## 📂 Contenido de la Subcarpeta
 
-### [`01_Scripting_Avanzado.md`](01_Scripting_Avanzado.md)
-**Contenido completo (~13 KB):**
-
-| Sección | Qué encontrarás |
-|---------|-----------------|
-| Patrones de Scripting Avanzados | 7 patrones con código completo (chain, token, WS, GraphQL, correlation, conditional, parallel) |
-| Data Management Strategies | CSV loading, SharedArray, database seeding, data cleanup |
-| Error Handling Best Practices | Retry patterns, graceful degradation, error categorization |
-| Script Maintenance | Versionado semántico, changelog template, code review checklist |
-
-**Ir aquí si necesitas:**
-- Implementar un patrón específico con código ejemplo
-- Estrategia para manejar test data a escala
-- Cómo hacer retry inteligente sin contaminar resultados
-- Mantener scripts a lo largo del tiempo (versionado, docs)
+### [`01_Scripting_Avanzado.md`](01_Scripting_Avanzado.md) — 7 patrones con código, datos, errores
+- Para qué: implementar patrones de scripting con código real.
+- Consultar si: necesitas correlación, WebSocket, GraphQL o token refresh · escalas test data (CSV, SharedArray, DB seeding, cleanup) · versionas scripts y defines el changelog
 
 ---
 
@@ -59,7 +43,7 @@ description: "Desarrollo de scripts de prueba avanzado: correlacion, refresh de 
 
 | Desde aquí puedo ir a... | Para... |
 |--------------------------|---------|
-| [05_Herramientas](../ptlc-herramientas/SKILL.md) | Implementación específica por herramienta |
-| [06_Workload](../ptlc-workload-modeling/SKILL.md) | Modelo de carga que el script debe seguir |
-| [03_Fases](../ptlc-fases-del-ciclo/SKILL.md) | Fase 5 (Desarrollo de Scripts) |
-| [10_Mejores_Practicas](../ptlc-mejores-practicas/SKILL.md) | Anti-patrones a evitar |
+| [ptlc-herramientas](../ptlc-herramientas/SKILL.md) | Implementación específica por herramienta |
+| [ptlc-workload-modeling](../ptlc-workload-modeling/SKILL.md) | Modelo de carga que el script debe seguir |
+| [ptlc-fases-del-ciclo](../ptlc-fases-del-ciclo/SKILL.md) | Fase 5 (Desarrollo de Scripts) |
+| [ptlc-mejores-practicas](../ptlc-mejores-practicas/SKILL.md) | Anti-patrones a evitar |

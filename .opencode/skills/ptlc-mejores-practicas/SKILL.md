@@ -1,15 +1,11 @@
 ---
 name: ptlc-mejores-practicas
-description: "Mejores practicas y errores comunes de performance testing: CI/CD, shift-left, microservicios, Kubernetes y tendencias."
+description: "Aplica practicas: CI/CD, shift-left, Kubernetes"
 ---
 
 # 10 — Mejores Prácticas y Errores Comunes
 
-> **Rol de este archivo:** Índice intermedio. Resume best practices, integración CI/CD, errores a evitar, y tendencias futuras.  
-> **Cuándo leer este archivo:** Cuando necesitas mejorar tu proceso, integrarlo con CI/CD, evitar errores, o explorar nuevas tendencias.  
-> **Carpeta detallada:** [`.`](10_Mejores_Practicas/)
-
----
+> Índice intermedio. **Cuándo leer:** mejorar el proceso, integrarlo con CI/CD o evitar errores. Detalle en los documentos de esta skill (abajo).
 
 ## Top 10 Mejores Prácticas
 
@@ -45,24 +41,9 @@ description: "Mejores practicas y errores comunes de performance testing: CI/CD,
 
 ## 📂 Contenido de la Subcarpeta
 
-### [`01_CICD_y_Tendencias_Futuras.md`](01_CICD_y_Tendencias_Futuras.md)
-**Contenido completo (~15 KB):**
-
-| Sección | Qué encontrarás |
-|---------|-----------------|
-| Performance Testing en CI/CD | Pipeline design, gates, smoke vs full, rollback triggers |
-| Performance Budgets | Cómo definir, asignar y enforcement por equipo |
-| Microservicios | Estrategias para testing distribuido, service mesh, contract testing |
-| Cloud-Native Performance Testing | K8s, serverless, auto-scaling validation, ephemeral envs |
-| Tendencias Futuras (2025-2027) | AI/ML para análisis, AIOps, chaos engineering mainstream, observability-driven testing |
-| Checklist Final | Performance Testing Excellence checklist completo |
-
-**Ir aquí si necesitas:**
-- Diseñar un pipeline de CI/CD con performance gates
-- Implementar performance budgets por equipo/feature
-- Estrategia de performance testing para microservicios
-- Entender hacia dónde va la industria
-- Checklist para validar tu proceso completo
+### [`01_CICD_y_Tendencias_Futuras.md`](01_CICD_y_Tendencias_Futuras.md) — CI/CD, budgets, cloud-native, tendencias
+- Para qué: industrializar el performance testing y anticiparse a la industria.
+- Consultar si: diseñas un pipeline con performance gates y rollback triggers · defines performance budgets por equipo o feature · validas tu proceso con el checklist de excellence
 
 ---
 
@@ -70,7 +51,7 @@ description: "Mejores practicas y errores comunes de performance testing: CI/CD,
 
 | Desde aquí puedo ir a... | Para... |
 |--------------------------|---------|
-| [03_Fases](../ptlc-fases-del-ciclo/SKILL.md) | Integrar estas prácticas en cada fase |
-| [05_Herramientas](../ptlc-herramientas/SKILL.md) | CI/CD específico de cada herramienta |
-| [07_Monitoreo](../ptlc-monitoreo/SKILL.md) | Stack de observabilidad para CI/CD |
-| [02_Tipos](../ptlc-tipos-de-pruebas/SKILL.md) | Smoke testing en CI/CD, resiliency automático |
+| [ptlc-fases-del-ciclo](../ptlc-fases-del-ciclo/SKILL.md) | Integrar estas prácticas en cada fase |
+| [ptlc-herramientas](../ptlc-herramientas/SKILL.md) | CI/CD específico de cada herramienta |
+| [ptlc-monitoreo](../ptlc-monitoreo/SKILL.md) | Stack de observabilidad para CI/CD |
+| [ptlc-tipos-de-pruebas](../ptlc-tipos-de-pruebas/SKILL.md) | Smoke testing en CI/CD, resiliency automático |

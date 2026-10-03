@@ -7,7 +7,7 @@
 
 ## 🏗️ Arquitectura v2.0
 
-- **Entry point obligatorio:** `ptlc-orchestrator` (agente en `.opencode/agents/ptlc-orchestrator.md`) — todo request del usuario entra por él. Orquesta las 6 fases del PTLC cargando las skills del pipeline, y deriva tareas generales (no-PTLC) al equipo `gem-*`.
+- **Entry point obligatorio:** `ptlc-orchestrator` (agente en `.opencode/agents/ptlc-orchestrator.md`) — todo request del usuario entra por él. Orquesta las 6 fases del PTLC cargando las skills del pipeline, y resuelve las tareas generales (no-PTLC) con los subagentes integrados `general`/`explore` o desde el knowledge base.
 - **Pipeline PTLC:** 6 skills de fase (`ptlc-intake` → `ptlc-diagnostics` → `ptlc-procedure-plan` → `ptlc-test-plan` → `ptlc-execution` → `ptlc-analysis`), con approval gate antes de ejecutar.
 - **Knowledge base:** 12 skills temáticas (~650 KB, 48 documentos) que reemplazan la antigua carpeta `DOCs/`.
 - **Guías operativas:** el diseño, scripting y ejecución de cada herramienta viven en las guías exhaustivas de `ptlc-herramientas/` — no hay skills operativas intermedias.
@@ -19,17 +19,17 @@
 | Skill | Tema | Detalle |
 |-------|------|---------|
 | [ptlc-fundamentos](ptlc-fundamentos/SKILL.md) | Definición PTLC, NFRs, glosario, roles RACI, ISO 25010 / ISTQB / TMMi / SRE | 3 documentos |
-| [ptlc-tipos-de-pruebas](ptlc-tipos-de-pruebas/SKILL.md) | 22+ tipos: load, stress, soak, spike, baseline, smoke, capacity, resiliency… | 7 documentos |
+| [ptlc-tipos-de-pruebas](ptlc-tipos-de-pruebas/SKILL.md) | 22+ tipos: load, stress, soak, spike, baseline, smoke, capacity, resiliency… | 9 documentos |
 | [ptlc-fases-del-ciclo](ptlc-fases-del-ciclo/SKILL.md) | Las 9 fases: requisitos → planificación → diseño → entorno → scripts → ejecución → análisis → optimización → cierre | 4 documentos |
 | [ptlc-metricas-kpis](ptlc-metricas-kpis/SKILL.md) | Percentiles, Apdex, throughput, error rate, Little's Law, fórmulas pass/fail | 1 documento |
-| [ptlc-herramientas](ptlc-herramientas/SKILL.md) | Guías exhaustivas k6, JMeter, Gatling, Locust + matriz de decisión | 6 documentos |
+| [ptlc-herramientas](ptlc-herramientas/SKILL.md) | Guías exhaustivas k6, JMeter, Gatling, Locust + matriz de decisión | 6 documentos (4 guías con mapa de secciones + 1 canónica común + 1 comparativa) |
 | [ptlc-workload-modeling](ptlc-workload-modeling/SKILL.md) | Little's Law, cálculo de VUs, distribuciones, patrones de tráfico | 1 documento |
 | [ptlc-monitoreo](ptlc-monitoreo/SKILL.md) | Prometheus, Grafana, OpenTelemetry, Jaeger, alerting | 1 documento |
 | [ptlc-scripting](ptlc-scripting/SKILL.md) | Correlación, tokens, WebSocket, GraphQL, data management | 1 documento |
 | [ptlc-analisis-bottlenecks](ptlc-analisis-bottlenecks/SKILL.md) | RCA: 5 Whys, Fishbone, profiling, bottlenecks de DB/red | 1 documento |
 | [ptlc-mejores-practicas](ptlc-mejores-practicas/SKILL.md) | CI/CD, shift-left, errores comunes, tendencias | 1 documento |
-| [ptlc-arquitectura-mapas](ptlc-arquitectura-mapas/SKILL.md) | Mapas de arquitectura y convenciones `AGENTS.md` | 5 documentos |
-| [ptlc-roadmap-decisiones](ptlc-roadmap-decisiones/SKILL.md) | ADRs, roadmap v2.0, plan de implementación, `PRD.yaml` | 4 documentos |
+| [ptlc-arquitectura-mapas](ptlc-arquitectura-mapas/SKILL.md) | Mapas de arquitectura y convenciones `AGENTS.md` | 2 documentos |
+| [ptlc-roadmap-decisiones](ptlc-roadmap-decisiones/SKILL.md) | Requisitos de producto (`PRD.yaml`) y contrato del contexto acumulado | 2 documentos |
 
 ## 🤖 Skills del Pipeline PTLC (6)
 
@@ -46,12 +46,14 @@ Cada skill es el procedimiento completo de una fase (lecturas obligatorias, work
 
 ## 🛠️ Guías Operativas de Herramientas
 
-Diseño, scripting, ejecución y análisis por herramienta — todo en [`ptlc-herramientas`](ptlc-herramientas/SKILL.md):
+Diseño, scripting, ejecución y análisis por herramienta — todo en [`ptlc-herramientas`](ptlc-herramientas/SKILL.md). Cada guía arranca con un **mapa de secciones** (`grep -n "^## "`): pide solo la sección que necesitas en lugar de leer el archivo entero.
 
+- **Común a las 4** (CI/CD, troubleshooting, mejores prácticas, proyecto de referencia) → [00_Comunes_Guia_Herramientas.md](ptlc-herramientas/00_Comunes_Guia_Herramientas.md)
 - **k6** → [06_k6_Guia_Completa_Expandida.md](ptlc-herramientas/06_k6_Guia_Completa_Expandida.md)
 - **JMeter** → [05_JMeter_Guia_Completa.md](ptlc-herramientas/05_JMeter_Guia_Completa.md)
 - **Gatling** → [04_Gatling_Community_Guia_Completa.md](ptlc-herramientas/04_Gatling_Community_Guia_Completa.md)
 - **Locust** → [03_Locust_Guia_Completa.md](ptlc-herramientas/03_Locust_Guia_Completa.md)
+- **Comparativa** (mismo test en 3 herramientas) → [02_JMeter_Gatling_Locust.md](ptlc-herramientas/02_JMeter_Gatling_Locust.md)
 
 ---
 

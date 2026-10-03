@@ -1,15 +1,11 @@
 ---
 name: ptlc-herramientas
-description: "Guias exhaustivas de herramientas de performance testing (k6, JMeter, Gatling, Locust) y matriz de decision para elegir UNA herramienta por proyecto."
+description: "Compara k6, JMeter, Gatling, Locust: guia y matriz"
 ---
 
 # 05 — Herramientas de Performance Testing
 
-> **Rol de este archivo:** Índice intermedio. Compara las herramientas disponibles y dirige a la guía exhaustiva de cada una.  
-> **Cuándo leer este archivo:** Cuando necesitas elegir una herramienta, comparar opciones, o saber qué guía consultar.  
-> **Carpeta detallada:** [`.`](05_Herramientas/)
-
----
+> Índice intermedio. **Cuándo leer:** elegir herramienta, comparar opciones o saber qué guía consultar. Detalle en los documentos de esta skill (abajo).
 
 ## Comparativa Rápida de Herramientas
 
@@ -37,140 +33,35 @@ description: "Guias exhaustivas de herramientas de performance testing (k6, JMet
 
 ## 📂 Contenido de la Subcarpeta
 
-### [`01_k6_Guia_Completa.md`](01_k6_Guia_Completa.md) — Referencia Rápida (14 KB)
-**Contenido:** Introducción · Instalación · Conceptos fundamentales · Scripting avanzado · Scenarios múltiples · Output y reporting · CI/CD integration · Extensiones xk6
+### [`00b_Cheat_Sheet_Herramientas.md`](00b_Cheat_Sheet_Herramientas.md) — matriz de decisión y mapa tarea→sección (≤600 tokens)
+- Para qué: obtener de un golpe la elección de herramienta y la sección+línea exacta a leer en cada guía.
+- Consultar si: eliges herramienta o buscas executors, thresholds, correlación, feeders o CLI.
 
-**Ir aquí si necesitas:** Una referencia compacta para empezar con k6 rápidamente.
+### [`00_Comunes_Guia_Herramientas.md`](00_Comunes_Guia_Herramientas.md) — CANÓNICA compartida (~24 KB)
+- Para qué: versión única de las secciones que las 4 guías repetían.
+- Consultar si: CI/CD (esqueleto GitHub Actions, Jenkins, quality gate) · troubleshooting (tabla de síntomas, logging, tuning) · mejores prácticas y antipatrones · proyecto de referencia (árboles, comandos Make, config)
 
----
+### [`02_JMeter_Gatling_Locust.md`](02_JMeter_Gatling_Locust.md) — mismo test en 3 herramientas (14 KB)
+- Para qué: comparar sintaxis del mismo escenario.
+- Consultar si: JMeter · Gatling · Locust (estructura, ejecución, decision matrix)
 
-### [`02_JMeter_Gatling_Locust.md`](02_JMeter_Gatling_Locust.md) — Comparativa Sintáctica (14 KB)
-**Contenido:** Mismo escenario implementado en JMeter, Gatling y Locust · Comparativa de estructura · Ejecución · Decision matrix detallada
+### [`03_Locust_Guia_Completa.md`](03_Locust_Guia_Completa.md) — EXHAUSTIVA (84 KB, mapa de 20 secciones)
+- Para qué: Locust en profundidad, de hello world a distributed gRPC.
+- Consultar si: custom load shapes y FastHttpUser (5-6x rendimiento) · modo distribuido (master/worker, Docker, K8s) · protocolos no-HTTP (gRPC, WebSocket, MQTT)
 
-**Ir aquí si necesitas:** Ver el mismo test en las 3 herramientas para comparar sintaxis directamente.
+### [`04_Gatling_Community_Guia_Completa.md`](04_Gatling_Community_Guia_Completa.md) — EXHAUSTIVA (84 KB, mapa de 22 secciones)
+- Para qué: Gatling CE, del setup con Maven a injection profiles.
+- Consultar si: DSLs (Java/Kotlin/Scala), Simulation, Session API y Feeders · injection profiles (open vs closed) y assertions · CE vs Enterprise Edition
 
----
+### [`05_JMeter_Guia_Completa.md`](05_JMeter_Guia_Completa.md) — EXHAUSTIVA (65 KB, mapa de 23 secciones)
+- Para qué: JMeter completo, de thread groups a distributed testing.
+- Consultar si: Extractors y correlación (Regex, JSON, XPath, Boundary) · plugins esenciales y ejecución CLI non-GUI (siempre para tests reales) · scripting JSR223/Groovy (nunca BeanShell)
 
-### [`03_Locust_Guia_Completa.md`](03_Locust_Guia_Completa.md) — EXHAUSTIVA (97 KB, 22 secciones)
-**Secciones:**
-1. Introducción y Filosofía
-2. Instalación y Configuración
-3. Arquitectura Interna (greenlets, gevent)
-4. Fundamentos del Locustfile
-5. User Classes en Profundidad
-6. Tasks y Control de Flujo
-7. HTTP Client y Validaciones
-8. Wait Times y Pacing
-9. **Custom Load Shapes** (ramp, step, spike, time-based)
-10. **Modo Distribuido** (master/worker, Docker, K8s)
-11. Event Hooks y Extensibilidad
-12. **FastHttpUser** (5-6x más rendimiento)
-13. **Protocolos No-HTTP** (gRPC, WebSocket, MQTT, custom)
-14. Datos de Prueba y Parametrización
-15. Métricas, Reportes y Exportación
-16. Integración con CI/CD
-17. Plugins y Ecosistema
-18. Patrones Avanzados
-19. Debugging y Troubleshooting
-20. Comparativa con Otras Herramientas
-21. Mejores Prácticas y Antipatrones
-22. Proyecto de Referencia Completo
+### [`06_k6_Guia_Completa_Expandida.md`](06_k6_Guia_Completa_Expandida.md) — EXHAUSTIVA (69 KB, mapa de 22 secciones)
+- Para qué: k6 en profundidad: executors, scenarios, xk6 y browser.
+- Consultar si: los 6 executors y thresholds como SLOs · extensiones xk6 compiladas en Go y browser testing · lifecycle del script, output y testing en microservicios
 
-**Ir aquí si necesitas:** Cualquier aspecto de Locust en profundidad — desde hello world hasta distributed gRPC testing.
-
----
-
-### [`04_Gatling_Community_Guia_Completa.md`](04_Gatling_Community_Guia_Completa.md) — EXHAUSTIVA (95 KB, 24 secciones)
-**Secciones:**
-1. Introducción y Filosofía
-2. Arquitectura Interna (Akka, Netty NIO)
-3. Instalación y Setup de Proyecto (Maven/Gradle)
-4. **DSLs Disponibles** (Java, Kotlin, Scala)
-5. Estructura de una Simulation
-6. Scenarios y Estructura de Ejecución
-7. HTTP Protocol Configuration
-8. Requests y Actions
-9. **Checks y Validaciones**
-10. **Session API** y Estado del Virtual User
-11. **Feeders** (CSV, JSON, JDBC, custom)
-12. **Injection Profiles** (Open vs Closed Model)
-13. Control de Flujo (Loops, Conditions, Errors)
-14. Pause, Pacing y Think Time
-15. **Assertions** (Criterios de Aceptación global)
-16. Gatling Recorder
-17. Reportes y Análisis (HTML reports)
-18. Protocolos Adicionales (WebSocket, SSE, JMS)
-19. Integración con CI/CD
-20. Patrones Avanzados
-21. Debugging y Troubleshooting
-22. Community vs Enterprise Edition
-23. Mejores Prácticas y Antipatrones
-24. Proyecto de Referencia Completo
-
-**Ir aquí si necesitas:** Cualquier aspecto de Gatling CE — desde setup con Maven hasta injection profiles avanzados.
-
----
-
-### [`05_JMeter_Guia_Completa.md`](05_JMeter_Guia_Completa.md) — EXHAUSTIVA (69 KB, 25 secciones)
-**Secciones:**
-1. Introducción y Filosofía
-2. Arquitectura Interna
-3. Instalación y Configuración
-4. Estructura del Test Plan
-5. **Thread Groups** (Standard, Stepping, Ultimate, Arrivals)
-6. **Samplers** (HTTP, JDBC, JMS, TCP, JSR223)
-7. Config Elements (defaults, headers, cookies, cache)
-8. Pre-Processors y Post-Processors
-9. **Extractors y Correlation** (Regex, JSON, XPath, Boundary)
-10. Assertions (Response, Duration, Size, JSON Schema)
-11. **Timers** (Constant, Gaussian, Uniform, Poisson, Throughput)
-12. **Logic Controllers** (If, While, Loop, ForEach, Transaction, Module)
-13. Listeners (Reportes en tiempo real)
-14. **Scripting JSR223 / Groovy** (no BeanShell!)
-15. Parametrización y Data Driven Testing
-16. **Testing Distribuido** (master/slave, RMI)
-17. Ejecución en Modo CLI (Non-GUI) — SIEMPRE para tests reales
-18. **Plugins Esenciales** (Custom Thread Groups, Throughput Shaping Timer, PerfMon)
-19. Protocolos Avanzados (JDBC, JMS, SMTP)
-20. Integración con CI/CD
-21. HTML Dashboard Report
-22. Patrones Avanzados
-23. Troubleshooting y Performance Tuning del propio JMeter
-24. Mejores Prácticas y Antipatrones
-25. Proyecto de Referencia Completo
-
-**Ir aquí si necesitas:** Cualquier aspecto de JMeter — desde thread groups hasta distributed testing y correlación dinámica.
-
----
-
-### [`06_k6_Guia_Completa_Expandida.md`](06_k6_Guia_Completa_Expandida.md) — EXHAUSTIVA (73 KB, 24 secciones)
-**Secciones:**
-1. Introducción y Filosofía
-2. **Arquitectura Interna** (Go engine, goja — NO es Node.js)
-3. Instalación y Configuración
-4. **Lifecycle** de un Script k6 (init, setup, VU code, teardown)
-5. **Executors en Profundidad** (6 tipos: shared-iterations, per-vu-iterations, constant-vus, ramping-vus, constant-arrival-rate, ramping-arrival-rate)
-6. **Scenarios** (Multi-scenario testing)
-7. HTTP API Completa
-8. Checks y Validaciones
-9. **Thresholds** (Criterios Pass/Fail como SLOs)
-10. **Métricas Built-in y Custom** (Counter, Gauge, Rate, Trend)
-11. Datos de Prueba y Parametrización (SharedArray, open())
-12. Grupos y Tags
-13. Módulos y Organización de Código
-14. **Protocolos Adicionales** (gRPC, WebSocket, Browser)
-15. Environment Variables y Options
-16. **Extensions (xk6)** — compilar extensiones custom en Go
-17. Output y Exportación de Resultados
-18. Integración con CI/CD
-19. **Grafana Cloud** integration
-20. Patrones Avanzados
-21. Testing de Performance en Microservicios
-22. Debugging y Troubleshooting
-23. Mejores Prácticas y Antipatrones
-24. Proyecto de Referencia Completo
-
-**Ir aquí si necesitas:** Cualquier aspecto de k6 en profundidad — desde executors y scenarios hasta xk6 extensions y browser testing.
+> Las 4 guías tienen un **mapa de secciones** al inicio (`grep -n "^## "`): pide solo el offset que necesites en lugar de leer el archivo entero. Sus secciones de CI/CD, troubleshooting, mejores prácticas y proyecto de referencia apuntan a [`00_Comunes_Guia_Herramientas.md`](00_Comunes_Guia_Herramientas.md).
 
 ---
 
@@ -178,7 +69,7 @@ description: "Guias exhaustivas de herramientas de performance testing (k6, JMet
 
 | Desde aquí puedo ir a... | Para... |
 |--------------------------|---------|
-| [02_Tipos_de_Pruebas](../ptlc-tipos-de-pruebas/SKILL.md) | Saber qué tipo de test implementar |
-| [06_Workload](../ptlc-workload-modeling/SKILL.md) | Calcular el modelo de carga antes de scripting |
-| [08_Scripts](../ptlc-scripting/SKILL.md) | Patrones avanzados de scripting (agnósticos de herramienta) |
-| [10_Mejores_Practicas](../ptlc-mejores-practicas/SKILL.md) | CI/CD pipelines con estas herramientas |
+| [ptlc-tipos-de-pruebas](../ptlc-tipos-de-pruebas/SKILL.md) | Saber qué tipo de test implementar |
+| [ptlc-workload-modeling](../ptlc-workload-modeling/SKILL.md) | Calcular el modelo de carga antes de scripting |
+| [ptlc-scripting](../ptlc-scripting/SKILL.md) | Patrones avanzados de scripting (agnósticos de herramienta) |
+| [ptlc-mejores-practicas](../ptlc-mejores-practicas/SKILL.md) | CI/CD pipelines con estas herramientas |

@@ -34,12 +34,11 @@
 
 ### Entry Point Obligatorio (v3.0)
 
-`ptlc-orchestrator` es el **entry point obligatorio de todo request del usuario** y el orquestador del ciclo PTLC. Recibe toda solicitud, detecta el dominio y ejecuta el pipeline cargando las skills correspondientes. Las tareas generales (no-PTLC) se derivan al equipo `gem-*`.
+`ptlc-orchestrator` es el **entry point obligatorio de todo request del usuario** y el orquestador del ciclo PTLC. Recibe toda solicitud, detecta el dominio y ejecuta el pipeline cargando las skills correspondientes. Las tareas generales (no-PTLC) se resuelven con los subagentes integrados de OpenCode (`general`/`explore`).
 
 | Agente | Archivo | Invocación | Rol |
 |--------|---------|------------|-----|
 | `ptlc-orchestrator` | `.opencode/agents/ptlc-orchestrator.md` | **Primario — todo request** | Entry point obligatorio + orquestador del pipeline PTLC |
-| `gem-orchestrator` | `.opencode/agents/gem-orchestrator.md` | Derivado (tareas generales) | Orquestador del equipo gem-team para desarrollo general |
 
 ### Pipeline PTLC — Skills de fase (invocadas por ptlc-orchestrator)
 
@@ -52,9 +51,9 @@
 | `ptlc-execution` | `.opencode/skills/ptlc-execution/SKILL.md` | 5 | Scripts y ejecución (**requiere aprobación**) |
 | `ptlc-analysis` | `.opencode/skills/ptlc-analysis/SKILL.md` | 6 | Análisis de resultados y reporte final |
 
-### gem-team — Agentes de soporte general
+### Subagentes integrados — Soporte general
 
-Los agentes `gem-*` proveen capacidades generales (planificación, investigación, revisión, documentación). Se usan para tareas de desarrollo general o como apoyo del pipeline PTLC.
+Para tareas generales (no-PTLC) o apoyo transversal se usan los subagentes integrados de OpenCode: `general` (trabajo multi-paso) y `explore` (exploración del repo). Cuando no hace falta delegar, el propio `ptlc-orchestrator` o el knowledge base resuelven la consulta.
 
 ### Flujo v3.0 — ptlc-orchestrator como entry point
 
@@ -72,7 +71,7 @@ ptlc-orchestrator (Phase 0: detecta dominio + clasifica complejidad)
     │       Wave 5: ptlc-execution       (scripts + ejecución)
     │       Wave 6: ptlc-analysis        (resultados + RCA + reporte)
     │
-    └─ domain=general → deriva a gem-orchestrator (plan DAG con agentes gem-*)
+    └─ domain=general → subagentes integrados (`general`/`explore`) o knowledge base
 ```
 
 ### Guías operativas por herramienta
@@ -100,4 +99,22 @@ El diseño, scripting y ejecución de cada herramienta se cubren en `.opencode/s
 ## Commands
 - No build, test, or lint pipeline is defined in this repository.
 - Typical validation is link integrity and markdown consistency checks.
-- APM binary: `~/.apm-bin/apm-windows-x86_64/apm.exe install` — reinstala dependencias APM.
+
+## Control de tokens
+
+El presupuesto de tokens del knowledge base se mide con `scripts/measure_tokens.py` (Python 3, sin dependencias; estima tokens como `caracteres / 3.5`):
+
+```bash
+python scripts/measure_tokens.py           # reporte legible
+python scripts/measure_tokens.py --strict  # falla (exit 1) si se supera algun presupuesto
+python scripts/measure_tokens.py --json out.json
+```
+
+`--strict` valida los artefactos del knowledge base:
+
+- contexto siempre activo (descripciones de skills + agentes + `AGENTS.md` + `opencode.json`) ≤ 1.400 tokens
+- cuerpo de cada agente del pipeline (`ptlc-orchestrator.md`) ≤ 3.200 tokens
+- índice de cada skill `ptlc-*` (`SKILL.md`) ≤ 2.000 tokens
+- ningún documento de detalle > 6.000 tokens
+
+El reporte también lista cuerpos de agentes e índices ordenados de mayor a menor, el top-20 de documentos de detalle, totales en KB y duplicados exactos y cerca-duplicados (Jaccard ≥ 0.30 sobre shingles de 8 palabras).

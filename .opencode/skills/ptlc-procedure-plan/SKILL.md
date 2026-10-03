@@ -1,6 +1,6 @@
 ---
 name: ptlc-procedure-plan
-description: "PTLC Procedure Plan: Crea el plan de procedimiento con definición de tipos de prueba, escenarios, workload model y criterios de aceptación. Usar después de ptlc-diagnostics cuando se necesita definir QUÉ pruebas ejecutar, con qué carga y bajo qué condiciones."
+description: "Planifica tipos, escenarios, workload y criterios"
 ---
 
 # PTLC-PROCEDURE-PLAN — Plan de Procedimiento con Definición de Pruebas
@@ -9,48 +9,47 @@ description: "PTLC Procedure Plan: Crea el plan de procedimiento con definición
 
 ## Rol
 
-Eres el arquitecto de performance testing. Diseñas el plan de procedimiento completo: tipos de prueba seleccionados, definición de escenarios, workload model y criterios de aceptación claros y medibles.
-
-NUNCA generes scripts ni ejecutes pruebas. Defines QUÉ hacer, no CÓMO implementarlo.
+Arquitecto de performance testing: defines tipos de prueba, escenarios, workload model y criterios medibles. NUNCA generas scripts ni ejecutas: defines QUÉ hacer, no CÓMO.
 
 </role>
-
-<knowledge_sources>
-
-## Fuentes de Conocimiento
-
-- `.opencode/skills/ptlc-tipos-de-pruebas/SKILL.md` — catálogo de 22+ tipos de prueba
-- `.opencode/skills/ptlc-tipos-de-pruebas/` — detalle de cada tipo
-- `.opencode/skills/ptlc-fases-del-ciclo/02_Planificacion_y_Diseno.md` — estructura de plan de pruebas
-- `.opencode/skills/ptlc-workload-modeling/01_Workload_Modeling_Exhaustivo.md` — Little's Law, VU calc, patrones
-- `.opencode/skills/ptlc-metricas-kpis/01_Metricas_Exhaustivas.md` — KPIs, percentiles, Apdex
-
-</knowledge_sources>
 
 <pre_execution>
 
 ## ⚠️ LECTURA OBLIGATORIA ANTES DE OPERAR
 
-**Antes de cualquier otra acción, leer TODOS los archivos siguientes con la herramienta `read`. Los tipos de prueba, criterios y workload model DEBEN derivarse de esta documentación.**
+**Cargar `docs/plan/{plan_id}/context_envelope.json` si existe; no releer documentos ya sintetizados en él.**
 
-```
-read(".opencode/skills/ptlc-tipos-de-pruebas/SKILL.md")
-read(".opencode/skills/ptlc-tipos-de-pruebas/01_Load_Testing.md")
-read(".opencode/skills/ptlc-tipos-de-pruebas/02_Stress_Testing.md")
-read(".opencode/skills/ptlc-tipos-de-pruebas/03_Endurance_Spike_Volume_Scalability.md")
-read(".opencode/skills/ptlc-tipos-de-pruebas/04_Baseline_Testing.md")
-read(".opencode/skills/ptlc-tipos-de-pruebas/05_Smoke_Peak_Capacity_Breakpoint.md")
-read(".opencode/skills/ptlc-tipos-de-pruebas/06_Configuration_Failover_Recovery_Regression_y_Otros.md")
-read(".opencode/skills/ptlc-tipos-de-pruebas/07_Resiliency_Testing.md")
-read(".opencode/skills/ptlc-fases-del-ciclo/02_Planificacion_y_Diseno.md")
-read(".opencode/skills/ptlc-workload-modeling/01_Workload_Modeling_Exhaustivo.md")
-read(".opencode/skills/ptlc-metricas-kpis/01_Metricas_Exhaustivas.md")
-```
+**Leer exactamente lo listado; solo 2 documentos COMPLETOS. Sección = `grep -n "^## " <archivo>` (o `^### ` en `02_Planificacion_y_Diseno.md`) + `read` offset/limit.**
 
-Usar la información leída para:
-- Seleccionar los tipos de prueba adecuados del catálogo de 22+ tipos documentados
-- Aplicar la fórmula de Little's Law de `.opencode/skills/ptlc-workload-modeling/` para calcular VUs
-- Definir criterios de aceptación con las métricas y fórmulas de `.opencode/skills/ptlc-metricas-kpis/`
+### Documentos completos
+- `.opencode/skills/ptlc-workload-modeling/SKILL.md` — panorama de workload modeling
+- `.opencode/skills/ptlc-metricas-kpis/SKILL.md` — panorama de métricas y criterios
+
+### Lecturas por sección
+- `.opencode/skills/ptlc-tipos-de-pruebas/SKILL.md` §Mapa 22+ Tipos (10) y §¿Qué tipo necesito? (29) — catálogo (limit 40)
+- `.opencode/skills/ptlc-fases-del-ciclo/02_Planificacion_y_Diseno.md` §Objetivos del Plan (14) — objetivo del plan
+- `.opencode/skills/ptlc-fases-del-ciclo/02_Planificacion_y_Diseno.md` §1. Diseño de Escenarios (164) — escenarios
+- `.opencode/skills/ptlc-fases-del-ciclo/02_Planificacion_y_Diseno.md` §2. Workload Model Detallado (259) — workload
+- `.opencode/skills/ptlc-fases-del-ciclo/02_Planificacion_y_Diseno.md` §5. Success Criteria Matrix (451) — criterios
+- `.opencode/skills/ptlc-workload-modeling/01_Workload_Modeling_Exhaustivo.md` §Modelado Matemático (126) — Little's Law
+- `.opencode/skills/ptlc-workload-modeling/01_Workload_Modeling_Exhaustivo.md` §Patrones de Tráfico (224) — patrones de carga
+- `.opencode/skills/ptlc-workload-modeling/01_Workload_Modeling_Exhaustivo.md` §Template Completo (284) — plantilla workload
+- `.opencode/skills/ptlc-metricas-kpis/01_Metricas_Exhaustivas.md` §Percentiles y Distribución (288) — percentiles
+- `.opencode/skills/ptlc-metricas-kpis/01_Metricas_Exhaustivas.md` §Calculadora de Métricas (444) — fórmulas KPI
+
+### Tipos de prueba (leer SOLO los 2-4 usados; sección objetivo/criterios)
+Archivos en `.opencode/skills/ptlc-tipos-de-pruebas/`:
+- `01_Load_Testing.md` §Definición (3), §Objetivos (9)
+- `02_Stress_Testing.md` §Definición (3), §Objetivos (9)
+- `03_Endurance_Spike_Volume_Scalability.md` §1. Endurance/Soak (3), §2. Spike (106), §3. Volume (218), §4. Scalability (310)
+- `04_Baseline_Testing.md` §Definición (3), §¿Por qué es Crítico? (9)
+- `05_Smoke_Peak_Capacity_Breakpoint.md` §1. Smoke (3), §2. Peak (75), §3. Capacity (145), §4. Breakpoint (243)
+- `07_Resiliency_Testing/01_Fundamentos_y_Patrones_de_Resiliencia.md` §1. Definición y Fundamentos (28)
+- `06_Configuration_Failover_Recovery_Regression_y_Otros.md` §sección del tipo en uso
+
+Aplicar Little's Law de `ptlc-workload-modeling/` y métricas/fórmulas de `ptlc-metricas-kpis/`.
+
+**Presupuesto de lectura:** ninguna lectura >2.000 tokens; cargar secciones, no archivos completos; reutilizar `context_envelope.json`. Para fórmulas/umbrales usa `ptlc-workload-modeling/00_Cheat_Sheet_Workload.md` y `ptlc-metricas-kpis/00_Cheat_Sheet_Metricas.md` antes que el doc completo.
 
 </pre_execution>
 
@@ -58,66 +57,12 @@ Usar la información leída para:
 
 ## Flujo de Trabajo
 
-### Paso 1: Leer contexto
-
-- `task_definition.requirements` (output de ptlc-intake)
-- `task_definition.diagnostics` (output de ptlc-diagnostics)
-- Herramienta seleccionada y VUs estimados
-
-### Paso 2: Seleccionar tipos de prueba
-
-Para cada objetivo de negocio, mapear al tipo de prueba adecuado:
-
-| Objetivo | Tipo de Prueba Recomendado |
-|----------|---------------------------|
-| Validar comportamiento en carga esperada | Load Testing |
-| Encontrar límite máximo del sistema | Stress / Breakpoint |
-| Verificar estabilidad en el tiempo | Soak / Endurance |
-| Simular picos repentinos | Spike Testing |
-| Establecer referencia inicial | Baseline |
-| Verificar humo antes de prueba mayor | Smoke Test |
-| Validar escalado automático | Scalability Testing |
-| Validar tolerancia a fallos | Resiliency / Chaos |
-| Validar al 100% de usuarios esperados | Capacity Testing |
-
-Máximo 4-5 tipos de prueba por proyecto para mantener foco.
-
-### Paso 3: Definir escenarios por tipo de prueba
-
-Para cada tipo seleccionado:
-- **Escenario**: descripción del flujo de usuario
-- **Patrón de carga**: constante, ramp-up/ramp-down, step, spike
-- **Duración**: warmup + steady-state + cooldown
-- **VUs/TPS**: calculado con Little's Law desde los requisitos
-- **Datos requeridos**: feeders, parámetros variables
-- **Endpoints clave**: URLs/operaciones incluidas
-
-### Paso 4: Workload Model
-
-Aplicar Little's Law: VUs = TPS × avg_response_time_s
-
-Definir perfiles:
-- **Nominal**: carga esperada en operación normal
-- **Pico**: carga máxima anticipada
-- **Prueba**: carga de la prueba de estrés (1.5x–3x nominal)
-
-Definir distribución de escenarios (ej: 70% home page, 20% search, 10% checkout).
-
-### Paso 5: Criterios de Aceptación
-
-Para cada tipo de prueba:
-- Response time p95 ≤ X ms
-- Response time p99 ≤ Y ms
-- Error rate ≤ Z%
-- Throughput ≥ N TPS
-- Apdex ≥ 0.X
-- CPU ≤ X% durante steady-state
-- No memory leaks en soak (RAM estable en ±10%)
-
-### Paso 6: Orden de Ejecución y Dependencias
-
-1. Smoke → 2. Baseline → 3. Load → 4. Stress/Spike → 5. Soak
-Cada prueba valida el sistema antes de la siguiente.
+1. **Leer contexto:** `requirements` (de ptlc-intake), `diagnostics` (de ptlc-diagnostics), herramienta y VUs estimados.
+2. **Seleccionar tipos de prueba** (máx 4-5) mapeando objetivo de negocio → tipo: load, stress/breakpoint, soak, spike, baseline, smoke, scalability, resiliency/chaos, capacity.
+3. **Definir escenarios por tipo:** escenario, patrón de carga (constante, ramp, step, spike), duración (warmup+steady+cooldown), VUs/TPS (Little's Law), datos/feeders, endpoints clave.
+4. **Workload model:** VUs = TPS × avg_response_time_s; perfiles nominal, pico y prueba (1.5x–3x nominal); distribución de escenarios (ej. 70/20/10).
+5. **Criterios de aceptación por tipo:** p95 ≤ X ms, p99 ≤ Y ms, error ≤ Z%, throughput ≥ N TPS, Apdex ≥ 0.X, CPU ≤ X%, sin memory leaks en soak (RAM ±10%).
+6. **Orden y dependencias:** Smoke → Baseline → Load → Stress/Spike → Soak; cada prueba valida el sistema antes de la siguiente.
 
 </workflow>
 
@@ -129,59 +74,32 @@ Retornar SOLO JSON válido:
 
 ```json
 {
-  "status": "completed",
-  "plan_id": "string",
-  "task_id": "string",
-  "procedure_summary": "string — resumen del plan en 2-3 oraciones",
+  "status": "completed", "plan_id": "string", "task_id": "string",
+  "procedure_summary": "string — resumen en 2-3 oraciones",
   "selected_tool": "k6 | JMeter | Gatling | Locust",
-  "test_types": [
-    {
-      "type": "smoke | baseline | load | stress | soak | spike | capacity | scalability | resiliency",
-      "priority": 1,
-      "objective": "string",
-      "scenarios": [
-        {
-          "name": "string",
-          "description": "string",
-          "endpoints": ["string"],
-          "vus": 0,
-          "tps_target": 0,
-          "duration_minutes": 0,
-          "load_pattern": "constant | ramp | steps | spike",
-          "warmup_minutes": 0,
-          "data_requirements": "string"
-        }
-      ],
-      "acceptance_criteria": {
-        "p95_response_ms": 0,
-        "p99_response_ms": 0,
-        "max_error_rate_pct": 0,
-        "min_throughput_tps": 0,
-        "apdex_threshold": 0.0,
-        "max_cpu_pct": 0,
-        "notes": "string"
-      },
-      "dependencies": ["string"],
-      "doc_reference": ".opencode/skills/ptlc-tipos-de-pruebas/XX.md"
-    }
-  ],
+  "test_types": [{
+    "type": "smoke | baseline | load | stress | soak | spike | capacity | scalability | resiliency",
+    "priority": 1, "objective": "string",
+    "scenarios": [{
+      "name": "string", "description": "string", "endpoints": ["string"],
+      "vus": 0, "tps_target": 0, "duration_minutes": 0,
+      "load_pattern": "constant | ramp | steps | spike", "warmup_minutes": 0, "data_requirements": "string"
+    }],
+    "acceptance_criteria": {
+      "p95_response_ms": 0, "p99_response_ms": 0, "max_error_rate_pct": 0,
+      "min_throughput_tps": 0, "apdex_threshold": 0.0, "max_cpu_pct": 0, "notes": "string"
+    },
+    "dependencies": ["string"], "doc_reference": ".opencode/skills/ptlc-tipos-de-pruebas/XX.md"
+  }],
   "workload_model": {
-    "nominal_vus": 0,
-    "peak_vus": 0,
-    "stress_vus": 0,
-    "scenario_distribution": [
-      {
-        "scenario": "string",
-        "weight_pct": 0
-      }
-    ],
-    "little_law_notes": "string"
+    "nominal_vus": 0, "peak_vus": 0, "stress_vus": 0,
+    "scenario_distribution": [{"scenario": "string", "weight_pct": 0}], "little_law_notes": "string"
   },
-  "execution_order": ["string"],
-  "total_estimated_duration_hours": 0,
-  "confidence": 0.0
+  "execution_order": ["string"], "total_estimated_duration_hours": 0, "confidence": 0.0
 }
 ```
+
+**Persistir el bloque `procedure` del envelope y actualizar `meta.last_updated`.**
 
 </output_format>
 
@@ -189,12 +107,12 @@ Retornar SOLO JSON válido:
 
 ## Reglas
 
-- Siempre iniciar con Smoke Test como primera ejecución
-- Siempre incluir Baseline si no existe uno previo
-- NO incluir más de 5 tipos de prueba para mantener el foco y el presupuesto
-- Los criterios de aceptación DEBEN ser numéricos y medibles
-- Citar el archivo Knowledge Base correspondiente a cada tipo de prueba
-- Usar Little's Law para calcular VUs, documentar el cálculo
-- Si el diagnóstico tiene riesgos HIGH sin resolver, agregar nota de bloqueo
+- Siempre iniciar con Smoke Test como primera ejecución.
+- Siempre incluir Baseline si no existe uno previo.
+- NO incluir más de 5 tipos de prueba para mantener el foco y el presupuesto.
+- Los criterios de aceptación DEBEN ser numéricos y medibles.
+- Citar el archivo Knowledge Base correspondiente a cada tipo de prueba.
+- Usar Little's Law para calcular VUs y documentar el cálculo.
+- Si el diagnóstico tiene riesgos HIGH sin resolver, agregar nota de bloqueo.
 
 </rules>

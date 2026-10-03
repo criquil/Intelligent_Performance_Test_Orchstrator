@@ -1,32 +1,33 @@
 # ⚡ k6 (Grafana) - Guía Completa de Referencia
 
-## Índice
+## Mapa de secciones
 
-1. [Introducción y Filosofía](#1-introducción-y-filosofía)
-2. [Arquitectura Interna (Go Engine)](#2-arquitectura-interna-go-engine)
-3. [Instalación y Configuración](#3-instalación-y-configuración)
-4. [Lifecycle de un Script k6](#4-lifecycle-de-un-script-k6)
-5. [Executors en Profundidad](#5-executors-en-profundidad)
-6. [Scenarios (Multi-Scenario Testing)](#6-scenarios-multi-scenario-testing)
-7. [HTTP API Completa](#7-http-api-completa)
-8. [Checks y Validaciones](#8-checks-y-validaciones)
-9. [Thresholds (Criterios Pass/Fail)](#9-thresholds-criterios-passfail)
-10. [Métricas Built-in y Custom](#10-métricas-built-in-y-custom)
-11. [Datos de Prueba y Parametrización](#11-datos-de-prueba-y-parametrización)
-12. [Grupos y Tags](#12-grupos-y-tags)
-13. [Módulos y Organización de Código](#13-módulos-y-organización-de-código)
-14. [Protocolos Adicionales (gRPC, WebSocket, Browser)](#14-protocolos-adicionales-grpc-websocket-browser)
-15. [Environment Variables y Options](#15-environment-variables-y-options)
-16. [Extensions (xk6)](#16-extensions-xk6)
-17. [Output y Exportación de Resultados](#17-output-y-exportación-de-resultados)
-18. [Integración con CI/CD](#18-integración-con-cicd)
-19. [Integración con Grafana Cloud](#19-integración-con-grafana-cloud)
-20. [Patrones Avanzados](#20-patrones-avanzados)
-21. [Testing de Performance en Microservicios](#21-testing-de-performance-en-microservicios)
-22. [Debugging y Troubleshooting](#22-debugging-y-troubleshooting)
-23. [Mejores Prácticas y Antipatrones](#23-mejores-prácticas-y-antipatrones)
-24. [Proyecto de Referencia Completo](#24-proyecto-de-referencia-completo)
+Tabla generada con `grep -n "^## "`. Para leer solo una sección concreta usa `read` con ese offset (o `grep` sobre el título) en lugar de cargar el archivo entero.
 
+| Línea | Sección |
+|--------|---------|
+| 3 | Mapa de secciones |
+| 33 | 1. Introducción y Filosofía |
+| 102 | 2. Arquitectura Interna (Go Engine) |
+| 179 | 3. Instalación y Configuración |
+| 227 | 4. Lifecycle de un Script k6 |
+| 392 | 5. Executors en Profundidad |
+| 575 | 6. Scenarios (Multi-Scenario Testing) |
+| 708 | 7. HTTP API Completa |
+| 863 | 8. Checks y Validaciones |
+| 931 | 9. Thresholds (Criterios Pass/Fail) |
+| 1047 | 10. Métricas Built-in y Custom |
+| 1163 | 11. Datos de Prueba y Parametrización |
+| 1275 | 12. Grupos y Tags |
+| 1430 | 13. Módulos y Organización de Código |
+| 1548 | 14. Protocolos Adicionales (gRPC, WebSocket, Browser) |
+| 1718 | 15. Environment Variables y Options |
+| 1799 | 16. Extensions (xk6) |
+| 1868 | 17. Output y Exportación de Resultados |
+| 1982 | 19. Integración con Grafana Cloud |
+| 2026 | 20. Patrones Avanzados |
+| 2173 | 21. Testing de Performance en Microservicios |
+| 2254 | Referencias |
 ---
 
 ## 1. Introducción y Filosofía
@@ -34,6 +35,15 @@
 ### ¿Qué es k6?
 
 **k6** es una herramienta moderna de load testing open-source desarrollada por **Grafana Labs**. Está escrita en **Go** con un runtime de JavaScript (goja), lo que le da rendimiento excepcional con scripting familiar.
+
+### Ventajas clave
+
+- **JavaScript (ES6)**: lenguaje familiar para la mayoría de developers
+- **Go engine**: eficiente en uso de recursos (no usa threads por VU)
+- **CLI-first**: ideal para CI/CD y automatización
+- **Extensible**: xk6 modules para funcionalidad adicional
+- **Grafana integration**: visualización nativa de resultados
+- **Open source**: AGPL-3.0 license
 
 ### Filosofía de diseño
 
@@ -128,6 +138,22 @@ JMeter:  ~500 KB - 1 MB per VU (thread)
 └─────────────────────────────────────────────────────────────────┘
 ```
 
+### Vista de componentes
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                        k6 Engine (Go)                         │
+├─────────────────┬───────────────────────┬───────────────────┤
+│   JavaScript    │   HTTP/2 Client       │   Metrics Engine  │
+│   Runtime       │   gRPC Client         │   (time series)   │
+│   (goja)        │   WebSocket Client    │                   │
+├─────────────────┼───────────────────────┼───────────────────┤
+│   VU Scheduler  │   Checks/Thresholds   │   Output Plugins  │
+│   (executors)   │   (assertions)        │   (cloud, json,   │
+│                 │                       │    prometheus...)  │
+└─────────────────┴───────────────────────┴───────────────────┘
+```
+
 ### Modelo de ejecución
 
 ```
@@ -158,6 +184,7 @@ IMPORTANTE: k6 NO es Node.js
 # ─── Windows ───
 choco install k6
 # o con winget:
+winget install k6
 winget install grafana.k6
 
 # ─── macOS ───
@@ -198,6 +225,22 @@ k6 run --out json=results.json --out influxdb=http://localhost:8086/k6 script.js
 ---
 
 ## 4. Lifecycle de un Script k6
+
+### Virtual Users (VUs) e Iteraciones
+
+```javascript
+// Cada VU ejecuta la función default() en un loop
+// Una "iteration" = una ejecución completa de default()
+
+export default function() {
+  // Esta función se ejecuta N veces por cada VU
+  // VU 1: iteration 1, 2, 3, 4, ...
+  // VU 2: iteration 1, 2, 3, 4, ...
+  // ...
+  http.get('https://api.example.com');
+  sleep(1);
+}
+```
 
 ### Fases de ejecución
 
@@ -453,11 +496,87 @@ REGLA:
 - open model (arrival-rate) → controlas THROUGHPUT
 ```
 
+### Resumen de executors
+
+| Executor | Uso | Descripción |
+|----------|-----|-------------|
+| `shared-iterations` | Smoke test | N iteraciones divididas entre VUs |
+| `per-vu-iterations` | Fixed work | Cada VU hace N iteraciones |
+| `constant-vus` | Steady state | N VUs constantes por duración |
+| `ramping-vus` | Load/Stress | VUs que suben/bajan según stages |
+| `constant-arrival-rate` | Throughput target | Mantener TPS constante |
+| `ramping-arrival-rate` | Variable throughput | TPS que cambia en el tiempo |
+| `externally-controlled` | Manual | Control externo via API |
+
+### Shortcuts de options (sin scenarios)
+
+```javascript
+// ramping-vus: Para load/stress tests
+export const options = {
+  stages: [
+    { duration: '5m', target: 100 },   // Ramp up
+    { duration: '30m', target: 100 },  // Steady
+    { duration: '5m', target: 0 },     // Ramp down
+  ],
+};
+
+// constant-arrival-rate: Para throughput target
+export const options = {
+  scenarios: {
+    constant_load: {
+      executor: 'constant-arrival-rate',
+      rate: 100,              // 100 iterations per timeUnit
+      timeUnit: '1s',         // = 100 RPS
+      duration: '30m',
+      preAllocatedVUs: 50,    // VUs pre-allocated
+      maxVUs: 200,            // Max VUs if needed
+    },
+  },
+};
+
+// ramping-arrival-rate: Para spike tests
+export const options = {
+  scenarios: {
+    spike: {
+      executor: 'ramping-arrival-rate',
+      startRate: 10,
+      timeUnit: '1s',
+      stages: [
+        { duration: '2m', target: 10 },    // Normal
+        { duration: '10s', target: 500 },  // Spike!
+        { duration: '3m', target: 500 },   // Hold spike
+        { duration: '10s', target: 10 },   // Recover
+        { duration: '2m', target: 10 },    // Verify recovery
+      ],
+      preAllocatedVUs: 100,
+      maxVUs: 600,
+    },
+  },
+};
+```
+
+### externally-controlled (control manual vía API)
+
+```javascript
+// Las configuraciones se empujan desde fuera durante la ejecución
+export const options = {
+  scenarios: {
+    manual: {
+      executor: 'externally-controlled',
+      vus: 10,
+      duration: '10m',
+    },
+  },
+};
+```
+
 ---
 
 ## 6. Scenarios (Multi-Scenario Testing)
 
 ### Múltiples scenarios simultáneos
+
+Ejemplo de tres perfiles de tráfico coexistiendo, cada uno arrancando en un momento distinto (`startTime` escalonado):
 
 ```javascript
 export const options = {
@@ -536,6 +655,52 @@ export function purchaseFlow() {
   }
   sleep(3);
 }
+```
+
+Variante con carga larga por escenario (ramp de 30m, purchasers con `arrival-rate` arrancando tras el ramp):
+
+```javascript
+export const options = {
+  scenarios: {
+    // Scenario 1: Browsing (constant load)
+    browsing: {
+      executor: 'constant-vus',
+      vus: 450,
+      duration: '2h30m',
+      exec: 'browseScenario',
+      startTime: '0s',
+    },
+    
+    // Scenario 2: Searching (ramping)
+    searching: {
+      executor: 'ramping-vus',
+      stages: [
+        { duration: '30m', target: 250 },
+        { duration: '2h', target: 250 },
+        { duration: '10m', target: 0 },
+      ],
+      exec: 'searchScenario',
+      startTime: '0s',
+    },
+    
+    // Scenario 3: Purchasing (arrival rate)
+    purchasing: {
+      executor: 'constant-arrival-rate',
+      rate: 30,
+      timeUnit: '1s',
+      duration: '2h',
+      preAllocatedVUs: 50,
+      maxVUs: 200,
+      exec: 'purchaseScenario',
+      startTime: '30m',  // Start after ramp-up
+    },
+  },
+};
+
+// Each scenario maps to an exported function
+export function browseScenario() { /* ... */ }
+export function searchScenario() { /* ... */ }
+export function purchaseScenario() { /* ... */ }
 ```
 
 ---
@@ -735,6 +900,32 @@ export default function () {
 }
 ```
 
+Checks de negocio (múltiples, con control de flujo a partir del resultado):
+
+```javascript
+import { check } from 'k6';
+
+const res = http.get('https://api.example.com/products');
+
+// Multiple checks
+const success = check(res, {
+  'status is 200': (r) => r.status === 200,
+  'response time < 500ms': (r) => r.timings.duration < 500,
+  'body is not empty': (r) => r.body.length > 0,
+  'contains products array': (r) => {
+    const body = r.json();
+    return Array.isArray(body.products) && body.products.length > 0;
+  },
+  'content-type is JSON': (r) => 
+    r.headers['Content-Type'].includes('application/json'),
+});
+
+// Use check result for flow control
+if (!success) {
+  console.error(`Failed checks for ${res.url}: status=${res.status}`);
+}
+```
+
 ---
 
 ## 9. Thresholds (Criterios Pass/Fail)
@@ -783,6 +974,16 @@ export const options = {
     'http_req_duration{scenario:browse}': ['p(95)<800'],
     'http_req_failed{critical:true}': ['rate<0.001'],  // 0.1% para críticos
     
+    // ─── Por nombre de request (tag name) ───
+    'http_req_duration{name:Login}': ['p(95)<1500'],
+    'http_req_duration{name:Search}': ['p(95)<3000'],
+    'http_req_duration{name:Checkout}': ['p(95)<5000'],
+    
+    // ─── Thresholds de custom metrics de negocio ───
+    'purchase_success_rate': ['rate>0.95'],   // 95% success
+    'checkout_duration': ['p(95)<10000'],     // Checkout < 10s
+    'group_duration{group:::User Login Flow}': ['p(95)<3000'],
+    
     // ─── Abort on threshold breach ───
     http_req_duration: [
       { threshold: 'p(95)<2000', abortOnFail: true, delayAbortEval: '30s' },
@@ -793,6 +994,29 @@ export const options = {
 ```
 
 ### Thresholds como SLOs
+
+```javascript
+// Umbrales por endpoint (usando el tag `name`) y por métrica de negocio
+export const options = {
+  thresholds: {
+    // Global thresholds
+    http_req_duration: ['p(95)<2000'],      // 95% of requests < 2s
+    http_req_failed: ['rate<0.01'],          // Error rate < 1%
+    
+    // Per-endpoint thresholds
+    'http_req_duration{name:Login}': ['p(95)<1500'],
+    'http_req_duration{name:Search}': ['p(95)<3000'],
+    'http_req_duration{name:Checkout}': ['p(95)<5000'],
+    
+    // Custom metrics thresholds
+    'purchase_success_rate': ['rate>0.95'],   // 95% success
+    'checkout_duration': ['p(95)<10000'],     // Checkout < 10s
+    
+    // Group duration
+    'group_duration{group:::User Login Flow}': ['p(95)<3000'],
+  },
+};
+```
 
 ```javascript
 // Mapear SLOs de producción a thresholds de k6
@@ -887,6 +1111,33 @@ export default function () {
     activeCartSize.add(cartRes.json('items').length);
   }
   
+  // Semántica de cada tipo:
+  //   Counter: valor acumulativo
+  //   Rate:    porcentaje (true/false)
+  //   Trend:   distribución (para percentiles)
+  //   Gauge:   valor actual (gana el último)
+
+```javascript
+import { Counter, Gauge, Rate, Trend } from 'k6/metrics';
+
+// Counter: Cumulative value
+const orderCount = new Counter('orders_created');
+orderCount.add(1);
+
+// Rate: Percentage (true/false)
+const loginSuccess = new Rate('login_success_rate');
+loginSuccess.add(true);   // success
+loginSuccess.add(false);  // failure
+
+// Trend: Distribution (for percentiles)
+const waitingTime = new Trend('waiting_time');
+waitingTime.add(res.timings.waiting);
+
+// Gauge: Current value (last value wins)
+const activeConnections = new Gauge('active_connections');
+activeConnections.add(42);
+```
+  
   // Calcular Apdex
   const duration = loginRes.timings.duration;
   if (duration < 500) {
@@ -940,6 +1191,35 @@ export default function () {
   // Acceso secuencial por iteración
   const idx = (__VU - 1) * 10 + __ITER;  // VU-based offset
   const item = products[idx % products.length];
+}
+```
+
+### CSV con papaparse (jslib)
+
+```javascript
+import { SharedArray } from 'k6/data';
+import papaparse from 'https://jslib.k6.io/papaparse/5.1.1/index.js';
+
+// Load CSV data (shared between VUs - memory efficient)
+const users = new SharedArray('users', function() {
+  return papaparse.parse(open('./data/users.csv'), { header: true }).data;
+});
+
+// Load JSON data
+const products = new SharedArray('products', function() {
+  return JSON.parse(open('./data/products.json'));
+});
+
+export default function() {
+  // Each VU gets different data
+  const user = users[__VU % users.length];
+  const product = products[Math.floor(Math.random() * products.length)];
+  
+  // Use in requests
+  const res = http.post('/login', JSON.stringify({
+    username: user.email,
+    password: user.password,
+  }), { headers: { 'Content-Type': 'application/json' } });
 }
 ```
 
@@ -1065,6 +1345,84 @@ export const options = {
     'http_req_duration{endpoint:products}': ['avg<200'],
   },
 };
+```
+
+### Tag `name`: agrupar requests dinámicos
+
+Payload nombrado (POST con objeto `payload` y tag `name`), útil cuando el mismo
+endpoint se invoca con cuerpos distintos:
+
+```javascript
+const payload = {
+  username: 'user@example.com',
+  password: 'password123',
+};
+
+const res = http.post('https://api.example.com/login', payload, {
+  headers: { 'Content-Type': 'application/json' },
+  tags: { name: 'Login' },
+});
+```
+
+```javascript
+import http from 'k6/http';
+
+export default function() {
+  // GET with headers
+  const res = http.get('https://api.example.com/data', {
+    headers: {
+      'Authorization': 'Bearer ' + token,
+      'Accept': 'application/json',
+    },
+    tags: { name: 'GetData' },  // Para agrupar en métricas
+    timeout: '30s',
+  });
+
+  // POST with JSON body
+  const payload = JSON.stringify({
+    username: 'user@example.com',
+    password: 'password123',
+  });
+
+  const res2 = http.post('https://api.example.com/login', payload, {
+    headers: { 'Content-Type': 'application/json' },
+    tags: { name: 'Login' },
+  });
+
+  // Batch requests (parallel)
+  const responses = http.batch([
+    ['GET', 'https://api.example.com/users', null, { tags: { name: 'GetUsers' } }],
+    ['GET', 'https://api.example.com/products', null, { tags: { name: 'GetProducts' } }],
+    ['GET', 'https://api.example.com/config', null, { tags: { name: 'GetConfig' } }],
+  ]);
+}
+```
+
+### Grupos como marcadores de transacción
+
+```javascript
+import { group } from 'k6';
+
+export default function() {
+  group('User Login Flow', () => {
+    // All requests here are grouped as "User Login Flow"
+    const loginPage = http.get('/login');
+    sleep(2);
+    const loginSubmit = http.post('/login', { user: 'test', pass: 'test' });
+  });
+  
+  group('Browse Products', () => {
+    const catalog = http.get('/products');
+    sleep(3);
+    const product = http.get('/products/123');
+  });
+  
+  group('Checkout', () => {
+    const cart = http.post('/cart/add', { product_id: '123' });
+    sleep(2);
+    const checkout = http.post('/checkout', { payment: 'card' });
+  });
+}
 ```
 
 ---
@@ -1319,6 +1677,42 @@ export default async function () {
 }
 ```
 
+Variante mínima con `locator.type()` y escenario anidado en `options` (forma corta):
+
+```javascript
+import { browser } from 'k6/browser';
+import { check } from 'k6';
+
+export const options = {
+  scenarios: {
+    browser: {
+      executor: 'constant-vus',
+      vus: 10,
+      duration: '5m',
+      options: { browser: { type: 'chromium' } },
+    },
+  },
+};
+
+export default async function() {
+  const page = await browser.newPage();
+  
+  try {
+    await page.goto('https://example.com/login');
+    await page.locator('input[name="username"]').type('user@test.com');
+    await page.locator('input[name="password"]').type('password');
+    await page.locator('button[type="submit"]').click();
+    
+    const welcome = await page.locator('h1').textContent();
+    check(welcome, {
+      'logged in successfully': (text) => text.includes('Welcome'),
+    });
+  } finally {
+    await page.close();
+  }
+}
+```
+
 ---
 
 ## 15. Environment Variables y Options
@@ -1505,6 +1899,31 @@ k6 run --out dashboard script.js
 # Abre http://localhost:5665
 ```
 
+### CLI useful flags
+
+```bash
+# Basic execution
+k6 run script.js
+
+# Override VUs and duration
+k6 run --vus 100 --duration 5m script.js
+
+# Set environment variables
+k6 run -e BASE_URL=https://staging.api.com -e API_KEY=xxx script.js
+
+# Tags for filtering results
+k6 run --tag testid=sprint42-load-1 script.js
+
+# Summary export
+k6 run --summary-export=summary.json script.js
+
+# Quiet mode (less console output)
+k6 run --quiet script.js
+
+# Show only specific summary metrics
+k6 run --summary-trend-stats="avg,min,med,max,p(90),p(95),p(99)" script.js
+```
+
 ### handleSummary (reportes custom)
 
 ```javascript
@@ -1556,109 +1975,9 @@ function generateJUnitXML(data) {
 
 ---
 
-## 18. Integración con CI/CD
-
-### GitHub Actions
-
-```yaml
-name: Performance Tests (k6)
-
-on:
-  pull_request:
-    branches: [main]
-  schedule:
-    - cron: '0 5 * * 1-5'
-  workflow_dispatch:
-    inputs:
-      test_type:
-        description: 'Test type'
-        type: choice
-        options: [smoke, load, stress, spike]
-        default: load
-
-jobs:
-  k6-test:
-    runs-on: ubuntu-latest
-    environment: staging
-    
-    steps:
-      - uses: actions/checkout@v4
-      
-      - name: Install k6
-        run: |
-          sudo gpg -k
-          sudo gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg \
-            --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
-          echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" \
-            | sudo tee /etc/apt/sources.list.d/k6.list
-          sudo apt-get update && sudo apt-get install k6
-      
-      - name: Run k6 Test
-        run: |
-          k6 run tests/${{ inputs.test_type || 'load' }}.js \
-            --out json=results/output.json
-        env:
-          TARGET_HOST: ${{ secrets.STAGING_URL }}
-          API_TOKEN: ${{ secrets.PERF_TEST_TOKEN }}
-          K6_CLOUD_TOKEN: ${{ secrets.K6_CLOUD_TOKEN }}
-      
-      - name: Upload Results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: k6-results-${{ github.run_id }}
-          path: results/
-      
-      - name: Comment PR with Results
-        if: github.event_name == 'pull_request' && always()
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const fs = require('fs');
-            const summary = JSON.parse(fs.readFileSync('results/output.json', 'utf8'));
-            // Format and post comment...
-```
-
-### Docker Compose para testing local
-
-```yaml
-version: '3.8'
-
-services:
-  k6:
-    image: grafana/k6:latest
-    volumes:
-      - ./tests:/scripts
-      - ./data:/data
-      - ./results:/results
-    environment:
-      - TARGET_HOST=http://app:8080
-      - K6_OUT=influxdb=http://influxdb:8086/k6
-    command: run /scripts/load.js
-    depends_on:
-      - influxdb
-      - grafana
-
-  influxdb:
-    image: influxdb:1.8
-    ports:
-      - "8086:8086"
-    environment:
-      - INFLUXDB_DB=k6
-
-  grafana:
-    image: grafana/grafana:latest
-    ports:
-      - "3000:3000"
-    environment:
-      - GF_AUTH_ANONYMOUS_ENABLED=true
-      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
-    volumes:
-      - ./grafana/dashboards:/var/lib/grafana/dashboards
-      - ./grafana/provisioning:/etc/grafana/provisioning
-```
-
----
+> **Secciones extraídas a la guía canónica común.**
+> Versión canónica: [00_Comunes_Guia_Herramientas.md](00_Comunes_Guia_Herramientas.md) (CI/CD, troubleshooting, mejores prácticas, proyecto de referencia).
+> Delta de esta herramienta: `K6_CLOUD_TOKEN` para Grafana Cloud, `test_type` como input choice del workflow, instalación por apt con el keyring de k6 y stack local InfluxDB + Grafana. Detalle en las secciones 1.2, 1.3 y 1.6 de la guía común; Grafana Cloud en la sección 19.
 
 ## 19. Integración con Grafana Cloud
 
@@ -1825,6 +2144,30 @@ export default function () {
 }
 ```
 
+### 20.4 Correlación (extracción de valores dinámicos)
+
+```javascript
+export default function() {
+  // Step 1: Get CSRF token
+  const loginPage = http.get('/login');
+  const csrfToken = loginPage.html().find('input[name=_token]').attr('value');
+  
+  // Step 2: Login with token
+  const loginRes = http.post('/login', {
+    username: 'user@test.com',
+    password: 'password',
+    _token: csrfToken,  // Correlated value
+  });
+  
+  // Step 3: Extract session/auth token from response
+  const authToken = loginRes.json('data.token');
+  
+  // Step 4: Use auth token in subsequent requests
+  const headers = { 'Authorization': `Bearer ${authToken}` };
+  const profile = http.get('/api/profile', { headers });
+}
+```
+
 ---
 
 ## 21. Testing de Performance en Microservicios
@@ -1904,236 +2247,9 @@ export function testOrders() {
 
 ---
 
-## 22. Debugging y Troubleshooting
-
-### Técnicas de debugging
-
-```bash
-# Ejecutar con 1 VU y 1 iteración (debug)
-k6 run --vus 1 --iterations 1 script.js
-
-# HTTP debug (ver requests/responses)
-k6 run --http-debug="full" script.js
-
-# Verbose logging
-k6 run --verbose script.js
-
-# Solo validar sintaxis (no ejecutar)
-k6 inspect script.js
-```
-
-```javascript
-// Console logging para debug
-export default function () {
-  console.log(`VU: ${__VU}, Iteration: ${__ITER}`);
-  
-  const res = http.get('https://api.example.com/data');
-  
-  if (res.status !== 200) {
-    console.error(`FAILED: status=${res.status}, body=${res.body.substring(0, 500)}`);
-    console.error(`Headers: ${JSON.stringify(res.headers)}`);
-    console.error(`Timings: ${JSON.stringify(res.timings)}`);
-  }
-}
-```
-
-### Problemas comunes
-
-```
-┌──────────────────────────────────┬────────────────────────────────────┐
-│ Error                            │ Solución                           │
-├──────────────────────────────────┼────────────────────────────────────┤
-│ "ERRO dial tcp: lookup...        │ DNS issue, verificar host          │
-│  no such host"                   │                                    │
-├──────────────────────────────────┼────────────────────────────────────┤
-│ "WARN Request Failed:            │ Timeout, aumentar timeout en       │
-│  request timeout"                │ options o http.get params          │
-├──────────────────────────────────┼────────────────────────────────────┤
-│ "ERRO GoError: unable to         │ open() solo funciona en init       │
-│  read file"                      │ phase (fuera de default func)      │
-├──────────────────────────────────┼────────────────────────────────────┤
-│ MaxVUs reached, can't            │ Aumentar maxVUs en arrival-rate    │
-│ allocate more                    │ executor                           │
-├──────────────────────────────────┼────────────────────────────────────┤
-│ "high number of dropped          │ El sistema bajo test es más lento  │
-│  iterations"                     │ que la rate configurada            │
-├──────────────────────────────────┼────────────────────────────────────┤
-│ Memory crece sin parar           │ Evitar acumular datos en arrays    │
-│                                  │ globales. Usar SharedArray.        │
-└──────────────────────────────────┴────────────────────────────────────┘
-```
-
----
-
-## 23. Mejores Prácticas y Antipatrones
-
-### ✅ Mejores Prácticas
-
-```javascript
-// 1. USAR THRESHOLDS SIEMPRE (no solo métricas)
-export const options = {
-  thresholds: {
-    http_req_duration: ['p(95)<500'],  // ← Define "éxito"
-    http_req_failed: ['rate<0.01'],
-  },
-};
-
-// 2. USAR SharedArray PARA DATOS GRANDES
-// BUENO (memoria compartida):
-const data = new SharedArray('d', () => JSON.parse(open('./big.json')));
-// MALO (cada VU tiene su copia):
-const data = JSON.parse(open('./big.json')); // ← N copias en RAM
-
-// 3. TAGS PARA GRANULARIDAD EN THRESHOLDS
-http.get(url, { tags: { endpoint: 'search', priority: 'high' } });
-
-// 4. GROUPS PARA MEDIR TRANSACCIONES
-group('Checkout', () => { /* steps */ });  // → group_duration metric
-
-// 5. sleep() PARA SIMULAR THINK TIME REAL
-sleep(Math.random() * 4 + 1);  // 1-5s aleatorio
-
-// 6. MODULARIZAR EN ARCHIVOS SEPARADOS
-import { login } from './src/api/auth.js';
-
-// 7. USAR __ENV PARA CONFIGURACIÓN DINÁMICA
-const host = __ENV.TARGET_HOST || 'https://staging.example.com';
-
-// 8. CHECK ANTES DE USAR RESPONSE DATA
-const res = http.get(url);
-if (check(res, { 'is 200': r => r.status === 200 })) {
-  const id = res.json('data.id');  // Safe
-}
-
-// 9. abortOnFail PARA ERRORES CRÍTICOS
-thresholds: {
-  http_req_failed: [{ threshold: 'rate<0.1', abortOnFail: true }],
-}
-```
-
-### ❌ Antipatrones
-
-```javascript
-// 1. NO usar open() dentro de default function
-export default function () {
-  const data = open('./file.json');  // ❌ Error! Solo funciona en init
-}
-
-// 2. NO acumular datos indefinidamente
-let allResponses = [];  // ❌ Memory leak
-export default function () {
-  allResponses.push(http.get(url).body);  // Crece infinitamente
-}
-
-// 3. NO ignorar el sleep (piense time)
-export default function () {
-  http.get(url);
-  // ❌ Sin sleep = throughput irreal, no simula usuarios reales
-}
-
-// 4. NO usar console.log bajo carga
-export default function () {
-  console.log(`Response: ${res.body}`);  // ❌ I/O blocking, destruye rendimiento
-}
-
-// 5. NO hardcodear hosts
-http.get('https://api.production.com/data');  // ❌ Accidente en producción
-// ✅ Usar: http.get(`${__ENV.TARGET_HOST}/data`);
-
-// 6. NO olvidar Content-Type en POST
-http.post(url, JSON.stringify(body));  // ❌ Server puede rechazar
-http.post(url, JSON.stringify(body),   // ✅ 
-  { headers: { 'Content-Type': 'application/json' } });
-```
-
----
-
-## 24. Proyecto de Referencia Completo
-
-### Estructura
-
-```
-k6-performance-tests/
-├── tests/
-│   ├── smoke.js
-│   ├── load.js
-│   ├── stress.js
-│   ├── spike.js
-│   ├── soak.js
-│   └── breakpoint.js
-├── src/
-│   ├── api/
-│   │   ├── auth.js
-│   │   ├── products.js
-│   │   ├── orders.js
-│   │   └── users.js
-│   ├── scenarios/
-│   │   ├── browse.js
-│   │   ├── search.js
-│   │   └── purchase.js
-│   ├── utils/
-│   │   ├── config.js
-│   │   ├── helpers.js
-│   │   └── checks.js
-│   └── thresholds/
-│       ├── slos.js
-│       └── per-endpoint.js
-├── data/
-│   ├── users.json
-│   ├── products.json
-│   └── search_terms.json
-├── reports/
-│   └── .gitkeep
-├── grafana/
-│   └── dashboards/
-│       └── k6-dashboard.json
-├── docker-compose.yml
-├── Makefile
-└── README.md
-```
-
-### Makefile
-
-```makefile
-.PHONY: smoke load stress spike soak breakpoint clean
-
-HOST ?= https://api.staging.example.com
-TOKEN ?= $(shell cat .env.token 2>/dev/null)
-
-smoke:
-	k6 run tests/smoke.js -e TARGET_HOST=$(HOST) -e API_TOKEN=$(TOKEN)
-
-load:
-	k6 run tests/load.js -e TARGET_HOST=$(HOST) -e API_TOKEN=$(TOKEN) \
-		--out json=reports/load.json
-
-stress:
-	k6 run tests/stress.js -e TARGET_HOST=$(HOST) -e API_TOKEN=$(TOKEN) \
-		--out json=reports/stress.json
-
-spike:
-	k6 run tests/spike.js -e TARGET_HOST=$(HOST) -e API_TOKEN=$(TOKEN)
-
-soak:
-	k6 run tests/soak.js -e TARGET_HOST=$(HOST) -e API_TOKEN=$(TOKEN) \
-		--out json=reports/soak.json
-
-breakpoint:
-	k6 run tests/breakpoint.js -e TARGET_HOST=$(HOST) -e API_TOKEN=$(TOKEN)
-
-cloud:
-	k6 cloud run tests/load.js -e TARGET_HOST=$(HOST)
-
-dashboard:
-	docker-compose up -d influxdb grafana
-	k6 run tests/load.js --out influxdb=http://localhost:8086/k6 \
-		-e TARGET_HOST=$(HOST) -e API_TOKEN=$(TOKEN)
-
-clean:
-	rm -rf reports/*.json reports/*.html
-```
-
----
+> **Secciones extraídas a la guía canónica común.**
+> Versión canónica: [00_Comunes_Guia_Herramientas.md](00_Comunes_Guia_Herramientas.md) (CI/CD, troubleshooting, mejores prácticas, proyecto de referencia).
+> Delta de esta herramienta: `k6 inspect` valida el script sin ejecutarlo y `open()` solo funciona en init phase (sección 2.1); `SharedArray` para no duplicar el dataset en RAM y `thresholds` como SLO (sección 3.3); `grafana/dashboards/k6-dashboard.json` y targets `cloud`/`dashboard` del Makefile (secciones 4.3-4.4).
 
 ## Referencias
 

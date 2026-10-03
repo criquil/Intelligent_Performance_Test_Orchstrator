@@ -1,15 +1,11 @@
 ---
 name: ptlc-fases-del-ciclo
-description: "Las 9 fases del Performance Test Life Cycle: requisitos, planificacion, diseno, entorno, scripts, ejecucion, analisis, optimizacion y cierre con reporting."
+description: "Define las 9 fases del PTLC: requisitos a cierre"
 ---
 
 # 03 — Fases del Performance Test Life Cycle (Detalle)
 
-> **Rol de este archivo:** Índice intermedio. Resume las 9 fases del PTLC y dirige a la documentación operativa detallada.  
-> **Cuándo leer este archivo:** Cuando necesitas ejecutar una fase específica del ciclo, saber qué entregables produce, o entender el orden de las actividades.  
-> **Carpeta detallada:** [`.`](03_Fases_del_PTLC/)
-
----
+> Índice intermedio. **Cuándo leer:** ejecutar una fase concreta, sus entregables y el orden de actividades. Detalle en los documentos de esta skill (abajo).
 
 ## Las 9 Fases — Vista General
 
@@ -29,51 +25,21 @@ description: "Las 9 fases del Performance Test Life Cycle: requisitos, planifica
 
 ## 📂 Contenido de la Subcarpeta
 
-### [`01_Recopilacion_de_Requisitos.md`](01_Recopilacion_de_Requisitos.md)
-**Fase cubierta:** Fase 1 — Recopilación y Análisis de Requisitos  
-**Secciones:** Propósito · Fuentes de requisitos (producción, negocio, técnicas) · Proceso de recopilación (workshops, entrevistas) · Análisis de carga esperada (cálculos de concurrencia) · Identificación de escenarios críticos · Template de documentación de requisitos (Executive Summary, SUT, Performance Requirements, Load Profile, Scenarios, Constraints, Risks, Approval) · Errores comunes
+### [`01_Recopilacion_de_Requisitos.md`](01_Recopilacion_de_Requisitos.md) — NFRs, cálculo de carga, template
+- Para qué: capturar requisitos de performance firmados.
+- Consultar si: necesitas el template de requisitos (8 secciones) · calculas usuarios concurrentes esperados · facilitates un workshop con stakeholders
 
-**Ir aquí si necesitas:**
-- Template para documentar requisitos de performance
-- Fórmulas para calcular usuarios concurrentes esperados
-- Guía para facilitar workshops con stakeholders
-- Priorizar escenarios de prueba
+### [`02_Planificacion_y_Diseno.md`](02_Planificacion_y_Diseno.md) — Test Plan y diseño de carga
+- Para qué: escribir el plan y diseñar el workload model.
+- Consultar si: defines criterios de aceptación / pass-fail · elaboras la estrategia de test data · diseñas el monitoreo de la prueba
 
----
+### [`03_Entorno_Scripts_Ejecucion.md`](03_Entorno_Scripts_Ejecucion.md) — entorno, scripts, ejecución, runbook
+- Para qué: preparar y ejecutar la prueba de forma controlada.
+- Consultar si: validas que el entorno está listo (checklist) · organizas la estructura de scripts · necesitas el runbook pre/durante/post ejecución
 
-### [`02_Planificacion_y_Diseno.md`](02_Planificacion_y_Diseno.md)
-**Fases cubiertas:** Fase 2 (Planificación) + Fase 3 (Diseño)  
-**Secciones:** Objetivos del plan · Alcance (in/out scope) · Cronograma · Diseño de pruebas · Workload model definition · Criterios de aceptación · Monitoring design · Test data strategy
-
-**Ir aquí si necesitas:**
-- Escribir un Performance Test Plan
-- Diseñar el workload model
-- Definir criterios de pass/fail para cada escenario
-- Planificar test data
-
----
-
-### [`03_Entorno_Scripts_Ejecucion.md`](03_Entorno_Scripts_Ejecucion.md)
-**Fases cubiertas:** Fase 4 (Entorno) + Fase 5 (Scripts) + Fase 6 (Ejecución)  
-**Secciones:** IaC (Infrastructure as Code) · Validación del entorno · Framework de scripts (estructura, parametrización) · Ejecución controlada · Pre/Post execution checklists · Runbook de ejecución
-
-**Ir aquí si necesitas:**
-- Checklist para validar que el entorno está listo
-- Estructura recomendada para organizar scripts
-- Runbook paso a paso para ejecutar una prueba
-- Saber qué hacer antes, durante y después de una ejecución
-
----
-
-### [`04_Analisis_Optimizacion_Cierre.md`](04_Analisis_Optimizacion_Cierre.md)
-**Fases cubiertas:** Fase 7 (Análisis) + Fase 8 (Optimización) + Fase 9 (Cierre)  
-**Secciones:** Template de reporte ejecutivo (7 secciones) · Optimización iterativa · Re-testing strategy · Sign-off process · Retrospectiva (what went well, improve, action items, metrics) · Archivo de evidencias
-
-**Ir aquí si necesitas:**
-- Template completo para reporte ejecutivo
-- Proceso de optimización iterativa (tune → test → validate)
-- Criterios para dar sign-off formal
-- Guía para retrospectiva de performance testing
+### [`04_Analisis_Optimizacion_Cierre.md`](04_Analisis_Optimizacion_Cierre.md) — reporte, optimización, sign-off
+- Para qué: cerrar el ciclo con reporte y retrospectiva.
+- Consultar si: usas el template de reporte ejecutivo (7 secciones) · iteras tune → test → validate · formalizas el sign-off y la retrospectiva
 
 ---
 
@@ -81,9 +47,9 @@ description: "Las 9 fases del Performance Test Life Cycle: requisitos, planifica
 
 | Desde aquí puedo ir a... | Para... |
 |--------------------------|---------|
-| [01_Introduccion](../ptlc-fundamentos/SKILL.md) | Entender los fundamentos antes de las fases |
-| [04_Metricas](../ptlc-metricas-kpis/SKILL.md) | Definir qué medir (usado en Fases 1, 7) |
-| [05_Herramientas](../ptlc-herramientas/SKILL.md) | Implementar scripts (Fase 5) |
-| [06_Workload](../ptlc-workload-modeling/SKILL.md) | Calcular el modelo de carga (Fase 3) |
-| [07_Monitoreo](../ptlc-monitoreo/SKILL.md) | Configurar observabilidad (Fase 4) |
-| [09_Analisis](../ptlc-analisis-bottlenecks/SKILL.md) | Técnicas de RCA detalladas (Fase 7) |
+| [ptlc-fundamentos](../ptlc-fundamentos/SKILL.md) | Entender los fundamentos antes de las fases |
+| [ptlc-metricas-kpis](../ptlc-metricas-kpis/SKILL.md) | Definir qué medir (usado en Fases 1, 7) |
+| [ptlc-herramientas](../ptlc-herramientas/SKILL.md) | Implementar scripts (Fase 5) |
+| [ptlc-workload-modeling](../ptlc-workload-modeling/SKILL.md) | Calcular el modelo de carga (Fase 3) |
+| [ptlc-monitoreo](../ptlc-monitoreo/SKILL.md) | Configurar observabilidad (Fase 4) |
+| [ptlc-analisis-bottlenecks](../ptlc-analisis-bottlenecks/SKILL.md) | Técnicas de RCA detalladas (Fase 7) |

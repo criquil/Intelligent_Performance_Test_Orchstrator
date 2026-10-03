@@ -1,15 +1,11 @@
 ---
 name: ptlc-tipos-de-pruebas
-description: "Catalogo de 22+ tipos de prueba de rendimiento (load, stress, soak, spike, baseline, smoke, capacity, resiliency...): cuando usar cada uno, objetivos, metricas y criterios pass/fail."
+description: "Define tipos: load, stress, soak, spike, resiliency"
 ---
 
 # 02 — Tipos de Pruebas de Rendimiento
 
-> **Rol de este archivo:** Índice intermedio. Clasifica todos los tipos de pruebas de performance y dirige al archivo específico de cada grupo.  
-> **Cuándo leer este archivo:** Cuando necesitas saber qué tipo de prueba ejecutar según tu objetivo o situación.  
-> **Carpeta detallada:** [`.`](02_Tipos_de_Pruebas/)
-
----
+> Índice intermedio. **Cuándo leer:** qué tipo de prueba ejecutar según tu objetivo. Detalle en los documentos de esta skill (abajo).
 
 ## Mapa Completo: 22+ Tipos de Pruebas
 
@@ -19,7 +15,7 @@ VALIDACIÓN DE CAPACIDAD          ESTABILIDAD A LARGO PLAZO       LÍMITES Y EXT
 ├── Baseline Testing             ├── Reliability Testing         ├── Spike Testing
 ├── Smoke Testing                └── Regression Testing          ├── Peak Testing
 └── Capacity Testing                                             ├── Breakpoint Testing
-                                                                 └── Saturation Testing
+                                                                  └── Saturation Testing
 
 RESILIENCIA Y RECUPERACIÓN       CONFIGURACIÓN Y RED             ESPECÍFICOS POR CAPA
 ├── Resiliency/Chaos Testing     ├── Configuration Testing       ├── API Performance Testing
@@ -43,7 +39,7 @@ RESILIENCIA Y RECUPERACIÓN       CONFIGURACIÓN Y RED             ESPECÍFICOS 
 | Verificar escalado horizontal/vertical funciona | Scalability Testing | `03_Endurance_Spike_Volume_Scalability.md` |
 | Validar comportamiento con alta carga en DB | Volume Testing | `03_Endurance_Spike_Volume_Scalability.md` |
 | Probar que el sistema se recupera de fallos | Failover / Recovery | `06_Configuration_Failover_...md` |
-| Inyectar fallos deliberadamente (Chaos Engineering) | Resiliency Testing | `07_Resiliency_Testing.md` |
+| Inyectar fallos deliberadamente (Chaos Engineering) | Resiliency Testing | `07_Resiliency_Testing/` (3 docs) |
 | Verificar APIs individualmente bajo carga | API Performance | `06_Configuration_Failover_...md` |
 | Medir Core Web Vitals y tiempos del browser | Browser/Frontend | `06_Configuration_Failover_...md` |
 | Probar diferentes configuraciones de infra | Configuration Testing | `06_Configuration_Failover_...md` |
@@ -53,47 +49,41 @@ RESILIENCIA Y RECUPERACIÓN       CONFIGURACIÓN Y RED             ESPECÍFICOS 
 
 ## 📂 Contenido de la Subcarpeta
 
-### [`01_Load_Testing.md`](01_Load_Testing.md)
-**Tipo cubierto:** Load Testing  
-**Secciones:** Definición · Objetivos · Diseño completo (VUs, ramp-up, steady-state, ramp-down) · Proceso de ejecución · Análisis de resultados · Variantes (step-load, constant, wave) · Ejemplo de reporte · Errores comunes
+### [`01_Load_Testing.md`](01_Load_Testing.md) — carga sostenida en VUs constantes
+- Para qué: validar que el SUT sostiene la carga objetivo.
+- Consultar si: dimensionas VUs, ramp-up y steady-state · necesitas el reporte de ejemplo o las variantes (step, constant, wave)
 
----
+### [`02_Stress_Testing.md`](02_Stress_Testing.md) — llevar el SUT más allá del límite
+- Para qué: encontrar el punto de quiebre y los límites seguros.
+- Consultar si: necesitas distinguir load vs stress · eliges tipo de stress (gradual, sudden, resource-bound) · quieres el script k6 de ejemplo
 
-### [`02_Stress_Testing.md`](02_Stress_Testing.md)
-**Tipo cubierto:** Stress Testing  
-**Secciones:** Definición · Objetivos · Diferencia con Load Testing · Tipos de stress (gradual, sudden, resource-bound) · Diseño · Métricas específicas · Análisis · Patrones de recuperación · Script k6 ejemplo · Seguridad
+### [`03_Endurance_Spike_Volume_Scalability.md`](03_Endurance_Spike_Volume_Scalability.md) — endurance, spike, volume, scalability
+- Para qué: cuatro tipos de carga agrupados en un solo doc.
+- Consultar si: pruebas larga duración (8-72 h) o picos súbitos · validas volumen de datos o escalado horizontal · aplicas Amdahl's Law para proyectar escalabilidad
 
----
+### [`04_Baseline_Testing.md`](04_Baseline_Testing.md) — línea base medible y repetible
+- Para qué: fijar el punto de comparación de todas las pruebas.
+- Consultar si: ejecutas el baseline inicial del ciclo · necesitas el template del documento baseline
 
-### [`03_Endurance_Spike_Volume_Scalability.md`](03_Endurance_Spike_Volume_Scalability.md)
-**Tipos cubiertos:** Endurance/Soak · Spike · Volume · Scalability  
-**Secciones:** Cada tipo con definición, cuándo usar, diseño, métricas, ejemplo y antipatrones · Amdahl's Law para scalability · Resumen comparativo
+**⚡ Destacado:** una sola ejecución NO es suficiente. Se necesitan múltiples iteraciones hasta lograr estabilidad estadística (Coeficiente de Variación < 10%).
 
----
+### [`05_Smoke_Peak_Capacity_Breakpoint.md`](05_Smoke_Peak_Capacity_Breakpoint.md) — smoke, peak, capacity, breakpoint, concurrency, reliability
+- Para qué: límites de capacidad y pruebas rápidas por deploy.
+- Consultar si: mides cuántos usuarios soporta el sistema · defines criterios pass/fail por tipo de prueba
 
-### [`04_Baseline_Testing.md`](04_Baseline_Testing.md)
-**Tipo cubierto:** Baseline Testing  
-**Secciones:** Definición · Por qué es crítico · Cuándo ejecutar · Cómo ejecutar · **La importancia de ITERAR** (mínimo 3 ejecuciones, CV < 10%) · Template del documento baseline · Uso de la baseline en el PTLC
+### [`06_Configuration_Failover_Recovery_Regression_y_Otros.md`](06_Configuration_Failover_Recovery_Regression_y_Otros.md) — configuración, failover, recovery, regression y 6 más
+- Para qué: tipos por infraestructura, red y capa concreta.
+- Consultar si: pruebas configuration, network, isolation o saturation · mides API, browser/frontend o recovery · quieres el mapa completo de los 22 tipos con clasificación cruzada
 
-**⚡ Destacado:** Este documento enfatiza que una sola ejecución NO es suficiente. Se necesitan múltiples iteraciones hasta lograr estabilidad estadística (Coeficiente de Variación < 10%).
+### [`07_Resiliency_Testing/`](07_Resiliency_Testing/) — chaos engineering y resiliencia (3 documentos)
 
----
+Guía partida en 3 partes. Elige solo la que necesitas:
 
-### [`05_Smoke_Peak_Capacity_Breakpoint.md`](05_Smoke_Peak_Capacity_Breakpoint.md)
-**Tipos cubiertos:** Smoke · Peak · Capacity · Breakpoint · Concurrency · Reliability  
-**Secciones:** Cada tipo con definición, objetivo, cuándo usar, diseño, métricas clave, script ejemplo, criterios pass/fail
-
----
-
-### [`06_Configuration_Failover_Recovery_Regression_y_Otros.md`](06_Configuration_Failover_Recovery_Regression_y_Otros.md)
-**Tipos cubiertos:** Configuration · Failover · Recovery · Regression · Network · API · Browser/Frontend · Isolation · Saturation  
-**Secciones:** Cada tipo documentado + Mapa completo de los 22 tipos con clasificación cruzada
-
----
-
-### [`07_Resiliency_Testing.md`](07_Resiliency_Testing.md)
-**Tipo cubierto:** Resiliency / Chaos Engineering (~62 KB de contenido exhaustivo)  
-**Secciones:** Definición y fundamentos · Diferencia con otros tipos · Principios clave · Steady-State Hypothesis · Chaos Engineering como disciplina · Patrones de resiliencia (Circuit Breaker, Bulkhead, Retry, Graceful Degradation) · Tipos de fault injection · Herramientas (LitmusChaos, Chaos Mesh, AWS FIS, Toxiproxy, Gremlin) · Diseño de experimentos · Game Days · Métricas de resiliencia · CI/CD integration · Ejemplos con código · Cloud-Native patterns · Antipatrones · Checklist
+| Documento | Para qué |
+|-----------|----------|
+| [`01_Fundamentos_y_Patrones_de_Resiliencia.md`](07_Resiliency_Testing/01_Fundamentos_y_Patrones_de_Resiliencia.md) | Qué es resiliencia, diferencias con stress/failover/recovery, principios de chaos engineering, steady-state hypothesis y los 7 patrones (Circuit Breaker, Bulkhead, Retry, Timeout, Graceful Degradation, Rate Limiting, Fallback) · índice completo de la guía |
+| [`02_Fault_Injection_Herramientas_y_Cloud.md`](07_Resiliency_Testing/02_Fault_Injection_Herramientas_y_Cloud.md) | Qué fallas inyectar (red, compute, aplicación, dependencias, infraestructura) · herramientas (LitmusChaos, Chaos Mesh, AWS FIS, Toxiproxy, Chaos Toolkit) · automatización en CI/CD · patrones de resiliencia en Kubernetes, Istio y multi-región |
+| [`03_Experimentos_Metricas_y_Operacion.md`](07_Resiliency_Testing/03_Experimentos_Metricas_y_Operacion.md) | Template de experimento, priorización y progresión de complejidad · Game Days · métricas, Resilience Score y SLOs · scripts k6 y bash de fault injection · antipatrones · checklist de implementación |
 
 ---
 
@@ -101,7 +91,7 @@ RESILIENCIA Y RECUPERACIÓN       CONFIGURACIÓN Y RED             ESPECÍFICOS 
 
 | Desde aquí puedo ir a... | Para... |
 |--------------------------|---------|
-| [04_Metricas](../ptlc-metricas-kpis/SKILL.md) | Definir qué medir en cada tipo de prueba |
-| [05_Herramientas](../ptlc-herramientas/SKILL.md) | Implementar la prueba con una tool específica |
-| [06_Workload_Modeling](../ptlc-workload-modeling/SKILL.md) | Calcular la carga para load/stress/spike |
-| [03_Fases](../ptlc-fases-del-ciclo/SKILL.md) | Entender en qué fase del ciclo se ejecuta cada tipo |
+| [ptlc-metricas-kpis](../ptlc-metricas-kpis/SKILL.md) | Definir qué medir en cada tipo de prueba |
+| [ptlc-herramientas](../ptlc-herramientas/SKILL.md) | Implementar la prueba con una tool específica |
+| [ptlc-workload-modeling](../ptlc-workload-modeling/SKILL.md) | Calcular la carga para load/stress/spike |
+| [ptlc-fases-del-ciclo](../ptlc-fases-del-ciclo/SKILL.md) | Entender en qué fase del ciclo se ejecuta cada tipo |

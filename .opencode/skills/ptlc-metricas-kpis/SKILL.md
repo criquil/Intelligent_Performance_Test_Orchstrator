@@ -1,15 +1,11 @@
 ---
 name: ptlc-metricas-kpis
-description: "Metricas y KPIs de performance: percentiles p50/p90/p95/p99, Apdex, throughput, error rate, Little's Law y formulas de criterios pass/fail."
+description: "Define KPI: p95/p99, Apdex, throughput, error rate"
 ---
 
 # 04 — Métricas y KPIs de Performance Testing
 
-> **Rol de este archivo:** Índice intermedio. Resume qué métricas existen, cómo clasificarlas, y dirige al documento exhaustivo con fórmulas y cálculos.  
-> **Cuándo leer este archivo:** Cuando necesitas saber qué medir, cómo definir criterios de éxito, o qué fórmulas aplicar.  
-> **Carpeta detallada:** [`.`](04_Metricas_y_KPIs/)
-
----
+> Índice intermedio. **Cuándo leer:** qué medir, cómo definir criterios de éxito y qué fórmulas aplicar. Detalle en los documentos de esta skill (abajo).
 
 ## Taxonomía de Métricas
 
@@ -43,29 +39,19 @@ description: "Metricas y KPIs de performance: percentiles p50/p90/p95/p99, Apdex
 | **CV (Coef. Variación):** `σ / μ × 100` | Validar estabilidad de baseline (< 10%) |
 | **Throughput saturation:** `TPS_max = f(resources)` | Identificar cuello de botella |
 
+> **Nota de uso:** usar el cheat sheet para fórmulas; el documento para el detalle.
+
 ---
 
 ## 📂 Contenido de la Subcarpeta
 
-### [`01_Metricas_Exhaustivas.md`](01_Metricas_Exhaustivas.md)
-**Contenido completo (~18 KB):**
+### [`00_Cheat_Sheet_Metricas.md`](00_Cheat_Sheet_Metricas.md) — fórmulas y umbrales operativos (≤600 tokens)
+- Para qué: obtener de un golpe percentiles, Apdex, throughput, error rate y la plantilla pass/fail.
+- Consultar si: solo necesitas la fórmula o el umbral; el detalle vive en el documento.
 
-| Sección | Qué encontrarás |
-|---------|-----------------|
-| Taxonomía de Métricas | Clasificación completa por categoría |
-| Response Time - Análisis Profundo | Desglose en componentes (DNS, TCP, TLS, TTFB, content transfer), cómo interpretar cada uno |
-| Throughput - Análisis Profundo | Curvas de throughput, punto de saturación, relación con VUs |
-| Error Rate - Análisis Profundo | Tipos de error, clasificación, umbrales por tipo de sistema |
-| Percentiles y Distribución | p50/p90/p95/p99, por qué promedios mienten, histogramas |
-| Métricas de Infraestructura Detalladas | CPU, memory, disk, network, JVM, containers, DB connections |
-| Calculadora de Métricas | Fórmulas aplicadas con ejemplos numéricos reales |
-
-**Ir aquí si necesitas:**
-- Fórmulas con ejemplos numéricos paso a paso
-- Entender por qué usar percentiles en vez de promedios
-- Definir umbrales de alerta para cada métrica de infra
-- Calcular VUs usando Little's Law con datos reales
-- Construir un Apdex score para tu aplicación
+### [`01_Metricas_Exhaustivas.md`](01_Metricas_Exhaustivas.md) — análisis profundo y calculadora
+- Para qué: aplicar las fórmulas con números reales.
+- Consultar si: entiendes por qué usar percentiles en vez de promedios · construyes un Apdex score o defines umbrales de alerta de infra
 
 ---
 
@@ -73,7 +59,7 @@ description: "Metricas y KPIs de performance: percentiles p50/p90/p95/p99, Apdex
 
 | Desde aquí puedo ir a... | Para... |
 |--------------------------|---------|
-| [02_Tipos_de_Pruebas](../ptlc-tipos-de-pruebas/SKILL.md) | Saber qué métricas priorizar por tipo de prueba |
-| [06_Workload](../ptlc-workload-modeling/SKILL.md) | Aplicar Little's Law al modelo de carga |
-| [07_Monitoreo](../ptlc-monitoreo/SKILL.md) | Implementar la recolección de estas métricas |
-| [09_Analisis](../ptlc-analisis-bottlenecks/SKILL.md) | Interpretar métricas y hacer RCA |
+| [ptlc-tipos-de-pruebas](../ptlc-tipos-de-pruebas/SKILL.md) | Saber qué métricas priorizar por tipo de prueba |
+| [ptlc-workload-modeling](../ptlc-workload-modeling/SKILL.md) | Aplicar Little's Law al modelo de carga |
+| [ptlc-monitoreo](../ptlc-monitoreo/SKILL.md) | Implementar la recolección de estas métricas |
+| [ptlc-analisis-bottlenecks](../ptlc-analisis-bottlenecks/SKILL.md) | Interpretar métricas y hacer RCA |
