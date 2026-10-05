@@ -14,7 +14,7 @@ Definición: [`.claude/agents/ptlc-orchestrator.md`](../.claude/agents/ptlc-orch
 ## Phase 0 — Init & Clarify
 
 1. Detecta el dominio. Si no es performance-testing, delega y termina el flujo PTLC.
-2. Revisa `docs/plan/{plan_id}/plan.yaml` si hay `plan_id`: inicio nuevo, plan existente o una sola fase.
+2. Revisa `tests/performance/{selected_tool}/{plan_id}/plan.yaml` si hay `plan_id`: inicio nuevo, plan existente o una sola fase.
 3. Genera `plan_id` con formato `YYYYMMDD-nombre-sistema` si es nuevo.
 4. **Gate de clarificación:** solo pregunta ante ambigüedad bloqueante; con input mínimo procede (el intake ya pregunta).
 5. **Clasifica complejidad:** TRIVIAL (consulta puntual) · LOW (una o dos fases) · MEDIUM/HIGH (ciclo completo, flujo normal).
@@ -29,7 +29,7 @@ Definición: [`.claude/agents/ptlc-orchestrator.md`](../.claude/agents/ptlc-orch
 
 ## Phase 2 — Plan (MEDIUM/HIGH)
 
-Crea `docs/plan/{plan_id}/plan.yaml` (6 fases en cascada) y `context_envelope.json` (bloques vacíos según `CONTEXT_ENVELOPE.md`):
+Crea `tests/performance/{selected_tool}/{plan_id}/plan.yaml` (6 fases en cascada) y `context_envelope.json` (bloques vacíos según `CONTEXT_ENVELOPE.md`):
 
 ```yaml
 plan_id: "{plan_id}"
@@ -53,9 +53,9 @@ Payload genérico: `plan_id`, `objective` y `task_definition` (input + snapshot 
 | F1 | `ptlc-intake` | `user_input` | `needs_more_info` → pregunta y re-ejecuta hasta `completed` |
 | F2 | `ptlc-diagnostics` | requisitos (F1) | `blocked` si readiness < 50 → espera confirmación; si no, score + top 3 riesgos |
 | F3 | `ptlc-procedure-plan` | F1 + F2 | Tipos de prueba, orden y estimado; pregunta si ajusta alcance |
-| F4 | `ptlc-test-plan` | F1–F3 | Genera `docs/performance-test-plan.md`; pide `execute: true/false` |
+| F4 | `ptlc-test-plan` | F1–F3 | Genera `tests/performance/{selected_tool}/{plan_id}/performance-test-plan.md`; pide `execute: true/false` |
 | F5 | `ptlc-execution` | `execute` + contexto | Requiere aprobación; smoke fallido → pausa y espera instrucciones |
-| F6 | `ptlc-analysis` | resultados + criterios | Veredicto PASSED/CONDITIONAL/FAILED + `docs/performance-test-report.md` |
+| F6 | `ptlc-analysis` | resultados + criterios | Veredicto PASSED/CONDITIONAL/FAILED + `tests/performance/{selected_tool}/{plan_id}/performance-test-report.md` |
 
 ## Phase 4 — Output final
 

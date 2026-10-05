@@ -1,6 +1,6 @@
 # CONTEXT_ENVELOPE — Contexto acumulado del ciclo PTLC
 
-> Artefacto único por `plan_id` que acumula las conclusiones sintetizadas de cada fase del pipeline, para que las siguientes **no vuelvan a leer** los mismos documentos. Ruta: `docs/plan/{plan_id}/context_envelope.json`.
+> Artefacto único por `plan_id` que acumula las conclusiones sintetizadas de cada fase del pipeline, para que las siguientes **no vuelvan a leer** los mismos documentos. Ruta: `tests/performance/{selected_tool}/{plan_id}/context_envelope.json`.
 
 ## Regla de escritura
 
@@ -41,7 +41,7 @@
     "acceptance_criteria": { "p95_ms": 0, "p99_ms": 0, "max_error_rate_pct": 0, "min_throughput_tps": 0, "apdex": 0 }
   },
   "test_plan": {
-    "path": "docs/performance-test-plan.md",
+    "path": "tests/performance/{selected_tool}/{plan_id}/performance-test-plan.md",
     "scope": "string",
     "entry_criteria": ["string"],
     "exit_criteria": ["string"],

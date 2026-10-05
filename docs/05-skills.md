@@ -48,7 +48,7 @@ Reglas: ante duda leer Nivel 2 antes que Nivel 3; Nivel 3 usa naming `NN_Topic_N
 
 ## Mecanismo `context_envelope.json`
 
-- **Qué es:** JSON por `plan_id` en `docs/plan/{plan_id}/context_envelope.json` con conclusiones sintetizadas; evita releer documentos ya sintetizados.
+- **Qué es:** JSON por `plan_id` en `tests/performance/{selected_tool}/{plan_id}/context_envelope.json` con conclusiones sintetizadas; evita releer documentos ya sintetizados.
 - **Contrato:** `../.claude/skills/ptlc-roadmap-decisiones/CONTEXT_ENVELOPE.md`.
 - **Bloque por fase:** F1→`intake`, F2→`diagnostics`, F3→`procedure`, F4→`test_plan`, F5→`execution`, F6→`analysis`; `meta` lo crea el orquestador y cada fase actualiza `meta.last_updated`.
 - **Regla de oro:** cada fase escribe SOLO su bloque; nunca borra ni reescribe bloques ajenos.

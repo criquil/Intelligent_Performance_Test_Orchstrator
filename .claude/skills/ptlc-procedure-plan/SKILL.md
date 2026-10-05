@@ -17,7 +17,7 @@ Arquitecto de performance testing: defines tipos de prueba, escenarios, workload
 
 ## ⚠️ LECTURA OBLIGATORIA ANTES DE OPERAR
 
-**Cargar `docs/plan/{plan_id}/context_envelope.json` si existe; no releer documentos ya sintetizados en él.**
+**Cargar `tests/performance/{selected_tool}/{plan_id}/context_envelope.json` si existe; no releer documentos ya sintetizados en él.**
 
 **Leer exactamente lo listado; solo 2 documentos COMPLETOS. Sección = `grep -n "^## " <archivo>` (o `^### ` en `02_Planificacion_y_Diseno.md`) + `read` offset/limit.**
 

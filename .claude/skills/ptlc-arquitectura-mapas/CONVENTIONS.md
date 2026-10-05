@@ -80,41 +80,28 @@ El diseño, scripting y ejecución de cada herramienta se cubren en `.claude/ski
 
 | Guía | Disparador |
 |------|-----------|
-| `ptlc-herramientas/SKILL.md` | Seleccionar herramienta según la matriz de decisión |
-| `ptlc-herramientas/06_k6_Guia_Completa_Expandida.md` | Diseñar/generar pruebas con k6 |
-| `ptlc-herramientas/05_JMeter_Guia_Completa.md` | Diseñar/generar pruebas con JMeter |
-| `ptlc-herramientas/04_Gatling_Community_Guia_Completa.md` | Diseñar/generar pruebas con Gatling CE |
-| `ptlc-herramientas/03_Locust_Guia_Completa.md` | Diseñar/generar pruebas con Locust |
+| `ptlc-herramientas/SKILL.md` + `00b_Cheat_Sheet_Herramientas.md` | Seleccionar herramienta según la matriz de decisión (única referencia central) |
+| Documentación oficial de cada herramienta | Diseñar/generar pruebas con k6, JMeter, Gatling CE, Locust (consultar docs oficiales) |
 | `ptlc-tipos-de-pruebas/` + `ptlc-workload-modeling/` | Estrategia: tipos de prueba, workload model, criterios |
 | `ptlc-metricas-kpis/` | Análisis de percentiles, Apdex, throughput |
 | `ptlc-analisis-bottlenecks/` | RCA técnico de bottlenecks |
 
 ## Entregables del PTLC
 
-- `docs/plan/{plan_id}/plan.yaml` — estado del plan activo
-- `docs/performance-test-plan.md` — plan de pruebas formal
+- `tests/performance/{selected_tool}/{plan_id}/plan.yaml` — estado del plan activo
+- `tests/performance/{selected_tool}/{plan_id}/performance-test-plan.md` — plan de pruebas formal
 - `tests/performance/{tool}/` — scripts de prueba
-- `docs/performance-test-report.md` — reporte de resultados
+- `tests/performance/{selected_tool}/{plan_id}/performance-test-report.md` — reporte de resultados
 
 ## Commands
 - No build, test, or lint pipeline is defined in this repository.
 - Typical validation is link integrity and markdown consistency checks.
 
-## Control de tokens
+## Control de contexto
 
-El presupuesto de tokens del knowledge base se mide con `scripts/measure_tokens.py` (Python 3, sin dependencias; estima tokens como `caracteres / 3.5`):
+No hay medidor automático de tokens. El ahorro de contexto se gobierna con disciplina de lectura:
 
-```bash
-python scripts/measure_tokens.py           # reporte legible
-python scripts/measure_tokens.py --strict  # falla (exit 1) si se supera algun presupuesto
-python scripts/measure_tokens.py --json out.json
-```
-
-`--strict` valida los artefactos del knowledge base:
-
-- contexto siempre activo (descripciones de skills + agentes + `CLAUDE.md` + `.claude/settings.json`) ≤ 1.500 tokens
-- cuerpo de cada agente del pipeline (`ptlc-orchestrator.md`) ≤ 3.200 tokens
-- índice de cada skill `ptlc-*` (`SKILL.md`) ≤ 2.000 tokens
-- ningún documento de detalle > 6.000 tokens
-
-El reporte también lista cuerpos de agentes e índices ordenados de mayor a menor, el top-20 de documentos de detalle, totales en KB y duplicados exactos y cerca-duplicados (Jaccard ≥ 0.30 sobre shingles de 8 palabras).
+- índice antes que documento: dudas → `SKILL.md`; detalle → `grep -n "^## "` + `read` por `offset/limit`
+- detalle grande → mapa de secciones + lectura acotada por sección/línea en `<pre_execution>`
+- fórmulas y umbrales → las 3 cheat sheets antes que el documento completo
+- `context_envelope.json` para no releer lo ya sintetizado por otra fase

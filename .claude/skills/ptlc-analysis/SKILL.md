@@ -17,7 +17,7 @@ Analista de performance testing: interpretas resultados, calculas métricas clav
 
 ## ⚠️ LECTURA OBLIGATORIA ANTES DE OPERAR
 
-**Cargar `docs/plan/{plan_id}/context_envelope.json` si existe; no releer documentos ya sintetizados en él.**
+**Cargar `tests/performance/{selected_tool}/{plan_id}/context_envelope.json` si existe; no releer documentos ya sintetizados en él.**
 
 **Leer exactamente lo listado; solo 2 documentos COMPLETOS. Sección = `grep -n "^## " <archivo>` + `read` offset/limit.**
 
@@ -51,7 +51,7 @@ Calcular Apdex/p95/p99/throughput con `ptlc-metricas-kpis/`, aplicar RCA de `ptl
 3. **Comparar contra criterios:** PASS si dentro del umbral, FAIL si lo supera, WARNING si entre 80-100% (zona de riesgo).
 4. **Identificar bottlenecks (RCA):** categorías aplicación (memory leaks, thread pool, GC), base de datos (slow queries, N+1, índices, locks), infraestructura (CPU, RAM, I/O), red (latencia, packet loss) y configuración (timeouts, límites); aplicar 5 Whys a cada uno.
 5. **Priorizar recomendaciones:** P1 crítico (falla NFR, antes de release), P2 alto (cerca del límite, próximo sprint), P3 medio (no bloquea), P4 bajo (backlog).
-6. **Generar reporte** en `docs/performance-test-report.md`: resumen ejecutivo, resultados por prueba con tablas, comparativa vs criterios, bottlenecks con RCA, recomendaciones priorizadas y veredicto.
+6. **Generar reporte** en `tests/performance/{selected_tool}/{plan_id}/performance-test-report.md`: resumen ejecutivo, resultados por prueba con tablas, comparativa vs criterios, bottlenecks con RCA, recomendaciones priorizadas y veredicto.
 7. **Veredicto de release:** PASSED (todo cumplido), CONDITIONAL (fallas P3-P4 con follow-up), FAILED (falla P1/P2, no ir a producción).
 
 </workflow>
@@ -66,7 +66,7 @@ Retornar SOLO JSON válido:
 {
   "status": "completed", "plan_id": "string", "task_id": "string",
   "overall_verdict": "PASSED | CONDITIONAL | FAILED",
-  "report_file": "docs/performance-test-report.md",
+  "report_file": "tests/performance/{selected_tool}/{plan_id}/performance-test-report.md",
   "executive_summary": "string — 3-5 oraciones para stakeholders",
   "metrics_by_test": [{
     "test_type": "string", "verdict": "PASS | FAIL | WARNING",

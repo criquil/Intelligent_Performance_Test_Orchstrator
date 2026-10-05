@@ -31,7 +31,7 @@ Orquestador: `ptlc-orchestrator` (entry point obligatorio). Detecta el dominio e
 ## F4 · Test plan — documento formal ISTQB/IEEE-829
 
 - **Skill:** `../.claude/skills/ptlc-test-plan/SKILL.md`
-- **Objetivo:** plan de 11 secciones legible por stakeholders; genera `docs/performance-test-plan.md`.
+- **Objetivo:** plan de 11 secciones legible por stakeholders; genera `tests/performance/{selected_tool}/{plan_id}/performance-test-plan.md`.
 - **Inputs:** fases 1-3 (`requirements` + `diagnostics` + `procedure_plan`).
 - **Outputs:** JSON resumen + archivo del plan; bloque `test_plan`.
 - **Gate:** pedir revisión del plan y confirmar `execute: true | false`.
@@ -51,7 +51,7 @@ Orquestador: `ptlc-orchestrator` (entry point obligatorio). Detecta el dominio e
 ## F6 · Analysis — métricas + RCA + veredicto
 
 - **Skill:** `../.claude/skills/ptlc-analysis/SKILL.md`
-- **Objetivo:** p50/p95/p99, Apdex, throughput, error rate vs criterios; RCA con 5 Whys; reporte en `docs/performance-test-report.md`.
+- **Objetivo:** p50/p95/p99, Apdex, throughput, error rate vs criterios; RCA con 5 Whys; reporte en `tests/performance/{selected_tool}/{plan_id}/performance-test-report.md`.
 - **Inputs:** `execution_results` + `acceptance_criteria`.
 - **Outputs:** `overall_verdict` + métricas por prueba + bottlenecks P1-P4; bloque `analysis`.
 - **Gate (veredicto):** `PASSED` (todo cumplido) · `CONDITIONAL` (fallas P3-P4 con follow-up) · `FAILED` (falla P1/P2, no ir a producción).
@@ -75,7 +75,7 @@ flowchart TD
 
 ## `plan.yaml` de ejemplo
 
-Estructura creada por `ptlc-orchestrator` en Phase 2 (`docs/plan/{plan_id}/plan.yaml`):
+Estructura creada por `ptlc-orchestrator` en Phase 2 (`tests/performance/{selected_tool}/{plan_id}/plan.yaml`):
 
 ```yaml
 plan_id: "20261003-api-pagos"

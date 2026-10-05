@@ -33,19 +33,18 @@ Pipeline:
 - **Edición**: Nivel 3 usa naming `NN_Topic_Name.md`. No duplicar docs: actualizar el existente. Al mover o renombrar, actualizar referencias en `.claude/skills/README.md` y el `SKILL.md` padre.
 - **Catálogo**: el índice de skills (y herramientas en `ptlc-herramientas/`) está en `.claude/skills/README.md`.
 
-## Presupuesto de tokens
+## Eficiencia de lectura
 
 - **Índice antes que documento**: dudas → `SKILL.md`/índice; detalle → `grep -n "^## "` + `read` por offset/limit. Nunca leer completo un doc >2.000 tokens.
 - **Cheat sheets primero**: fórmulas/umbrales en `ptlc-metricas-kpis/00_Cheat_Sheet_Metricas.md`, `ptlc-workload-modeling/00_Cheat_Sheet_Workload.md` y `ptlc-herramientas/00b_Cheat_Sheet_Herramientas.md`; el doc completo, para API/sintaxis/ejemplos.
-- **Envelope acumulado**: cada fase persiste su bloque en `docs/plan/{plan_id}/context_envelope.json`; las siguientes lo cargan y no releen lo ya sintetizado.
-- **Medición continua**: `python scripts/measure_tokens.py --strict` valida: activo ≤1.500; agente ≤3.200; `SKILL.md` ≤2.000; ninguna lectura obligatoria >2.000 sin sección/línea; documento de detalle ≤23.000.
+- **Envelope acumulado**: cada fase persiste su bloque en `tests/performance/{selected_tool}/{plan_id}/context_envelope.json`; las siguientes lo cargan y no releen lo ya sintetizado.
 
 ## Entregables
 
-- `docs/plan/{plan_id}/plan.yaml` — plan activo (workflows resumibles)
-- `docs/performance-test-plan.md` — plan de pruebas formal
+- `tests/performance/{selected_tool}/{plan_id}/plan.yaml` — plan activo (workflows resumibles)
+- `tests/performance/{selected_tool}/{plan_id}/performance-test-plan.md` — plan de pruebas formal
 - `tests/performance/{tool}/` — scripts generados
-- `docs/performance-test-report.md` — reporte final con RCA y veredicto PASSED/FAILED
+- `tests/performance/{selected_tool}/{plan_id}/performance-test-report.md` — reporte final con RCA y veredicto PASSED/FAILED
 
 ## Rutas clave
 

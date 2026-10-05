@@ -25,8 +25,6 @@
 │       └── ptlc-roadmap-decisiones/   # PRD.yaml + CONTEXT_ENVELOPE.md
 ├── docs/                      # Esta documentación + entregables por ciclo
 │   └── plan/{plan_id}/        # plan.yaml + context_envelope.json (estado activo)
-├── scripts/
-│   └── measure_tokens.py      # Medición del presupuesto de tokens
 └── tests/performance/{tool}/  # Scripts generados on-demand (Wave 5)
 ```
 
@@ -41,7 +39,6 @@ Cada skill temática sigue `SKILL.md` (índice, Nivel 2) + `NN_Tema.md` (detalle
 | Skills conocimiento (12) | Fuente de verdad temática; nunca ejecutan el ciclo por sí solas |
 | Subagentes `general-purpose` / `Explore` | Resuelven requests no-PTLC (multi-paso / exploración del repo) |
 | `plan.yaml` + `context_envelope.json` | Estado resumible del ciclo; evita releer documentos ya sintetizados |
-| `measure_tokens.py` | Valida: activo ≤1.400, agente ≤3.200, `SKILL.md` ≤2.000, detalle ≤6.000 tokens |
 
 ## Flujo de un request (extremo a extremo)
 

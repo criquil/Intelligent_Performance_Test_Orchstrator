@@ -22,7 +22,7 @@
 | [ptlc-tipos-de-pruebas](ptlc-tipos-de-pruebas/SKILL.md) | 22+ tipos: load, stress, soak, spike, baseline, smoke, capacity, resiliency… | 9 documentos |
 | [ptlc-fases-del-ciclo](ptlc-fases-del-ciclo/SKILL.md) | Las 9 fases: requisitos → planificación → diseño → entorno → scripts → ejecución → análisis → optimización → cierre | 4 documentos |
 | [ptlc-metricas-kpis](ptlc-metricas-kpis/SKILL.md) | Percentiles, Apdex, throughput, error rate, Little's Law, fórmulas pass/fail | 1 documento |
-| [ptlc-herramientas](ptlc-herramientas/SKILL.md) | Guías exhaustivas k6, JMeter, Gatling, Locust + matriz de decisión | 6 documentos (4 guías con mapa de secciones + 1 canónica común + 1 comparativa) |
+| [ptlc-herramientas](ptlc-herramientas/SKILL.md) | Cheat sheet central + referencia a documentación oficial | 1 documento (cheat sheet único) |
 | [ptlc-workload-modeling](ptlc-workload-modeling/SKILL.md) | Little's Law, cálculo de VUs, distribuciones, patrones de tráfico | 1 documento |
 | [ptlc-monitoreo](ptlc-monitoreo/SKILL.md) | Prometheus, Grafana, OpenTelemetry, Jaeger, alerting | 1 documento |
 | [ptlc-scripting](ptlc-scripting/SKILL.md) | Correlación, tokens, WebSocket, GraphQL, data management | 1 documento |
@@ -46,14 +46,12 @@ Cada skill es el procedimiento completo de una fase (lecturas obligatorias, work
 
 ## 🛠️ Guías Operativas de Herramientas
 
-Diseño, scripting, ejecución y análisis por herramienta — todo en [`ptlc-herramientas`](ptlc-herramientas/SKILL.md). Cada guía arranca con un **mapa de secciones** (`grep -n "^## "`): pide solo la sección que necesitas en lugar de leer el archivo entero.
+La skill `ptlc-herramientas` ahora contiene solo un **cheat sheet central** ([`00b_Cheat_Sheet_Herramientas.md`](ptlc-herramientas/00b_Cheat_Sheet_Herramientas.md)). Toda información detallada sobre k6, JMeter, Gatling y Locust está en la documentación oficial de cada herramienta.
 
-- **Común a las 4** (CI/CD, troubleshooting, mejores prácticas, proyecto de referencia) → [00_Comunes_Guia_Herramientas.md](ptlc-herramientas/00_Comunes_Guia_Herramientas.md)
-- **k6** → [06_k6_Guia_Completa_Expandida.md](ptlc-herramientas/06_k6_Guia_Completa_Expandida.md)
-- **JMeter** → [05_JMeter_Guia_Completa.md](ptlc-herramientas/05_JMeter_Guia_Completa.md)
-- **Gatling** → [04_Gatling_Community_Guia_Completa.md](ptlc-herramientas/04_Gatling_Community_Guia_Completa.md)
-- **Locust** → [03_Locust_Guia_Completa.md](ptlc-herramientas/03_Locust_Guia_Completa.md)
-- **Comparativa** (mismo test en 3 herramientas) → [02_JMeter_Gatling_Locust.md](ptlc-herramientas/02_JMeter_Gatling_Locust.md)
+El cheat sheet proporciona: matriz de decisión rápida + acceso a secciones comunes (CI/CD, troubleshooting, correlación).
+
+- **Selección de herramienta** → Usa [`ptlc-herramientas/SKILL.md`](ptlc-herramientas/SKILL.md) y el cheat sheet
+- **k6, JMeter, Gatling, Locust** → Documentación oficial de cada herramienta (consultar links oficiales)
 
 ---
 
@@ -87,9 +85,9 @@ Las skills mantienen el prefijo numérico `NN_` original para preservar el orden
 
 ## 📄 Entregables del PTLC (no son knowledge base)
 
-- `docs/plan/{plan_id}/plan.yaml` — estado del plan activo
-- `docs/performance-test-plan.md` — plan de pruebas formal
-- `docs/performance-test-report.md` — reporte de resultados
+- `tests/performance/{selected_tool}/{plan_id}/plan.yaml` — estado del plan activo
+- `tests/performance/{selected_tool}/{plan_id}/performance-test-plan.md` — plan de pruebas formal
+- `tests/performance/{selected_tool}/{plan_id}/performance-test-report.md` — reporte de resultados
 - `tests/performance/{tool}/{plan_id}/` — scripts generados on-demand
 
 ## Fuentes externas consideradas

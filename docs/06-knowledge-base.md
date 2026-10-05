@@ -19,18 +19,11 @@
 
 ## Guías de herramientas
 
-Todo el diseño/scripting/ejecución por herramienta vive en `ptlc-herramientas/` (cada guía abre con mapa de secciones):
+**Nota:** La skill `ptlc-herramientas` ahora está simplificada con solo un cheat sheet central ([`00b_Cheat_Sheet_Herramientas.md`](../.claude/skills/ptlc-herramientas/00b_Cheat_Sheet_Herramientas.md)). 
 
-| Guía | Contenido |
-|------|-----------|
-| [00_Comunes_Guia_Herramientas.md](../.claude/skills/ptlc-herramientas/00_Comunes_Guia_Herramientas.md) | Canónica común: CI/CD, troubleshooting, prácticas/antipatrones, proyecto de referencia |
-| [06_k6_Guia_Completa_Expandida.md](../.claude/skills/ptlc-herramientas/06_k6_Guia_Completa_Expandida.md) | k6: executors, scenarios, thresholds, lifecycle, datos, xk6 |
-| [05_JMeter_Guia_Completa.md](../.claude/skills/ptlc-herramientas/05_JMeter_Guia_Completa.md) | JMeter: thread groups, extractors/correlación, assertions, CLI non-GUI |
-| [04_Gatling_Community_Guia_Completa.md](../.claude/skills/ptlc-herramientas/04_Gatling_Community_Guia_Completa.md) | Gatling CE: DSL, injection profiles, feeders, assertions |
-| [03_Locust_Guia_Completa.md](../.claude/skills/ptlc-herramientas/03_Locust_Guia_Completa.md) | Locust: user classes, custom shapes, wait times, distribuido |
-| [02_JMeter_Gatling_Locust.md](../.claude/skills/ptlc-herramientas/02_JMeter_Gatling_Locust.md) | Comparativa: mismo test en 3 herramientas + decision matrix |
+Para información detallada sobre k6, JMeter, Gatling y Locust, consulta las guías oficiales de cada herramienta en sus repositorios respectivos o documentación oficial. El cheat sheet proporciona la matriz de decisión y acceso rápido a secciones comunes (CI/CD, troubleshooting, correlación).
 
-Mapa de secciones por guía (verificado con `grep -n "^## "`): k6 22 secciones · JMeter 23 · Gatling 22 · Locust 20. Regla F5: leer SOLO la guía de la herramienta seleccionada.
+Regla F5: usa el cheat sheet para elección rápida; luego consulta documentación oficial de la herramienta seleccionada para detalles específicos.
 
 ## Los 3 cheat sheets (fórmulas primero)
 

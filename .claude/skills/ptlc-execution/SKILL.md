@@ -17,7 +17,7 @@ Performance test engineer: generas scripts de calidad para la herramienta selecc
 
 ## ⚠️ LECTURA OBLIGATORIA ANTES DE OPERAR
 
-**Cargar `docs/plan/{plan_id}/context_envelope.json` si existe; no releer documentos ya sintetizados en él.**
+**Cargar `tests/performance/{selected_tool}/{plan_id}/context_envelope.json` si existe; no releer documentos ya sintetizados en él.**
 
 **Leer exactamente lo listado; solo 2 documentos COMPLETOS. Sección = `grep -n "^## " <archivo>` + `read` offset/limit. Regla de herramienta: si `task_definition.selected_tool` (o `tool_selected`) falta, PREGUNTA; NUNCA leas las 4 guías, solo la seleccionada y sus secciones requeridas.**
 
@@ -31,18 +31,15 @@ Performance test engineer: generas scripts de calidad para la herramienta selecc
 - `.claude/skills/ptlc-workload-modeling/01_Workload_Modeling_Exhaustivo.md` §Patrones de Tráfico (224) — perfiles de carga
 - `.claude/skills/ptlc-scripting/01_Scripting_Avanzado.md` §Data Management Strategies (325) — feeders y datos
 - `.claude/skills/ptlc-scripting/01_Scripting_Avanzado.md` §Error Handling Best Practices (392) — manejo de errores
-- `.claude/skills/ptlc-herramientas/00_Comunes_Guia_Herramientas.md` §3.1 Prácticas (267) — mejores prácticas
-- `.claude/skills/ptlc-herramientas/00_Comunes_Guia_Herramientas.md` §3.2 Antipatrones (282) — antipatrones
-- `.claude/skills/ptlc-herramientas/00_Comunes_Guia_Herramientas.md` §1.7 Quality gate (151) — check_thresholds.py
 
 ### Lecturas por sección (solo `tool_selected`, solo lo requerido)
-Guías en `.claude/skills/ptlc-herramientas/`:
-- k6 `06_k6_Guia_Completa_Expandida.md` §5 Executors (392), §6 Scenarios (575), §9 Thresholds (931), §4 Lifecycle (227), §11 Datos/Parametrización (1163)
-- JMeter `05_JMeter_Guia_Completa.md` §5 Thread Groups (310), §9 Extractors/Correlation (595), §10 Assertions (688), §17 CLI (1191)
-- Gatling `04_Gatling_Community_Guia_Completa.md` §12 Injection Profiles (1303), §15 Assertions (1689), §11 Feeders (1203)
-- Locust `03_Locust_Guia_Completa.md` §5 User Classes (462), §9 Custom Load Shapes (1032), §8 Wait Times/Pacing (943)
+**Nota:** La skill `ptlc-herramientas` ahora solo contiene el cheat sheet. Consulta documentación oficial de cada herramienta para sintaxis específica:
+- k6 → [Documentación oficial k6](https://grafana.com/k6/)
+- JMeter → [Apache JMeter Documentation](https://jmeter.apache.org/documentation/)
+- Gatling → [Gatling Docs](https://gatling.io/docs/)
+- Locust → [Locust Docs](https://locust.readthedocs.io/)
 
-Aplicar patrones de carga de `ptlc-workload-modeling/`, scripting de `ptlc-scripting/` y sintaxis de la guía de la herramienta.
+Usa `.claude/skills/ptlc-herramientas/00b_Cheat_Sheet_Herramientas.md` para matriz de decisión y secciones comunes (CI/CD, troubleshooting).
 
 **Presupuesto de lectura:** ninguna lectura >2.000 tokens; cargar secciones, no archivos completos; reutilizar `context_envelope.json`. Para fórmulas/umbrales/sintaxis usa `ptlc-workload-modeling/00_Cheat_Sheet_Workload.md` y `ptlc-herramientas/00b_Cheat_Sheet_Herramientas.md` antes que el doc completo.
 
@@ -53,14 +50,14 @@ Aplicar patrones de carga de `ptlc-workload-modeling/`, scripting de `ptlc-scrip
 ## Flujo de Trabajo
 
 1. **Leer plan completo:** `procedure_plan` (tipos, escenarios, VUs, criterios), `requirements` (endpoints, protocolo, datos, stack), `selected_tool`, `test_plan` (criterios definitivos).
-2. **Crear estructura** en `tests/performance/`: `{tool}/scripts/`, `{tool}/data/`, `{tool}/config/`, `{tool}/results/`, `README.md`.
+2. **Crear estructura** solo para la herramienta seleccionada (`selected_tool`) en `tests/performance/{selected_tool}/{plan_id}/`: `{selected_tool}/scripts/`, `{selected_tool}/data/`, `{selected_tool}/config/`, `{selected_tool}/results/`, `README.md`.
 3. **Generar scripts por tipo de prueba:**
    - k6: `executor` correcto (`ramping-vus`, `constant-arrival-rate`), `scenarios`, `thresholds`, `SharedArray`, `setup/default/teardown`.
    - JMeter: JMX con Thread Group (ramp-up, users, duration), CSV Data Set, Response/Duration Assertion, extractors, Backend Listener.
    - Gatling: DSL, `inject` (`rampUsers`, `constantUsersPerSec`, `stressPeakUsers`), `assertions`, `feeder`.
    - Locust: `HttpUser` con `tasks`/`wait_time`, `LoadTestShape`, `--headless`, `events`.
 4. **Ejecutar** (si `execute = true`): smoke primero (2-3 min); si pasa, pruebas en orden; si falla, detener y reportar. Capturar stdout/stderr, CSV/JSON/HTML, tiempos.
-5. **Empaquetar resultados** en `tests/performance/{tool}/results/` + resumen.
+5. **Empaquetar resultados** en `tests/performance/{selected_tool}/{plan_id}/results/` + resumen.
 
 </workflow>
 

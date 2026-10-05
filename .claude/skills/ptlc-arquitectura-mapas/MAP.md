@@ -50,7 +50,7 @@ graph TB
         end
         subgraph SKILLS["📂 skills/ — 18 skills ptlc-*"]
             PIPE["⚙️ 6 skills pipeline PTLC\nintake · diagnostics · procedure\nplan · execution · analysis"]
-            OPS["🛠️ Guías operativas por herramienta\nptlc-herramientas/ (k6 · JMeter\nGatling · Locust)"]
+            OPS["🛠️ Referencia central + cheat sheet\nptlc-herramientas/ (solo índice)"]
         end
     end
 
@@ -69,7 +69,7 @@ graph TB
 flowchart TD
     USER(["👤 Usuario\n'Necesito probar mi API'\nO cualquier request"])
 
-    PTLC_ORCH["🎯 ptlc-orchestrator\nENTRY POINT OBLIGATORIO\nPhase 0: detecta dominio + clasifica\nPersiste plan en docs/plan/"]
+    PTLC_ORCH["🎯 ptlc-orchestrator\nENTRY POINT OBLIGATORIO\nPhase 0: detecta dominio + clasifica\nPersiste plan en tests/performance/{selected_tool}/{plan_id}/"]
 
     DOMAIN{{"¿Dominio detectado?"}}
 
@@ -86,7 +86,7 @@ flowchart TD
 
     GEN_FLOW["🛠️ Soporte general — subagentes integrados\n`general-purpose` (multi-paso) · `Explore` (exploración)"]
 
-    OUT_PTLC(["📦 Entregables PTLC\n• docs/performance-test-plan.md\n• tests/performance/{tool}/\n• docs/performance-test-report.md"])
+    OUT_PTLC(["📦 Entregables PTLC\n• tests/performance/{selected_tool}/{plan_id}/performance-test-plan.md\n• tests/performance/{tool}/\n• tests/performance/{selected_tool}/{plan_id}/performance-test-report.md"])
     OUT_GEN(["📦 Entregables generales\n• código · documentación · tests"])
 
     USER --> PTLC_ORCH
@@ -107,14 +107,14 @@ flowchart TD
 
 | # | Skill | Entrada | Lecturas del knowledge base | Proceso | Salida / artefacto |
 |---|-------|---------|------------------------------|---------|--------------------|
-| 0 | `ptlc-orchestrator` | Request del usuario | PRD (`ptlc-roadmap-decisiones`) | Detección de dominio + plan 6-wave | `docs/plan/{plan_id}/plan.yaml` |
-| 1 | `ptlc-intake` | Solicitud | `ptlc-fundamentos`, `ptlc-tipos-de-pruebas`, `ptlc-herramientas` (matriz de decisión), `ptlc-workload-modeling` | Preguntas estructuradas + selección de UNA herramienta | Requisitos completos + herramienta elegida |
+| 0 | `ptlc-orchestrator` | Request del usuario | PRD (`ptlc-roadmap-decisiones`) | Detección de dominio + plan 6-wave | `tests/performance/{selected_tool}/{plan_id}/plan.yaml` |
+| 1 | `ptlc-intake` | Solicitud | `ptlc-fundamentos`, `ptlc-tipos-de-pruebas`, `ptlc-herramientas` (cheat sheet), `ptlc-workload-modeling` | Preguntas estructuradas + selección de UNA herramienta | Requisitos completos + herramienta elegida |
 | 2 | `ptlc-diagnostics` | Requisitos, entorno | `ptlc-fases-del-ciclo` (readiness), `ptlc-metricas-kpis`, `ptlc-workload-modeling`, `ptlc-monitoreo`, `ptlc-mejores-practicas` | Evaluación de entorno y dependencias | Readiness score + riesgos |
 | 3 | `ptlc-procedure-plan` | Requisitos + diagnóstico | `ptlc-tipos-de-pruebas`, `ptlc-workload-modeling` (Little's Law), `ptlc-metricas-kpis` | Tipos de prueba + modelo de carga | Workload model + tipos seleccionados |
-| 4 | `ptlc-test-plan` | Procedure plan | `ptlc-fundamentos`, `ptlc-fases-del-ciclo` (planificación) | Redacción ISTQB/IEEE-829 | `docs/performance-test-plan.md` |
+| 4 | `ptlc-test-plan` | Procedure plan | `ptlc-fundamentos`, `ptlc-fases-del-ciclo` (planificación) | Redacción ISTQB/IEEE-829 | `tests/performance/{selected_tool}/{plan_id}/performance-test-plan.md` |
 | — | **APPROVAL GATE** | Plan completo | — | `ptlc-orchestrator` presenta el plan y espera confirmación explícita | Aprobado → Wave 5 · rechazado → ciclo pausado |
-| 5 | `ptlc-execution` | Test plan aprobado | `ptlc-herramientas` (guía de la herramienta), `ptlc-scripting`, `ptlc-fases-del-ciclo` | Generación on-demand de scripts + ejecución | Scripts + resultados en `tests/performance/{tool}/{plan_id}/` |
-| 6 | `ptlc-analysis` | Resultados de ejecución | `ptlc-metricas-kpis`, `ptlc-analisis-bottlenecks`, `ptlc-fases-del-ciclo` (análisis y cierre), `ptlc-monitoreo` | Métricas + RCA + health scoring | `docs/performance-test-report.md` + veredicto PASSED/FAILED |
+| 5 | `ptlc-execution` | Test plan aprobado | `ptlc-herramientas` (cheat sheet), `ptlc-scripting`, `ptlc-fases-del-ciclo` | Generación on-demand de scripts + ejecución | Scripts + resultados en `tests/performance/{selected_tool}/{plan_id}/` |
+| 6 | `ptlc-analysis` | Resultados de ejecución | `ptlc-metricas-kpis`, `ptlc-analisis-bottlenecks`, `ptlc-fases-del-ciclo` (análisis y cierre), `ptlc-monitoreo` | Métricas + RCA + health scoring | `tests/performance/{selected_tool}/{plan_id}/performance-test-report.md` + veredicto PASSED/FAILED |
 
 ---
 
@@ -123,11 +123,11 @@ flowchart TD
 | Agente | Guías que debe leer |
 |--------|--------------------|
 | `ptlc-orchestrator` | Detección de dominio (Phase 0), generación de plan 6-wave (Phase 2), approval gate (Phase 3B) |
-| `ptlc-intake` | [`ptlc-herramientas/SKILL.md`](../ptlc-herramientas/SKILL.md) — protocolo, complejidad, lenguaje, tipo de prueba → selecciona UNA herramienta |
+| `ptlc-intake` | [`ptlc-herramientas/SKILL.md`](../ptlc-herramientas/SKILL.md) — matriz de decisión rápida vía cheat sheet |
 | `ptlc-diagnostics` | Checklist de readiness de [`ptlc-fases-del-ciclo/SKILL.md`](../ptlc-fases-del-ciclo/SKILL.md) |
 | `ptlc-procedure-plan` | [`ptlc-tipos-de-pruebas/SKILL.md`](../ptlc-tipos-de-pruebas/SKILL.md) + [`ptlc-workload-modeling/SKILL.md`](../ptlc-workload-modeling/SKILL.md) — tipos de prueba + Little's Law |
 | `ptlc-test-plan` | [`ptlc-fundamentos/SKILL.md`](../ptlc-fundamentos/SKILL.md) + template ISTQB/IEEE-829 de [`ptlc-fases-del-ciclo/`](../ptlc-fases-del-ciclo/SKILL.md) |
-| `ptlc-execution` | Guía de la herramienta en [`ptlc-herramientas/`](../ptlc-herramientas/SKILL.md) (k6 / JMeter / Gatling / Locust) + [`ptlc-scripting/`](../ptlc-scripting/SKILL.md) |
+| `ptlc-execution` | Cheat sheet en [`ptlc-herramientas/00b_Cheat_Sheet_Herramientas.md`](../ptlc-herramientas/00b_Cheat_Sheet_Herramientas.md) + [`ptlc-scripting/`](../ptlc-scripting/SKILL.md) |
 | `ptlc-analysis` | [`ptlc-metricas-kpis/SKILL.md`](../ptlc-metricas-kpis/SKILL.md) — percentiles, Apdex, throughput, error rate · [`ptlc-analisis-bottlenecks/SKILL.md`](../ptlc-analisis-bottlenecks/SKILL.md) — 5 Whys, Fishbone, health scoring, ranking P1/P2/P3 |
 
 ---
@@ -141,15 +141,15 @@ flowchart TD
 | Generación on-demand | Scripts generados en Wave 5 — no existen pre-creados |
 | Aprobación explícita | `ptlc-execution` no corre sin confirmación del usuario |
 | Resultados individuales | Cada ejecución es independiente; no hay comparación cross-tool |
-| Estado persistido | `docs/plan/{plan_id}/plan.yaml` guarda el estado de cada ciclo |
+| Estado persistido | `tests/performance/{selected_tool}/{plan_id}/plan.yaml` guarda el estado de cada ciclo |
 | Knowledge Base como fuente de verdad | Cada agente lee los documentos relevantes antes de actuar |
 | Outputs en español | Todos los reportes, planes y comunicaciones en español |
 
 | Decisión | Valor | Justificación |
 |----------|-------|---------------|
 | Script generation | On-demand en Wave 5 | No existen scripts pre-creados; se generan para cada request |
-| Output path | `tests/performance/{tool}/{plan_id}/` | Organización por herramienta y ciclo para trazabilidad |
-| State persistence | `docs/plan/{plan_id}/plan.yaml` | Permite retomar ciclos interrumpidos |
+| Output path | `tests/performance/{selected_tool}/{plan_id}/` | Organización por herramienta y ciclo para trazabilidad |
+| State persistence | `tests/performance/{selected_tool}/{plan_id}/plan.yaml` | Permite retomar ciclos interrumpidos |
 | Approval gate | Requerida antes de ejecutar | `ptlc-execution` tiene impacto real sobre infraestructura |
 | Idioma | Español en todos los outputs | Requisito de producto definido en [`ptlc-roadmap-decisiones/PRD.yaml`](../ptlc-roadmap-decisiones/PRD.yaml) |
 
@@ -161,22 +161,22 @@ flowchart TD
 flowchart LR
     Q1{{"¿Protocolo?"}}
     
-    Q1 -->|"JDBC/JMS/FTP\nbinario"| JMETER["🔴 JMeter\n.claude/skills/ptlc-herramientas/\n05_JMeter_Guia_Completa.md"]
+    Q1 -->|"JDBC/JMS/FTP\nbinario"| JMETER["🔴 JMeter\nDocumentación oficial"]
     Q1 -->|HTTP/gRPC| Q2{{"¿Lenguaje\ndel equipo?"}}
     Q1 -->|WebSocket\ncomplejo| Q3{{"¿Stack?"}}
     
     Q2 -->|"JavaScript/TS"| Q4{{"¿CI-first?"}}
-    Q2 -->|"Java/Kotlin/Scala"| GATLING["🔵 Gatling CE\n.claude/skills/ptlc-herramientas/\n04_Gatling_Community_Guia_Completa.md"]
-    Q2 -->|"Python"| LOCUST["🟢 Locust\n.claude/skills/ptlc-herramientas/\n03_Locust_Guia_Completa.md"]
+    Q2 -->|"Java/Kotlin/Scala"| GATLING["🔵 Gatling CE\nDocumentación oficial"]
+    Q2 -->|"Python"| LOCUST["🟢 Locust\nDocumentación oficial"]
     
-    Q4 -->|"Sí, pipeline first"| K6["🟡 k6\n.claude/skills/ptlc-herramientas/\n06_k6_Guia_Completa_Expandida.md"]
+    Q4 -->|"Sí, pipeline first"| K6["🟡 k6\nDocumentación oficial"]
     Q4 -->|"No, GUI disponible"| JMETER
     
     Q3 -->|Python| LOCUST
     Q3 -->|JS/Java| K6
 ```
 
-> Las guías se están reorganizando por tema; la tabla de decisión vigente está en [`ptlc-herramientas/SKILL.md`](../ptlc-herramientas/SKILL.md).
+> **Nota v3.0:** La skill `ptlc-herramientas` ahora solo contiene el cheat sheet central ([`00b_Cheat_Sheet_Herramientas.md`](../ptlc-herramientas/00b_Cheat_Sheet_Herramientas.md)). Toda información detallada sobre k6, JMeter, Gatling y Locust está en la documentación oficial de cada herramienta. Usa el cheat sheet para decisión rápida y navegación a secciones comunes (CI/CD, troubleshooting).
 
 ---
 
@@ -204,11 +204,7 @@ graph LR
         D03C["ptlc-fases-del-ciclo/03_Entorno_Scripts"]
         D03D["ptlc-fases-del-ciclo/04_Analisis_Cierre"]
         D04["ptlc-metricas-kpis"]
-        D05I["ptlc-herramientas (índice + comparativa)"]
-        D05K["ptlc-herramientas/06_k6 Expandida"]
-        D05J["ptlc-herramientas/05_JMeter"]
-        D05G["ptlc-herramientas/04_Gatling CE"]
-        D05L["ptlc-herramientas/03_Locust"]
+        D05I["ptlc-herramientas (índice + cheat sheet)"]
         D06["ptlc-workload-modeling · Little's Law"]
         D07["ptlc-monitoreo · Prometheus · Grafana"]
         D08["ptlc-scripting avanzado"]
@@ -241,10 +237,7 @@ graph LR
     A_TPL --> D04
 
     A_EXE --> D03C
-    A_EXE --> D05K
-    A_EXE --> D05J
-    A_EXE --> D05G
-    A_EXE --> D05L
+    A_EXE --> D05I
     A_EXE --> D06
     A_EXE --> D08
 
@@ -269,10 +262,9 @@ graph TD
 
     SK_ROOT_F --> README_SK["📄 README.md\nÍndice maestro"]
     SK_ROOT_F --> K1["📂 ptlc-fundamentos · ptlc-tipos-de-pruebas\nptlc-fases-del-ciclo · ptlc-metricas-kpis"]
-    SK_ROOT_F --> K2["📂 ptlc-herramientas · ptlc-workload-modeling\nptlc-monitoreo · ptlc-scripting"]
+    SK_ROOT_F --> K2["📂 ptlc-herramientas (solo cheat sheet)\nptlc-workload-modeling\nptlc-monitoreo · ptlc-scripting"]
     SK_ROOT_F --> K3["📂 ptlc-analisis-bottlenecks · ptlc-mejores-practicas\nptlc-arquitectura-mapas · ptlc-roadmap-decisiones"]
     SK_ROOT_F --> K4["⚙️ 6 skills pipeline: ptlc-intake\nptlc-diagnostics · ptlc-procedure-plan\nptlc-test-plan · ptlc-execution · ptlc-analysis"]
-    SK_ROOT_F --> K5["🛠️ Guías operativas por herramienta\nptlc-herramientas/"]
 
     GH_F --> AG_F["📂 agents/"]
     GH_F --> INS_F["📂 instructions/"]
@@ -296,82 +288,68 @@ graph TD
 
     N3A["🟢 Load Testing"]
     N3B["🟢 Stress Testing"]
-    N3C["🟢 k6 Guía Expandida"]
-    N3D["🟢 JMeter Guía"]
-    N3E["🟢 RCA y Troubleshooting"]
-    N3F["🟢 Workload Modeling\n(Little's Law)"]
+    N3C["🟢 k6 Cheat Sheet"]
+    N3D["🟢 JMeter Cheat Sheet"]
+    N3E["🟢 Gatling Cheat Sheet"]
+    N3F["🟢 Locust Cheat Sheet"]
 
-    N1 -->|"¿Qué tipo de prueba?"| N2A
-    N1 -->|"¿Cómo ejecutar el ciclo?"| N2B
-    N1 -->|"¿Qué herramienta usar?"| N2C
-    N1 -->|"¿Cómo analizar resultados?"| N2D
+    N1 --> N2A
+    N1 --> N2B
+    N1 --> N2C
+    N1 --> N2D
     N1 --> N2E
 
-    N2A --> N3A
-    N2A --> N3B
     N2C --> N3C
     N2C --> N3D
-    N2D --> N3E
-    N2B --> N3F
+    N2C --> N3E
+    N2C --> N3F
+
+    style N1 fill:#e1f5ff
+    style N2A fill:#fff4e1
+    style N2B fill:#fff4e1
+    style N2C fill:#fff4e1
+    style N2D fill:#fff4e1
+    style N2E fill:#fff4e1
+    style N3A fill:#e8f5e9
+    style N3B fill:#e8f5e9
+    style N3C fill:#e8f5e9
+    style N3D fill:#e8f5e9
+    style N3E fill:#e8f5e9
+    style N3F fill:#e8f5e9
 ```
 
 ---
 
 ## 10. Entregables y artefactos por ciclo
 
-```mermaid
-flowchart LR
-    subgraph RUNTIME["⚙️ En ejecución"]
-        PY["docs/plan/{plan_id}/\nplan.yaml"]
-    end
-
-    subgraph DOCS_OUT["📋 Documentos"]
-        TP["docs/\nperformance-test-plan.md\n(Plan formal ISTQB)"]
-        TR["docs/\nperformance-test-report.md\n(Reporte ejecutivo + RCA)"]
-    end
-
-    subgraph SCRIPTS["🧪 Scripts de Prueba"]
-        K6S["tests/performance/k6/\nscripts/ · data/ · results/"]
-        JMS["tests/performance/jmeter/\nscripts/ · data/ · results/"]
-        GTS["tests/performance/gatling/\nscripts/ · data/ · results/"]
-        LCS["tests/performance/locust/\nscripts/ · data/ · results/"]
-    end
-
-    PY --> TP
-    TP --> TR
-    TP --> K6S
-    TP --> JMS
-    TP --> GTS
-    TP --> LCS
-```
-
-**Scripts generados por herramienta (Wave 5, on-demand):**
-
-```
-tests/performance/{tool}/{plan_id}/
-├── [k6]       script.js + run.sh
-├── [JMeter]   test-plan.jmx + pom.xml + run.ps1
-├── [Gatling]  Simulation.scala/Java/Kotlin + pom.xml
-└── [Locust]   locustfile.py + run.sh
-```
+| Fase | Entregable principal | Formato | Ubicación |
+|------|---------------------|---------|-----------|
+| F1 (Intake) | `requirements.json` + herramienta seleccionada | JSON | `tests/performance/{selected_tool}/{plan_id}/` |
+| F2 (Diagnostics) | Readiness score + riesgos identificados | JSON | `tests/performance/{selected_tool}/{plan_id}/` |
+| F3 (Procedure Plan) | Workload model + tipos de prueba | YAML | `tests/performance/{selected_tool}/{plan_id}/` |
+| F4 (Test Plan) | Documento formal ISTQB/IEEE-829 | Markdown | `tests/performance/{selected_tool}/{plan_id}/performance-test-plan.md` |
+| **Gate** | Aprobación explícita del usuario | Confirmación | Interfaz UI |
+| F5 (Execution) | Scripts generados + resultados | Scripts + JSON | `tests/performance/{selected_tool}/{plan_id}/` |
+| F6 (Analysis) | Reporte final con veredicto | Markdown | `tests/performance/{selected_tool}/{plan_id}/performance-test-report.md` |
 
 ---
 
 ## 11. Tiempos estimados por fase
 
-```
-ptlc-orchestrator (Phase 0+2)   ██░░░░░░░░░░  ~2 min  (detección + plan)
-ptlc-intake        (Wave 1)     ████░░░░░░░░  ~5 min  (preguntas + selección)
-ptlc-diagnostics   (Wave 2)     ████░░░░░░░░  ~5 min  (readiness check)
-ptlc-procedure-plan(Wave 3)     ████████░░░░  ~10 min (workload modeling)
-ptlc-test-plan     (Wave 4)     ██████████░░  ~15 min (redacción del plan)
-APPROVAL GATE                   ██░░░░░░░░░░  variable
-ptlc-execution     (Wave 5)     ████████████  variable (gen + ejecución)
-ptlc-analysis      (Wave 6)     ████████░░░░  ~10 min (análisis + reporte)
-──────────────────────────────────────────────────────────
-TOTAL (sin ejecución)                         ~47 min
-```
+| Fase | Tiempo estimado | Depende de |
+|------|-----------------|------------|
+| F0 (Detection) | ~2 min | Complejidad del request |
+| F1 (Intake) | 5-15 min | Cantidad de preguntas |
+| F2 (Diagnostics) | 3-8 min | Complejidad del entorno |
+| F3 (Procedure Plan) | 5-10 min | Workload model complexity |
+| F4 (Test Plan) | 8-15 min | Longitud del documento formal |
+| **Gate** | Variable | Respuesta usuario |
+| F5 (Execution) | 10-30 min | Scripts generados + infraestructura |
+| F6 (Analysis) | 5-12 min | Cantidad de métricas/RCA |
+
+**Total ciclo completo:** ~45-90 minutos promedio
 
 ---
 
-*Actualizado: Octubre 2026 — v3.0: knowledge base migrada de `DOCs/` a `.claude/skills/`, `ptlc-orchestrator` como entry point obligatorio. Este documento consolidó los tres mapas previos (agentes ↔ skills, funcional simplificado y funcional v1.0), ya eliminados.*
+*Documento generado automáticamente por análisis del repositorio PTLC MAP*  
+*Última actualización: 2026-10-05*

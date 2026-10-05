@@ -40,10 +40,10 @@ Skills PTLC (`.claude/skills/{skill}/SKILL.md`): las 6 de las fases F1-F6. Para 
 - `.claude/skills/ptlc-fases-del-ciclo/SKILL.md` — fases del ciclo completo
 - `.claude/skills/ptlc-arquitectura-mapas/CONVENTIONS.md` — convenciones del repositorio
 - `.claude/skills/ptlc-roadmap-decisiones/PRD.yaml` — requisitos del producto
-- `docs/plan/{plan_id}/plan.yaml` — estado del plan activo
-- `docs/plan/{plan_id}/context_envelope.json` — contexto acumulado del ciclo; contrato en `.claude/skills/ptlc-roadmap-decisiones/CONTEXT_ENVELOPE.md`
-- `docs/performance-test-plan.md` — plan formal generado (si existe)
-- `docs/performance-test-report.md` — reporte de resultados (si existe)
+- `tests/performance/{selected_tool}/{plan_id}/plan.yaml` — estado del plan activo
+- `tests/performance/{selected_tool}/{plan_id}/context_envelope.json` — contexto acumulado del ciclo; contrato en `.claude/skills/ptlc-roadmap-decisiones/CONTEXT_ENVELOPE.md`
+- `tests/performance/{selected_tool}/{plan_id}/performance-test-plan.md` — plan formal generado (si existe)
+- `tests/performance/{selected_tool}/{plan_id}/performance-test-report.md` — reporte de resultados (si existe)
 
 </knowledge_sources>
 
@@ -56,7 +56,7 @@ IMPORTANTE: Ejecutar SIEMPRE desde Phase 0. Nunca saltear ni reordenar fases.
 ### Phase 0: Init & Clarify
 
 - Leer el input y **detectar el dominio**: ¿performance-testing? ¿general (no-PTLC)? Si NO es performance-testing → resuelve el request con los subagentes integrados (`general-purpose` para trabajo multi-paso, `Explore` para exploración del repo) o desde el knowledge base, y termina este flujo.
-- Verificar `docs/plan/{plan_id}/plan.yaml` (si se provee plan_id) y detectar la intención: ¿inicio nuevo? ¿plan existente? ¿solo una fase?
+- Verificar `tests/performance/{selected_tool}/{plan_id}/plan.yaml` (si se provee plan_id) y detectar la intención: ¿inicio nuevo? ¿plan existente? ¿solo una fase?
 - Generar `plan_id` `YYYYMMDD-nombre-sistema` si es nuevo; ver si el input trae contexto o se necesitan aclaraciones.
 
 **Gate de clarificación:** solo preguntar si hay ambigüedad bloqueante; con input mínimo ("quiero probar mi API") proceder con `ptlc-intake`, que hace las preguntas necesarias.
@@ -71,7 +71,7 @@ IMPORTANTE: Ejecutar SIEMPRE desde Phase 0. Nunca saltear ni reordenar fases.
 
 ### Phase 2: Plan (para MEDIUM/HIGH)
 
-Crear `docs/plan/{plan_id}/plan.yaml` con `plan_id`, `objective`, `complexity` y 6 fases en cascada (`wave` = orden, `status` = pending):
+Crear `tests/performance/{selected_tool}/{plan_id}/plan.yaml` con `plan_id`, `objective`, `complexity` y 6 fases en cascada (`wave` = orden, `status` = pending):
 
 ```yaml
 plan_id: "{plan_id}"
@@ -86,7 +86,7 @@ phases:
   - {id: phase-6-analysis, skill: ptlc-analysis, depends_on: [phase-5-execution]}
 ```
 
-Crear también `docs/plan/{plan_id}/context_envelope.json` con `meta` (`plan_id`, `objective`, `domain: performance-testing`, `created`) y los bloques de fase vacíos, según `.claude/skills/ptlc-roadmap-decisiones/CONTEXT_ENVELOPE.md`.
+Crear también `tests/performance/{selected_tool}/{plan_id}/context_envelope.json` con `meta` (`plan_id`, `objective`, `domain: performance-testing`, `created`) y los bloques de fase vacíos, según `.claude/skills/ptlc-roadmap-decisiones/CONTEXT_ENVELOPE.md`.
 
 ### Phase 3: Ejecución por Skills
 
@@ -107,9 +107,9 @@ Tras cada fase: presentar el resultado, marcarla `completed` en `plan.yaml`, per
 - **F1 `ptlc-intake`** → `task_definition.user_input`. `needs_more_info` con `pending_questions` → presentarlas al usuario de forma estructurada, esperar respuesta y re-ejecutar la skill hasta `completed`; luego Fase 2.
 - **F2 `ptlc-diagnostics`** → `task_definition.requirements` = output de fase 1. `blocked` (readiness_score < 50) → issues bloqueantes al usuario, esperar confirmación y re-evaluar; `completed` → readiness_score y top 3 riesgos, confirmar si continuar o resolver riesgos HIGH.
 - **F3 `ptlc-procedure-plan`** → `requirements` + `diagnostics_output` (fases 1-2). Presentar tipos de prueba, orden y estimado; preguntar si ajusta el alcance.
-- **F4 `ptlc-test-plan`** → `test_plan` (fases 1-3). Notificar que se generó `docs/performance-test-plan.md`, pedir revisión antes de ejecutar y confirmar `execute: true | false`.
+- **F4 `ptlc-test-plan`** → `test_plan` (fases 1-3). Notificar que se generó `tests/performance/{selected_tool}/{plan_id}/performance-test-plan.md`, pedir revisión antes de ejecutar y confirmar `execute: true | false`.
 - **F5 `ptlc-execution`** → `execute` (booleano aprobado) + contexto acumulado. Smoke test fallido → pausar, reportar y esperar instrucciones; ejecución completa → resumen inmediato.
-- **F6 `ptlc-analysis`** → `execution_results` + `acceptance_criteria`. Veredicto (PASSED/CONDITIONAL/FAILED), resumen ejecutivo, top 3 bottlenecks con P1/P2 y reporte en `docs/performance-test-report.md`.
+- **F6 `ptlc-analysis`** → `execution_results` + `acceptance_criteria`. Veredicto (PASSED/CONDITIONAL/FAILED), resumen ejecutivo, top 3 bottlenecks con P1/P2 y reporte en `tests/performance/{selected_tool}/{plan_id}/performance-test-report.md`.
 
 ### Phase 4: Output Final
 
@@ -121,10 +121,10 @@ Cierre (veredicto, entregables, top 3 recomendaciones) y estado por fase en el f
 
 ## Reglas
 
-- **Estado** — persistir en `docs/plan/{plan_id}/plan.yaml` al completar cada fase; al cerrar cada wave, persistir el bloque de la fase en `docs/plan/{plan_id}/context_envelope.json` y actualizar `meta.last_updated` (nunca borrar bloques ajenos); cada fase pasa a la siguiente el `plan.yaml` + `context_envelope.json` como contexto acumulativo; si se pierde contexto, releer ambos.
+- **Estado** — persistir en `tests/performance/{selected_tool}/{plan_id}/plan.yaml` al completar cada fase; al cerrar cada wave, persistir el bloque de la fase en `tests/performance/{selected_tool}/{plan_id}/context_envelope.json` y actualizar `meta.last_updated` (nunca borrar bloques ajenos); cada fase pasa a la siguiente el `plan.yaml` + `context_envelope.json` como contexto acumulativo; si se pierde contexto, releer ambos.
 - **Usuario** — mostrar progreso por fase ("⏳ Fase 2/6: Diagnóstico en progreso...") y un resumen legible tras cada fase, no solo el JSON; preguntar solo ante decisiones bloqueantes; en ajustes menores (un threshold) proceder directamente.
 - **Ejecución** — NUNCA reimprovisar una fase: ejecutar el procedimiento de su skill `ptlc-*` con el contexto acumulativo completo; si una skill falla 3 veces → escalar al usuario con el error.
-- **Dominio PTLC** — orden intake → diagnóstico → procedimiento → plan → ejecución → análisis; la ejecución real de pruebas requiere confirmación explícita del usuario (Approval Gate); entregables en `docs/` y `tests/performance/`.
+- **Dominio PTLC** — orden intake → diagnóstico → procedimiento → plan → ejecución → análisis; la ejecución real de pruebas requiere confirmación explícita del usuario (Approval Gate); entregables en `tests/performance/{selected_tool}/{plan_id}/` y `docs/`.
 - **Interacción (Claude Code)** — como subagente NO puedes preguntar al usuario: ante un gate, devuelve `status: needs_more_info` con `pending_questions` o `requires_approval: true` para que la sesión principal (que actúa como `ptlc-orchestrator` según `CLAUDE.md`) formule la pregunta. No continúes el pipeline sin la respuesta.
 
 </rules>

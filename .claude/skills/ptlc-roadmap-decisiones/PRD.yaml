@@ -37,20 +37,20 @@ pipeline:
       output: tipos de prueba + workload model
     - id: phase-4-test-plan
       skill: ptlc-test-plan
-      output: docs/performance-test-plan.md
+      output: tests/performance/{selected_tool}/{plan_id}/performance-test-plan.md
     - id: phase-5-execution
       skill: ptlc-execution
-      output: tests/performance/{tool}/ + resultados
+      output: tests/performance/{selected_tool}/ + resultados
       requires_approval: true
     - id: phase-6-analysis
       skill: ptlc-analysis
-      output: docs/performance-test-report.md
+      output: tests/performance/{selected_tool}/{plan_id}/performance-test-report.md
 
 deliverables:
-  test_plan: docs/performance-test-plan.md
-  test_report: docs/performance-test-report.md
-  scripts: tests/performance/{tool}/
-  plan_state: docs/plan/{plan_id}/plan.yaml
+  test_plan: tests/performance/{selected_tool}/{plan_id}/performance-test-plan.md
+  test_report: tests/performance/{selected_tool}/{plan_id}/performance-test-report.md
+  scripts: tests/performance/{selected_tool}/
+  plan_state: tests/performance/{selected_tool}/{plan_id}/plan.yaml
 
 knowledge_base:
   path: .claude/skills/
@@ -73,5 +73,5 @@ knowledge_base:
 constraints:
   - Todos los outputs en español
   - La ejecución real de pruebas requiere aprobación explícita del usuario
-  - El estado de cada plan se persiste en docs/plan/{plan_id}/plan.yaml
+  - El estado de cada plan se persiste en tests/performance/{selected_tool}/{plan_id}/plan.yaml
   - Nunca ejecutar múltiples herramientas en paralelo dentro de un mismo ciclo PTLC

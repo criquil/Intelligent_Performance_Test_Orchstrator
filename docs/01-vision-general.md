@@ -9,7 +9,7 @@
 - Conducir el PTLC de extremo a extremo: requisitos → diagnóstico → procedimiento → plan formal → ejecución → análisis.
 - Centralizar el conocimiento (estándares ISTQB/IEEE-829, ISO 25010, workload modeling, RCA) como skills navegables en 3 niveles.
 - Generar entregables trazables por ciclo: plan activo, plan formal, scripts y reporte con veredicto.
-- Mantener el contexto barato: cheat sheets primero, envelope acumulado, presupuestos de tokens.
+- Mantener el contexto barato: cheat sheets primero, envelope acumulado y lectura por sección.
 
 ## Para quién es
 
@@ -27,7 +27,7 @@ Existe y es funcional:
 - **18 skills:** 6 del pipeline (`ptlc-intake`, `ptlc-diagnostics`, `ptlc-procedure-plan`, `ptlc-test-plan`, `ptlc-execution`, `ptlc-analysis`) + 12 temáticas de conocimiento.
 - **Knowledge base:** ~650 KB y 48 documentos bajo `.claude/skills/` (reemplaza la antigua carpeta `DOCs/`).
 - **Guías operativas:** k6, JMeter, Gatling y Locust en `ptlc-herramientas/` + matriz de decisión.
-- **Gobernanza:** `CLAUDE.md`, mapa de arquitectura (`ptlc-arquitectura-mapas/MAP.md`), PRD (`ptlc-roadmap-decisiones/PRD.yaml`), medición con `scripts/measure_tokens.py`.
+- **Gobernanza:** `CLAUDE.md`, mapa de arquitectura (`ptlc-arquitectura-mapas/MAP.md`), PRD (`ptlc-roadmap-decisiones/PRD.yaml`) y reglas de edición en [07](07-gobernanza.md).
 
 ## Qué NO es
 
@@ -46,7 +46,6 @@ Existe y es funcional:
 | Skills conocimiento (12) | `.claude/skills/ptlc-{fundamentos,…,roadmap-decisiones}/` | Knowledge base temática |
 | Índice maestro | `.claude/skills/README.md` | Punto de entrada del knowledge base |
 | Mapa arquitectura | `.claude/skills/ptlc-arquitectura-mapas/MAP.md` | Diagramas y decisiones críticas |
-| Medición tokens | `scripts/measure_tokens.py` | Valida presupuestos (`--strict`) |
-| Entregables | `docs/plan/{plan_id}/`, `docs/*.md`, `tests/performance/{tool}/` | Estado, planes, scripts y reportes por ciclo |
+| Entregables | `tests/performance/{selected_tool}/{plan_id}/`, `docs/*.md`, `tests/performance/{tool}/` | Estado, planes, scripts y reportes por ciclo |
 
 Siguiente: [02 Arquitectura](02-arquitectura.md) · [03 Agente orquestador](03-agente-orquestador.md).

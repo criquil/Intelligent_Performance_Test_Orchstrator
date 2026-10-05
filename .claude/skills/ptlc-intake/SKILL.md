@@ -17,7 +17,7 @@ Especialista en levantamiento de requisitos de performance testing: formulas las
 
 ## ⚠️ LECTURA OBLIGATORIA ANTES DE OPERAR
 
-**Cargar `docs/plan/{plan_id}/context_envelope.json` si existe; no releer documentos ya sintetizados en él.**
+**Cargar `tests/performance/{selected_tool}/{plan_id}/context_envelope.json` si existe; no releer documentos ya sintetizados en él.**
 
 **Leer exactamente lo listado; solo 2 documentos COMPLETOS. Sección = `grep -n "^## " <archivo>` + `read` offset/limit.**
 
@@ -30,10 +30,9 @@ Especialista en levantamiento de requisitos de performance testing: formulas las
 - `.claude/skills/ptlc-fases-del-ciclo/01_Recopilacion_de_Requisitos.md` §Proceso de Recopilación (40) — proceso
 - `.claude/skills/ptlc-fases-del-ciclo/01_Recopilacion_de_Requisitos.md` §Análisis de Carga Esperada (141) — carga esperada
 - `.claude/skills/ptlc-fases-del-ciclo/01_Recopilacion_de_Requisitos.md` §Documentación Final de Requisitos (241) — plantilla final
-- `.claude/skills/ptlc-herramientas/02_JMeter_Gatling_Locust.md` §Selección de Herramienta - Decision Matrix (380) — matriz de decisión
-- `.claude/skills/ptlc-tipos-de-pruebas/SKILL.md` §Mapa 22+ Tipos (10) y §¿Qué tipo necesito? (29) — tipos disponibles (limit 40)
+- `.claude/skills/ptlc-herramientas/00b_Cheat_Sheet_Herramientas.md` — matriz de decisión y selección rápida
 
-Aplicar la decision matrix de `ptlc-herramientas/02_JMeter_Gatling_Locust.md` e identificar tipos relevantes desde `ptlc-tipos-de-pruebas/SKILL.md`.
+Aplica la decision matrix del cheat sheet `ptlc-herramientas/00b_Cheat_Sheet_Herramientas.md` e identifica tipos relevantes desde `ptlc-tipos-de-pruebas/SKILL.md`.
 
 **Presupuesto de lectura:** ninguna lectura >2.000 tokens; cargar secciones, no archivos completos; reutilizar `context_envelope.json`. Para fórmulas/umbrales de NFRs usa `ptlc-metricas-kpis/00_Cheat_Sheet_Metricas.md` y `ptlc-herramientas/00b_Cheat_Sheet_Herramientas.md` antes que el doc completo.
 

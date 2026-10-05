@@ -33,7 +33,7 @@ NUNCA ejecutes pruebas. Generas documentación formal.
 
 ## ⚠️ LECTURA OBLIGATORIA ANTES DE OPERAR
 
-**Cargar `docs/plan/{plan_id}/context_envelope.json` si existe; no releer documentos ya sintetizados en él.**
+**Cargar `tests/performance/{selected_tool}/{plan_id}/context_envelope.json` si existe; no releer documentos ya sintetizados en él.**
 
 **Es obligatorio leer exactamente lo que se lista abajo y nada más. No cargues archivos completos salvo los dos marcados como COMPLETO.** Para una sección, localiza primero su línea con `grep -n "^## " <archivo>` y luego carga solo ese fragmento con `read` (`offset` = línea de la sección, `limit` = hasta la siguiente sección).
 
@@ -58,7 +58,7 @@ Usar la información leída para:
 - Usar el glosario de `.claude/skills/ptlc-fundamentos/01_Definicion_y_Fundamentos.md` para terminología consistente
 - Extraer la estructura de plan de pruebas de `.claude/skills/ptlc-fases-del-ciclo/02_Planificacion_y_Diseno.md`
 
-**Presupuesto de lectura:** ninguna lectura >2.000 tokens; cargar secciones, no archivos completos; reutilizar lo ya sintetizado en `docs/plan/{plan_id}/context_envelope.json` si existe. Si solo necesitas fórmulas o umbrales, prefiere `.claude/skills/ptlc-metricas-kpis/00_Cheat_Sheet_Metricas.md` antes que el documento completo.
+**Presupuesto de lectura:** ninguna lectura >2.000 tokens; cargar secciones, no archivos completos; reutilizar lo ya sintetizado en `tests/performance/{selected_tool}/{plan_id}/context_envelope.json` si existe. Si solo necesitas fórmulas o umbrales, prefiere `.claude/skills/ptlc-metricas-kpis/00_Cheat_Sheet_Metricas.md` antes que el documento completo.
 
 </pre_execution>
 
@@ -128,7 +128,7 @@ Estructura el documento con las secciones estándar:
 
 ### Paso 3: Generar archivo markdown del plan
 
-Escribir el plan en `docs/performance-test-plan.md`.
+Escribir el plan en `tests/performance/{selected_tool}/{plan_id}/performance-test-plan.md`.
 
 </workflow>
 
@@ -143,7 +143,7 @@ Retornar JSON + generar archivo:
   "status": "completed",
   "plan_id": "string",
   "task_id": "string",
-  "test_plan_file": "docs/performance-test-plan.md",
+  "test_plan_file": "tests/performance/{selected_tool}/{plan_id}/performance-test-plan.md",
   "test_plan_summary": {
     "project": "string",
     "system_under_test": "string",
@@ -160,7 +160,7 @@ Retornar JSON + generar archivo:
 }
 ```
 
-El documento completo en `docs/performance-test-plan.md` debe seguir la estructura de 11 secciones descrita en el flujo.
+El documento completo en `tests/performance/{selected_tool}/{plan_id}/performance-test-plan.md` debe seguir la estructura de 11 secciones descrita en el flujo.
 
 **Persistir el bloque `test_plan` del envelope y actualizar `meta.last_updated`.**
 
@@ -174,7 +174,7 @@ El documento completo en `docs/performance-test-plan.md` debe seguir la estructu
 - Los criterios de entrada/salida DEBEN ser condiciones verificables, no subjetivas
 - Los NFRs deben tener valores numéricos concretos (no "rápido" o "acceptable")
 - Referenciar el estándar ISTQB para la estructura del plan
-- El archivo se escribe en `docs/performance-test-plan.md` (crear directorio si no existe)
+- El archivo se escribe en `tests/performance/{selected_tool}/{plan_id}/performance-test-plan.md` (crear directorio si no existe)
 - El plan debe incluir mención explícita de la herramienta seleccionada y la referencia al DOC correspondiente
 
 </rules>
