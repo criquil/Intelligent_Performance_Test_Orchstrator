@@ -111,9 +111,42 @@ Estructura el documento con las secciones estándar:
 **7. Tipos de Prueba Definidos**
 - Referencia al procedure plan con tabla resumen
 
-**8. Recursos y Roles**
-- Rol performance tester, DevOps, Dev, QA Lead
-- Herramientas requeridas
+**8. Recursos, Roles y Matriz RACI**
+
+Generar tabla RACI completa con los siguientes roles estándar:
+
+| Rol | Código | Descripción |
+|-----|--------|-------------|
+| QA Lead / Test Manager | QL | Responsable de la estrategia y sign-off |
+| Performance Engineer (humano) | PE | Diseña pruebas, revisa scripts, interpreta resultados |
+| **Perfie — IPTO v3** | **AI** | Agente ejecutor autónomo: genera scripts, ejecuta pipeline PTLC, produce reportes |
+| Developer / Dev Team | DV | Provee contexto técnico, atiende findings P1/P2 |
+| DevOps / Infra / Ops | OPS | Gestiona entorno, monitoreo, accesos |
+| Product Manager / Stakeholder | PM | Valida NFRs, aprueba criterios, recibe executive report |
+
+Tabla RACI por tarea del ciclo PTLC (R=Responsible, A=Accountable, C=Consulted, I=Informed):
+
+| Tarea PTLC | QL | PE | AI (Perfie) | DV | OPS | PM |
+|---|---|---|---|---|---|---|
+| 1. Relevamiento de NFRs y requisitos | A | R | R | C | C | C |
+| 2. Diagnóstico técnico y readiness | C | A | R | C | R | I |
+| 3. Procedure Plan (tipos, escenarios, workload) | A | C | R | C | C | I |
+| 4. Test Plan formal (ISTQB/IEEE-829) | A | C | R | I | I | C |
+| 5. Generación de scripts de prueba | C | A | R | C | I | I |
+| 6. Configuración y validación de entorno | I | C | R | C | A | I |
+| 7. Ejecución de smoke test | C | A | R | I | C | I |
+| 8. Ejecución de pruebas completas | A | C | R | I | C | I |
+| 9. Análisis de métricas y KPIs | C | A | R | C | C | I |
+| 10. RCA de bottlenecks | C | A | R | R | C | I |
+| 11. Generación de reportes técnicos | C | A | R | I | I | I |
+| 12. Executive Report para management | A | C | R | I | I | C |
+| 13. Veredicto PASSED/CONDITIONAL/FAILED | A | C | R | C | C | C |
+| 14. Sign-off y aprobación de release | A | I | I | C | C | R |
+| 15. Archivo y cierre del ciclo | A | C | R | I | I | I |
+
+> **Nota sobre Perfie:** El agente Intelligent Performance Test Orchestrator v3 (Perfie) es Responsible (R) en la mayoría de las tareas de ejecución automatizada. El rol humano (QL o PE) retiene siempre la Accountabilidad (A) y el gate de aprobación de release.
+
+- Herramientas requeridas: listar las necesarias según `selected_tool` y stack de monitoreo
 
 **9. Cronograma Estimado**
 - Fases con duración estimada
@@ -176,5 +209,9 @@ El documento completo en `tests/performance/{selected_tool}/{plan_id}/performanc
 - Referenciar el estándar ISTQB para la estructura del plan
 - El archivo se escribe en `tests/performance/{selected_tool}/{plan_id}/performance-test-plan.md` (crear directorio si no existe)
 - El plan debe incluir mención explícita de la herramienta seleccionada y la referencia al DOC correspondiente
+- La RACI de la sección 8 es **obligatoria**; no omitirla aunque el equipo sea pequeño — ajustar roles vacíos a "N/A"
+- **Perfie (AI)** SIEMPRE aparece en la RACI como Responsible (R) de todas las tareas automatizadas del pipeline; nunca omitir este rol
+- El rol humano (QL o PE) SIEMPRE retiene Accountable (A) en las decisiones de estrategia y sign-off; Perfie nunca tiene A en tareas de release o aprobación
+- Si el equipo no tiene algún rol (e.g., no hay DevOps separado), consolidar en la celda indicando quién asume esa responsabilidad
 
 </rules>

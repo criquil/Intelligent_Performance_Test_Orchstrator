@@ -42,7 +42,7 @@ Cada skill es el procedimiento completo de una fase (lecturas obligatorias, work
 | [ptlc-procedure-plan](ptlc-procedure-plan/SKILL.md) | 3 | Tipos de prueba y workload model |
 | [ptlc-test-plan](ptlc-test-plan/SKILL.md) | 4 | Documento formal ISTQB/IEEE-829 |
 | [ptlc-execution](ptlc-execution/SKILL.md) | 5 | Generación y ejecución de scripts (**requiere aprobación**) |
-| [ptlc-analysis](ptlc-analysis/SKILL.md) | 6 | Métricas, RCA y reporte final |
+| [ptlc-analysis](ptlc-analysis/SKILL.md) | 6 | Métricas, RCA y 5 reportes separados: KPIs, análisis, RCA, veredicto, executive report |
 
 ## 🛠️ Guías Operativas de Herramientas
 
